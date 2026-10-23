@@ -1,0 +1,91 @@
+{
+ "period_start": "2026-08-01",
+ "period_end": "2026-08-31",
+ "distribution_date": "2026-09-15",
+ "pool_balance_beginning": 273660015.52,
+ "pool_balance_ending": 258571905.03,
+ "receivables_count_ending": 21147,
+ "gross_charge_offs": null,
+ "recoveries": null,
+ "net_losses": 302555.41,
+ "cumulative_net_loss_pct": 1.1309,
+ "initial_pool_balance": 1121999935.31,
+ "cumulative_net_losses": 12688903.31,
+ "servicing_fee": 228050.01,
+ "reserve_account_ending": 2804999.84,
+ "overcollateralization_ending": 14585999.16,
+ "excess_to_residual": 600153.02,
+ "delinquency": [
+  {
+   "bucket": "31-60",
+   "count": 413,
+   "balance": 6094422.45
+  },
+  {
+   "bucket": "61-90",
+   "count": 179,
+   "balance": 2774028.33
+  },
+  {
+   "bucket": "91-120",
+   "count": 54,
+   "balance": 915211.54
+  },
+  {
+   "bucket": "121+",
+   "count": 7,
+   "balance": 47376.79
+  }
+ ],
+ "notes": [
+  {
+   "class": "A-1",
+   "beginning_balance": 0.0,
+   "ending_balance": 0.0,
+   "interest_paid": 0.0,
+   "principal_paid": 0.0
+  },
+  {
+   "class": "A-2",
+   "beginning_balance": 0.0,
+   "ending_balance": 0.0,
+   "interest_paid": 0.0,
+   "principal_paid": 0.0
+  },
+  {
+   "class": "A-3",
+   "beginning_balance": 138084016.36,
+   "ending_balance": 122995905.87,
+   "interest_paid": 584555.67,
+   "principal_paid": 15088110.49
+  },
+  {
+   "class": "A-4",
+   "beginning_balance": 63200000.0,
+   "ending_balance": 63200000.0,
+   "interest_paid": 260173.33,
+   "principal_paid": 0.0
+  },
+  {
+   "class": "B",
+   "beginning_balance": 23560000.0,
+   "ending_balance": 23560000.0,
+   "interest_paid": 101308.0,
+   "principal_paid": 0.0
+  },
+  {
+   "class": "C",
+   "beginning_balance": 19640000.0,
+   "ending_balance": 19640000.0,
+   "interest_paid": 88543.67,
+   "principal_paid": 0.0
+  },
+  {
+   "class": "D",
+   "beginning_balance": 14590000.0,
+   "ending_balance": 14590000.0,
+   "interest_paid": 70518.33,
+   "principal_paid": 0.0
+  }
+ ]
+}

@@ -1,0 +1,93 @@
+{
+ "period_start": "2026-07-01",
+ "period_end": "2026-07-31",
+ "distribution_date": "2026-08-18",
+ "pool_balance_beginning": 702381104.0,
+ "pool_balance_ending": 675150503.0,
+ "receivables_count_ending": 34667,
+ "gross_charge_offs": 6089239.0,
+ "recoveries": 2206080.0,
+ "net_losses": 3883159.0,
+ "cumulative_net_loss_pct": 6.526,
+ "servicing_fee": 1316965.0,
+ "reserve_account_ending": 16759192.0,
+ "overcollateralization_ending": 82825507.0,
+ "excess_to_residual": 5829138.0,
+ "initial_pool_balance": 1675919179.0,
+ "cumulative_net_losses": 109380429.0,
+ "delinquency": [
+  {
+   "bucket": "31-60",
+   "count": 3781,
+   "balance": 81406570.0
+  },
+  {
+   "bucket": "61-90",
+   "count": 1005,
+   "balance": 19782103.0
+  },
+  {
+   "bucket": "91-120",
+   "count": 256,
+   "balance": 4790373.0
+  }
+ ],
+ "notes": [
+  {
+   "class": "A-1",
+   "beginning_balance": 0.0,
+   "ending_balance": 0.0,
+   "interest_paid": 0.0,
+   "principal_paid": 0.0
+  },
+  {
+   "class": "A-2A",
+   "beginning_balance": 0.0,
+   "ending_balance": 0.0,
+   "interest_paid": 0.0,
+   "principal_paid": 0.0
+  },
+  {
+   "class": "A-2B",
+   "beginning_balance": 0.0,
+   "ending_balance": 0.0,
+   "interest_paid": 0.0,
+   "principal_paid": 0.0
+  },
+  {
+   "class": "A-3",
+   "beginning_balance": 190759083.0,
+   "ending_balance": 167544996.0,
+   "interest_paid": 863185.0,
+   "principal_paid": 23214087.0
+  },
+  {
+   "class": "B",
+   "beginning_balance": 108920000.0,
+   "ending_balance": 108920000.0,
+   "interest_paid": 488325.0,
+   "principal_paid": 0.0
+  },
+  {
+   "class": "C",
+   "beginning_balance": 136560000.0,
+   "ending_balance": 136560000.0,
+   "interest_paid": 627038.0,
+   "principal_paid": 0.0
+  },
+  {
+   "class": "D",
+   "beginning_balance": 131540000.0,
+   "ending_balance": 131540000.0,
+   "interest_paid": 631392.0,
+   "principal_paid": 0.0
+  },
+  {
+   "class": "E",
+   "beginning_balance": 47760000.0,
+   "ending_balance": 47760000.0,
+   "interest_paid": 233228.0,
+   "principal_paid": 0.0
+  }
+ ]
+}

@@ -1,0 +1,98 @@
+{
+ "period_start": "2026-08-01",
+ "period_end": "2026-08-31",
+ "distribution_date": "2026-09-15",
+ "pool_balance_beginning": 462790058.45,
+ "pool_balance_ending": 438720495.08,
+ "receivables_count_ending": 34574,
+ "gross_charge_offs": 1946443.74,
+ "recoveries": 712264.97,
+ "net_losses": 1234178.77,
+ "cumulative_net_loss_pct": 2.7788,
+ "servicing_fee": 385658.38,
+ "reserve_account_ending": 3914142.67,
+ "overcollateralization_ending": 15656570.68,
+ "excess_to_residual": 1014026.99,
+ "initial_pool_balance": 1565657067.52,
+ "cumulative_net_losses": 43505752.39,
+ "delinquency": [
+  {
+   "bucket": "31-60",
+   "count": 1112,
+   "balance": 20306755.64
+  },
+  {
+   "bucket": "61-90",
+   "count": 600,
+   "balance": 11394103.18
+  },
+  {
+   "bucket": "91-120",
+   "count": 135,
+   "balance": 2198033.28
+  },
+  {
+   "bucket": "121+",
+   "count": 1,
+   "balance": 11461.11
+  }
+ ],
+ "notes": [
+  {
+   "class": "A-1",
+   "beginning_balance": 0.0,
+   "ending_balance": 0.0,
+   "interest_paid": 0.0,
+   "principal_paid": 0.0
+  },
+  {
+   "class": "A-2a",
+   "beginning_balance": 0.0,
+   "ending_balance": 0.0,
+   "interest_paid": 0.0,
+   "principal_paid": 0.0
+  },
+  {
+   "class": "A-2b",
+   "beginning_balance": 0.0,
+   "ending_balance": 0.0,
+   "interest_paid": 0.0,
+   "principal_paid": 0.0
+  },
+  {
+   "class": "A-3",
+   "beginning_balance": 235253487.77,
+   "ending_balance": 211183924.4,
+   "interest_paid": 964539.3,
+   "principal_paid": 24069563.37
+  },
+  {
+   "class": "A-4",
+   "beginning_balance": 86680000.0,
+   "ending_balance": 86680000.0,
+   "interest_paid": 356832.67,
+   "principal_paid": 0.0
+  },
+  {
+   "class": "B",
+   "beginning_balance": 46900000.0,
+   "ending_balance": 46900000.0,
+   "interest_paid": 202060.83,
+   "principal_paid": 0.0
+  },
+  {
+   "class": "C",
+   "beginning_balance": 44600000.0,
+   "ending_balance": 44600000.0,
+   "interest_paid": 203301.67,
+   "principal_paid": 0.0
+  },
+  {
+   "class": "D",
+   "beginning_balance": 33700000.0,
+   "ending_balance": 33700000.0,
+   "interest_paid": 168500.0,
+   "principal_paid": 0.0
+  }
+ ]
+}

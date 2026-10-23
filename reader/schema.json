@@ -1,0 +1,212 @@
+{
+ "type": "object",
+ "additionalProperties": false,
+ "required": [
+  "trust",
+  "period_start",
+  "period_end",
+  "distribution_date",
+  "pool_balance_beginning",
+  "pool_balance_ending",
+  "receivables_count_ending",
+  "gross_charge_offs",
+  "recoveries",
+  "net_losses",
+  "cumulative_net_loss_pct",
+  "delinquency",
+  "servicing_fee",
+  "reserve_account_ending",
+  "overcollateralization_ending",
+  "excess_to_residual",
+  "notes",
+  "initial_pool_balance",
+  "cumulative_net_losses",
+  "recoveries_components",
+  "ambiguous_fields"
+ ],
+ "properties": {
+  "trust": {
+   "type": "string"
+  },
+  "period_start": {
+   "type": [
+    "string",
+    "null"
+   ]
+  },
+  "period_end": {
+   "type": [
+    "string",
+    "null"
+   ]
+  },
+  "distribution_date": {
+   "type": [
+    "string",
+    "null"
+   ]
+  },
+  "pool_balance_beginning": {
+   "type": [
+    "number",
+    "null"
+   ]
+  },
+  "pool_balance_ending": {
+   "type": [
+    "number",
+    "null"
+   ]
+  },
+  "receivables_count_ending": {
+   "type": [
+    "integer",
+    "null"
+   ]
+  },
+  "gross_charge_offs": {
+   "type": [
+    "number",
+    "null"
+   ]
+  },
+  "recoveries": {
+   "type": [
+    "number",
+    "null"
+   ]
+  },
+  "net_losses": {
+   "type": [
+    "number",
+    "null"
+   ]
+  },
+  "cumulative_net_loss_pct": {
+   "type": [
+    "number",
+    "null"
+   ]
+  },
+  "delinquency": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "bucket",
+     "count",
+     "balance"
+    ],
+    "properties": {
+     "bucket": {
+      "type": "string"
+     },
+     "count": {
+      "type": [
+       "integer",
+       "null"
+      ]
+     },
+     "balance": {
+      "type": [
+       "number",
+       "null"
+      ]
+     }
+    }
+   }
+  },
+  "servicing_fee": {
+   "type": [
+    "number",
+    "null"
+   ]
+  },
+  "reserve_account_ending": {
+   "type": [
+    "number",
+    "null"
+   ]
+  },
+  "overcollateralization_ending": {
+   "type": [
+    "number",
+    "null"
+   ]
+  },
+  "excess_to_residual": {
+   "type": [
+    "number",
+    "null"
+   ]
+  },
+  "notes": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+     "class",
+     "beginning_balance",
+     "ending_balance",
+     "interest_paid",
+     "principal_paid"
+    ],
+    "properties": {
+     "class": {
+      "type": "string"
+     },
+     "beginning_balance": {
+      "type": [
+       "number",
+       "null"
+      ]
+     },
+     "ending_balance": {
+      "type": [
+       "number",
+       "null"
+      ]
+     },
+     "interest_paid": {
+      "type": [
+       "number",
+       "null"
+      ]
+     },
+     "principal_paid": {
+      "type": [
+       "number",
+       "null"
+      ]
+     }
+    }
+   }
+  },
+  "initial_pool_balance": {
+   "type": [
+    "number",
+    "null"
+   ]
+  },
+  "cumulative_net_losses": {
+   "type": [
+    "number",
+    "null"
+   ]
+  },
+  "recoveries_components": {
+   "type": "array",
+   "items": {
+    "type": "number"
+   }
+  },
+  "ambiguous_fields": {
+   "type": "array",
+   "items": {
+    "type": "string"
+   }
+  }
+ }
+}
