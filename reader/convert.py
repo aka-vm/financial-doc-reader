@@ -229,6 +229,21 @@ def walk(src):
     return out, lines
 
 
+def plain(src):
+    """Contracts: plain text, table rows kept on one line ("cell | cell")."""
+    t = re.sub(r"(?is)<(script|style)\b.*?</\1>", " ", strip_hidden(src))
+    t = re.sub(r"(?i)</t[dh]>", " | ", t)
+    t = re.sub(r"(?i)<br\s*/?>|</(p|div|tr|li|h\d)>", "\n", t)
+    t = unescape(re.sub(r"<[^>]+>", " ", t)).replace("\xa0", " ")
+    lines = []
+    for line in t.split("\n"):
+        line = re.sub(r"[ \t]+", " ", line)
+        line = re.sub(r"(\s*\|\s*)+", " | ", line).strip(" |")
+        if line:
+            lines.append(line)
+    return "\n".join(lines)
+
+
 def render(src):
     return "\n".join(walk(src)[1])
 

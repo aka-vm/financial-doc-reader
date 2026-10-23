@@ -1,21 +1,45 @@
-"""Drop-in web page: drag a servicer report onto it, get the standard figures with anything doubtful flagged.
+"""Drop-in web page: give it servicer reports, contracts, loan tapes, a .zip, or an EDGAR link; get one deal report.
 
-usage: python3 app.py [--backend ollama --model qwen3.5:9b] [--url URL] [--port 8420] [--host 0.0.0.0]
-The backend and model can also be changed on the page. Nothing is stored; uploads go to a temp file and are deleted.
+usage: python3 app.py --backend ollama --model <model> [--url URL] [--port 8420] [--host 0.0.0.0]   (see STARTUP.md)
+The model is chosen when the server starts; the page only takes documents. Uploads live in a temp folder per job.
 """
 import argparse
+import base64
 import json
 import os
 import sys
 import tempfile
-import urllib.parse
+import threading
+import uuid
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from reader.extract import read_report  # noqa: E402
+from reader.deal import build  # noqa: E402
+from reader.intake import collect  # noqa: E402
 
 UI = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "reader", "ui.html"), encoding="utf-8").read()
-DEFAULTS = {}
+DEFAULTS, JOBS = {}, {}
+MAX_UPLOAD = 300 << 20
+
+
+def work(job, files, links, backend, model, url):
+    log = job["log"].append
+    job["progress"] = {"done": 0, "total": 0, "step": "collecting the documents"}
+    try:
+        with tempfile.TemporaryDirectory() as folder:
+            paths = []
+            for f in files:
+                p = os.path.join(folder, os.path.basename(f["name"]) or "upload")
+                open(p, "wb").write(base64.b64decode(f["data"]))
+                paths.append(p)
+            docs = collect(paths, links, folder, log)
+            if not docs:
+                raise ValueError("nothing to read: add a file or a link")
+            job["report"] = build(docs, backend, model, url, log,
+                                  lambda done, total, step: job.update(progress={"done": done, "total": total, "step": step}))
+        job["status"] = "done"
+    except Exception as e:  # shown on the page
+        job["status"], job["error"] = "error", f"{type(e).__name__}: {e}"
 
 
 class Handler(BaseHTTPRequestHandler):
@@ -28,28 +52,24 @@ class Handler(BaseHTTPRequestHandler):
         self.wfile.write(data)
 
     def do_GET(self):
-        if self.path == "/api/defaults":
-            return self.send(200, json.dumps(DEFAULTS))
+        if self.path.startswith("/api/jobs/"):
+            job = JOBS.get(self.path.rsplit("/", 1)[1])
+            return self.send(200, json.dumps(job)) if job else self.send(404, "{}")
         self.send(200, UI, "text/html; charset=utf-8")
 
     def do_POST(self):
-        if not self.path.startswith("/api/read"):
+        if self.path != "/api/jobs":
             return self.send(404, "{}")
-        q = {k: v[0] for k, v in urllib.parse.parse_qs(urllib.parse.urlparse(self.path).query).items()}
-        name = os.path.basename(self.headers.get("X-Filename", "report.htm"))
-        suffix = os.path.splitext(name)[1].lower()
-        if suffix not in (".htm", ".html", ".txt", ".pdf"):
-            return self.send(400, json.dumps({"error": "upload an .htm, .html, .txt or .pdf servicer report"}))
-        body = self.rfile.read(int(self.headers.get("Content-Length", 0)))
-        with tempfile.TemporaryDirectory() as d:
-            path = os.path.join(d, name)
-            open(path, "wb").write(body)
-            try:
-                res = read_report(path, q.get("backend") or DEFAULTS["backend"], q.get("model") or DEFAULTS.get("model"),
-                                  q.get("url") or DEFAULTS.get("url"))
-            except Exception as e:  # show the reason on the page instead of a blank failure
-                return self.send(500, json.dumps({"error": f"{type(e).__name__}: {e}"}))
-        self.send(200, json.dumps(res))
+        size = int(self.headers.get("Content-Length", 0))
+        if size > MAX_UPLOAD:
+            return self.send(413, json.dumps({"error": "upload larger than 300 MB"}))
+        req = json.loads(self.rfile.read(size))
+        jid = uuid.uuid4().hex[:12]
+        JOBS[jid] = {"status": "running", "log": [], "report": None, "error": None}
+        threading.Thread(target=work, daemon=True, args=(
+            JOBS[jid], req.get("files", []), [u for u in req.get("links", []) if u.strip()],
+            DEFAULTS["backend"], DEFAULTS.get("model"), DEFAULTS.get("url"))).start()
+        self.send(200, json.dumps({"id": jid}))
 
     def log_message(self, fmt, *args):
         pass

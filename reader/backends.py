@@ -24,31 +24,62 @@ def first_json(text):
     return json.JSONDecoder().raw_decode(text[text.index("{"):])[0]
 
 
+RUNAWAY = 300  # this many whitespace characters in a row: valid JSON never needs it; the model is looping
+
+
 def post(url, body, headers=None, timeout=1800):
     req = urllib.request.Request(url, json.dumps(body).encode(), {"Content-Type": "application/json", **(headers or {})})
     with urllib.request.urlopen(req, timeout=timeout) as r:
         return json.load(r)
 
 
-def ollama(model, prompt, schema):
+def stream(url, body, piece, headers=None, timeout=1800):
+    """Read a streamed answer chunk by chunk (piece(line) -> text or None); stop as soon as it starts looping on
+    whitespace, instead of letting it run to the length limit."""
+    req = urllib.request.Request(url, json.dumps(body).encode(), {"Content-Type": "application/json", **(headers or {})})
+    with urllib.request.urlopen(req, timeout=timeout) as r:
+        return gather(piece(line.decode("utf-8", "replace").strip()) for line in r)
+
+
+def gather(chunks):
+    """Join streamed text chunks; raise as soon as RUNAWAY whitespace characters arrive in a row."""
+    text, blank = [], 0
+    for t in chunks:
+        if not t:
+            continue
+        text.append(t)
+        blank = blank + len(t) if not t.strip() else len(t) - len(t.rstrip())
+        if blank >= RUNAWAY:
+            raise ValueError("the answer started repeating whitespace")
+    return "".join(text)
+
+
+def ollama(model, prompt, schema, max_tokens=16384):
     host = os.environ.get("OLLAMA_HOST", "http://localhost:11434")
     host = host if host.startswith("http") else "http://" + host
+    body = {"model": model, "stream": True, "format": schema, "think": False, "messages": [{"role": "user", "content": prompt}],
+            "options": {"temperature": 0, "num_ctx": 32768, "num_predict": max_tokens}}
     try:
-        res = post(f"{host}/api/chat", {"model": model, "stream": False, "format": schema, "think": False,
-                                        "messages": [{"role": "user", "content": prompt}],
-                                        "options": {"temperature": 0, "num_ctx": 32768}})
+        text = stream(f"{host}/api/chat", body, lambda ln: ln and json.loads(ln).get("message", {}).get("content"))
     except urllib.error.HTTPError as e:
         if e.code == 404:
             raise RuntimeError(f"Ollama has no model {model!r}: run `ollama pull {model}`") from e
         raise
-    return json.loads(res["message"]["content"])
+    return json.loads(text)
 
 
-def openai_compatible(url, model, prompt, schema, key=None, **extra):
-    body = {"model": model, "messages": [{"role": "user", "content": prompt}], "max_tokens": 16384,
+def _sse(line):
+    if not line.startswith("data:") or line.endswith("[DONE]"):
+        return None
+    choices = json.loads(line[5:]).get("choices") or [{}]
+    return (choices[0].get("delta") or {}).get("content")
+
+
+def openai_compatible(url, model, prompt, schema, key=None, max_tokens=16384, **extra):
+    body = {"model": model, "messages": [{"role": "user", "content": prompt}], "max_tokens": max_tokens, "stream": True,
             "response_format": {"type": "json_schema", "json_schema": {"name": "report", "schema": schema}}, **extra}
-    res = post(url.rstrip("/") + "/chat/completions", body, {"Authorization": f"Bearer {key}"} if key else {})
-    return first_json(res["choices"][0]["message"]["content"])
+    text = stream(url.rstrip("/") + "/chat/completions", body, _sse, {"Authorization": f"Bearer {key}"} if key else {})
+    return first_json(text)
 
 
 def anthropic(model, prompt, schema):
@@ -82,22 +113,40 @@ def agent(name, model, prompt):
     return first_json(r.stdout)
 
 
-def call(backend, model, prompt, schema, url=None):
+RETRY = ("\n\nYour previous answer broke off before the JSON was complete (it repeated spaces or newlines). "
+         "Write the JSON compactly on a single line, with no spaces between items.")
+
+
+def call(backend, model, prompt, schema, url=None, max_tokens=16384):
+    """One answer as parsed JSON. Constrained JSON can loop on whitespace until the length limit (max_tokens is only
+    that safety net, set far above any real answer); a broken answer is asked for again with a different prompt,
+    since at temperature 0 the same prompt would loop the same way."""
+    try:
+        return _call(backend, model, prompt, schema, url, max_tokens)
+    except (ValueError, KeyError):  # json.JSONDecodeError is a ValueError
+        pass
+    try:
+        return _call(backend, model, prompt + RETRY, schema, url, max_tokens)
+    except (ValueError, KeyError) as e:
+        raise RuntimeError(f"the model's answer was not valid JSON, also on a retry ({e})") from e
+
+
+def _call(backend, model, prompt, schema, url, max_tokens):
     if backend == "ollama":
-        return ollama(model, prompt, schema)
+        return ollama(model, prompt, schema, max_tokens)
     if backend == "link":
         key = os.environ.get("LINK_API_KEY")
         try:  # temperature 0; Qwen-style templates on vLLM answer directly instead of thinking first
-            return openai_compatible(url, model, prompt, schema, key, temperature=0,
+            return openai_compatible(url, model, prompt, schema, key, max_tokens, temperature=0,
                                      chat_template_kwargs={"enable_thinking": False})
         except urllib.error.HTTPError as e:
             if e.code != 400:
                 raise
-            return openai_compatible(url, model, prompt, schema, key, temperature=0)  # a proxy that rejects the extra field
+            return openai_compatible(url, model, prompt, schema, key, max_tokens, temperature=0)  # proxy rejects the field
     if backend in AGENTS:
         return agent(backend, model, prompt)
     if backend == "anthropic":
         return anthropic(model or DEFAULT_MODEL_ANTHROPIC, prompt, schema)
     if backend in HOSTED_URLS:
-        return openai_compatible(HOSTED_URLS[backend], model, prompt, schema, os.environ[f"{backend.upper()}_API_KEY"])
+        return openai_compatible(HOSTED_URLS[backend], model, prompt, schema, os.environ[f"{backend.upper()}_API_KEY"], max_tokens)
     raise ValueError(f"unknown backend {backend!r}")

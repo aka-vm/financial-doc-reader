@@ -1,0 +1,9 @@
+{"type": "object", "required": ["terms", "definitions", "steps", "principal_order"],
+ "properties": {
+  "terms": {"type": "object"},
+  "definitions": {"type": "object", "additionalProperties": {"type": "string"}},
+  "steps": {"type": "array", "items": {"type": "object", "required": ["id", "pay", "kind", "amount"],
+            "properties": {"id": {"type": "string"}, "pay": {"type": "string"},
+                           "kind": {"type": "string", "enum": ["fee", "interest", "principal", "reserve", "residual"]},
+                           "amount": {"type": "string"}}}},
+  "principal_order": {"type": "array", "items": {"type": "array", "items": {"type": "string"}}}}}

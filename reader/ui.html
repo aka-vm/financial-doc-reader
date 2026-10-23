@@ -3,79 +3,98 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Servicer Report Reader</title>
+<title>Deal Report Reader</title>
 <style>
   :root {
     --bg: #f7f7f5; --card: #ffffff; --text: #1d1d1b; --muted: #6b6b66; --line: #e4e3de;
-    --ok: #1f7a4d; --ok-bg: #e8f5ee; --warn: #9a5b00; --warn-bg: #fdf3e1; --accent: #2b5fd9;
+    --ok: #1f7a4d; --ok-bg: #e8f5ee; --warn: #9a5b00; --warn-bg: #fdf3e1; --accent: #2b5fd9; --soft: #f1f0ec;
   }
+  @media print { #drop, .row, .picked, button, h1, .sub { display: none !important; } body { background: #fff; } }
   @media (prefers-color-scheme: dark) {
     :root { --bg: #161615; --card: #1f1f1d; --text: #ecebe6; --muted: #9b9a94; --line: #34332f;
-            --ok: #5ccf94; --ok-bg: #16301f; --warn: #f0b45a; --warn-bg: #352812; --accent: #7aa2ff; }
+            --ok: #5ccf94; --ok-bg: #16301f; --warn: #f0b45a; --warn-bg: #352812; --accent: #7aa2ff; --soft: #282826; }
   }
   * { box-sizing: border-box; }
   body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.5 system-ui, -apple-system, sans-serif; }
-  main { max-width: 980px; margin: 0 auto; padding: 32px 16px 64px; }
+  main { max-width: 1000px; margin: 0 auto; padding: 32px 16px 64px; }
   h1 { font-size: 22px; margin: 0 0 4px; }
   .sub { color: var(--muted); margin: 0 0 20px; }
-  .settings { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 16px; }
-  .settings label { display: flex; flex-direction: column; font-size: 12px; color: var(--muted); gap: 2px; }
-  select, input { font: inherit; padding: 6px 8px; border: 1px solid var(--line); border-radius: 6px;
-                  background: var(--card); color: var(--text); min-width: 160px; }
-  #drop { border: 2px dashed var(--line); border-radius: 12px; padding: 40px 16px; text-align: center;
+  label { display: flex; flex-direction: column; font-size: 12px; color: var(--muted); gap: 2px; }
+  select, input, textarea { font: inherit; padding: 6px 8px; border: 1px solid var(--line); border-radius: 6px;
+                            background: var(--card); color: var(--text); min-width: 160px; }
+  textarea { width: 100%; min-height: 44px; resize: vertical; }
+  #drop { border: 2px dashed var(--line); border-radius: 12px; padding: 28px 16px; text-align: center;
           background: var(--card); cursor: pointer; transition: border-color .15s; }
   #drop.over { border-color: var(--accent); }
   #drop b { display: block; font-size: 17px; margin-bottom: 4px; }
   #drop span { color: var(--muted); font-size: 13px; }
+  .picked { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0; }
+  .chip { background: var(--soft); border-radius: 999px; padding: 2px 10px; font-size: 13px; }
+  .chip button { border: 0; background: none; color: var(--muted); cursor: pointer; padding: 0 0 0 4px; }
+  .row { display: flex; gap: 8px; align-items: flex-end; margin-top: 10px; flex-wrap: wrap; }
+  .row label { flex: 1; min-width: 240px; }
+  button.go { font: inherit; font-weight: 600; padding: 8px 18px; border-radius: 8px; border: 0; background: var(--accent);
+              color: #fff; cursor: pointer; }
+  button.go:disabled { opacity: .5; cursor: default; }
   .card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 16px; margin-top: 16px; }
   .head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; flex-wrap: wrap; }
-  .head h2 { font-size: 16px; margin: 0; }
+  h2 { font-size: 16px; margin: 0; }
+  h3 { font-size: 13px; margin: 16px 0 0; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
   .banner { margin: 12px 0; padding: 8px 12px; border-radius: 8px; font-weight: 600; }
   .banner.ok { background: var(--ok-bg); color: var(--ok); }
   .banner.warn { background: var(--warn-bg); color: var(--warn); }
   .muted { color: var(--muted); font-size: 13px; }
+  .log { font: 12px/1.6 ui-monospace, Menlo, monospace; color: var(--muted); max-height: 220px; overflow: auto;
+         white-space: pre-wrap; margin: 0; }
   table { width: 100%; border-collapse: collapse; margin: 8px 0 4px; font-variant-numeric: tabular-nums; }
   th, td { padding: 6px 8px; border-bottom: 1px solid var(--line); text-align: right; vertical-align: top; }
   th:first-child, td:first-child { text-align: left; }
   th { font-size: 12px; color: var(--muted); font-weight: 600; }
   td.flag { background: var(--warn-bg); color: var(--warn); }
+  td.good { color: var(--ok); }
   .why { display: block; font-size: 12px; font-weight: normal; }
-  h3 { font-size: 13px; margin: 16px 0 0; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; }
   .scroll { overflow-x: auto; }
-  button { font: inherit; padding: 6px 12px; border-radius: 6px; border: 1px solid var(--line);
-           background: var(--card); color: var(--text); cursor: pointer; }
+  details { margin-top: 8px; }
+  summary { cursor: pointer; color: var(--muted); font-size: 13px; }
+  code { font-size: 12px; word-break: break-word; }
+  button.dl { font: inherit; font-size: 13px; padding: 4px 10px; border-radius: 6px; border: 1px solid var(--line);
+              background: var(--card); color: var(--text); cursor: pointer; }
   .err { color: var(--warn); }
+  .bar { height: 8px; background: var(--soft); border-radius: 999px; overflow: hidden; margin: 12px 0 6px; }
+  .bar > div { height: 100%; background: var(--accent); border-radius: 999px; transition: width .6s ease; }
+  .bar.busy > div { width: 30% !important; animation: slide 1.4s ease-in-out infinite; }
+  @keyframes slide { from { margin-left: -30%; } to { margin-left: 100%; } }
+  .step { font-size: 14px; }
 </style>
 </head>
 <body>
 <main>
-  <h1>Servicer Report Reader</h1>
-  <p class="sub">Drop a monthly auto-ABS servicer report. Every figure comes back either passing the arithmetic checks
-    or flagged with the reason.</p>
+  <h1>Deal Report Reader</h1>
+  <p class="sub">Drop in a deal's documents: servicer reports, contracts, loan tapes, a .zip of them, or an EDGAR link.
+    You get one report where every figure either passes the checks or is flagged with the reason.</p>
 
-  <div class="settings">
-    <label>Model runs on
-      <select id="backend">
-        <option value="ollama">Ollama (this machine)</option>
-        <option value="link">My server (link)</option>
-        <option value="codex">Codex CLI</option>
-        <option value="claude-code">Claude Code CLI</option>
-        <option value="gemini-cli">Gemini CLI</option>
-        <option value="anthropic">Anthropic API key</option>
-        <option value="openai">OpenAI API key</option>
-        <option value="gemini">Gemini API key</option>
-      </select>
-    </label>
-    <label>Model <input id="model" placeholder="e.g. qwen3.5:9b"></label>
-    <label id="urlbox">Server URL <input id="url" placeholder="http://my-server:8000/v1"></label>
+  <div id="drop"><b>Drop files here</b><span>servicer reports, contracts, loan tapes (.htm .pdf .txt .csv .xml) or a .zip ·
+    or click to choose</span><input id="pick" type="file" multiple hidden></div>
+  <div class="picked" id="picked"></div>
+  <div class="row">
+    <label>Or links, one per line (an EDGAR filing, a document, or a trust: its EDGAR page or "CIK 2003263")
+      <textarea id="links" placeholder="e.g. CIK 2003263"></textarea></label>
+    <button class="go" id="go">Build report</button>
   </div>
-
-  <div id="drop"><b>Drop servicer reports here</b><span>.htm, .html, .txt or .pdf · or click to choose files</span><input id="pick" type="file" multiple hidden accept=".htm,.html,.txt,.pdf"></div>
-  <div id="results"></div>
+  <div id="out"></div>
 </main>
 
 <script>
 const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]));
+const fmt = (v, pct) => v === null || v === undefined ? "—" : typeof v === "number"
+  ? (pct ? v + "%" : v.toLocaleString("en-US", Number.isInteger(v) ? {} : {minimumFractionDigits: 2, maximumFractionDigits: 2}))
+  : String(v);
+const cell = (v, flag, pct) => flag ? `<td class="flag">${esc(fmt(v, pct))}<span class="why">${esc(flag)}</span></td>`
+                                    : `<td>${esc(fmt(v, pct))}</td>`;
+const cls = c => String(c).toUpperCase().replace(/CLASS|NOTES?|\s/g, "");
+const bucket = b => { const n = (String(b).match(/\d+/g) || []).map(Number);
+  return !n.length ? String(b) : n[0] >= 120 ? "121+" : n.length > 1 ? `${n[0]}-${n[1]}` : String(n[0]); };
 const FIELDS = [
   ["trust", "Trust"], ["period_start", "Period start"], ["period_end", "Period end"], ["distribution_date", "Distribution date"],
   ["initial_pool_balance", "Initial pool balance"], ["pool_balance_beginning", "Pool balance, beginning"],
@@ -85,82 +104,214 @@ const FIELDS = [
   ["servicing_fee", "Servicing fee"], ["reserve_account_ending", "Reserve account, ending"],
   ["overcollateralization_ending", "Overcollateralization, ending"], ["excess_to_residual", "Released to residual holder"],
 ];
-const fmt = (v, pct) => v === null || v === undefined ? "—" : typeof v === "number"
-  ? (pct ? v + "%" : v.toLocaleString("en-US", Number.isInteger(v) ? {} : {minimumFractionDigits: 2, maximumFractionDigits: 2}))
-  : String(v);
-const esc = s => String(s).replace(/[&<>"]/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;"}[c]));
-const cell = (v, flag, pct) => flag
-  ? `<td class="flag">${esc(fmt(v, pct))}<span class="why">${esc(flag)}</span></td>`
-  : `<td>${esc(fmt(v, pct))}</td>`;
-const cls = c => String(c).toUpperCase().replace(/CLASS|NOTES?|\s/g, "");
-const bucket = b => { const n = (String(b).match(/\d+/g) || []).map(Number);
-  return !n.length ? String(b) : n[0] >= 120 ? "121+" : n.length > 1 ? `${n[0]}-${n[1]}` : String(n[0]); };
+const KIND = {servicer_report: "servicer report", contract: "contract", loan_tape: "loan tape", prospectus: "prospectus", other: "not used"};
 
-let saved = {};  // the viewer's own last choice wins over the server's defaults
-try { saved = JSON.parse(localStorage.getItem("srr") || "{}"); } catch {}
-for (const k of ["backend", "model", "url"]) if (saved[k]) $(k).value = saved[k];
-fetch("/api/defaults").then(r => r.json()).then(d => {
-  for (const k of ["backend", "model", "url"]) if (d[k] && !saved[k]) $(k).value = d[k];
-  showUrl();
-});
-const save = () => { try { localStorage.setItem("srr", JSON.stringify({backend: $("backend").value, model: $("model").value, url: $("url").value})); } catch {} };
-const showUrl = () => $("urlbox").style.display = $("backend").value === "link" ? "" : "none";
-for (const k of ["backend", "model", "url"]) $(k).addEventListener("change", () => { save(); showUrl(); });
-showUrl();
-
+// inputs
+let files = [];
+const showPicked = () => $("picked").innerHTML = files.map((f, i) =>
+  `<span class="chip">${esc(f.name)}<button data-i="${i}" title="remove">×</button></span>`).join("");
+$("picked").onclick = e => { if (e.target.dataset.i) { files.splice(+e.target.dataset.i, 1); showPicked(); } };
+const add = list => { files.push(...list); showPicked(); };
 const drop = $("drop");
 drop.onclick = () => $("pick").click();
-$("pick").onchange = e => run([...e.target.files]);
+$("pick").onchange = e => add([...e.target.files]);
 drop.ondragover = e => { e.preventDefault(); drop.classList.add("over"); };
 drop.ondragleave = () => drop.classList.remove("over");
-drop.ondrop = e => { e.preventDefault(); drop.classList.remove("over"); run([...e.dataTransfer.files]); };
+drop.ondrop = e => { e.preventDefault(); drop.classList.remove("over"); add([...e.dataTransfer.files]); };
 
-async function run(files) {
-  files.sort((a, b) => a.name.localeCompare(b.name));  // month order for files named by date
-  for (const f of files) await readOne(f);
-}
+const b64 = f => new Promise((ok, bad) => { const r = new FileReader();
+  r.onload = () => ok(r.result.split(",")[1]); r.onerror = bad; r.readAsDataURL(f); });
 
-async function readOne(file) {
-  const card = document.createElement("div");
-  card.className = "card";
-  $("results").prepend(card);
+$("go").onclick = async () => {
+  const links = $("links").value.split("\n").map(s => s.trim()).filter(Boolean);
+  if (!files.length && !links.length) return;
+  $("go").disabled = true;
+  const out = $("out");
+  out.innerHTML = `<div class="card"><div class="head"><h2>Building the report…</h2><span class="muted" id="clock"></span></div>
+    <div class="bar busy" id="bar"><div></div></div><div class="step" id="step">uploading</div>
+    <details><summary>Details</summary><pre class="log" id="log"></pre></details></div>`;
   const t0 = Date.now();
-  const tick = setInterval(() => card.innerHTML =
-    `<div class="head"><h2>${esc(file.name)}</h2><span class="muted">reading… ${Math.round((Date.now() - t0) / 1000)}s</span></div>`, 500);
-  const q = new URLSearchParams({backend: $("backend").value, model: $("model").value, url: $("url").value});
   try {
-    const r = await fetch("/api/read?" + q, {method: "POST", headers: {"X-Filename": file.name}, body: file});
-    const res = await r.json();
-    clearInterval(tick);
-    if (res.error) throw new Error(res.error);
-    card.innerHTML = render(res, Math.round((Date.now() - t0) / 1000));
-    card.querySelector("button").onclick = () => {
-      const a = document.createElement("a");
-      a.href = URL.createObjectURL(new Blob([JSON.stringify(res, null, 1)], {type: "application/json"}));
-      a.download = file.name.replace(/\.\w+$/, "") + ".json";
-      a.click();
-    };
+    const body = {links, files: await Promise.all(files.map(async f => ({name: f.name, data: await b64(f)})))};
+    const r = await fetch("/api/jobs", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(body)});
+    const {id, error} = await r.json();
+    if (error) throw new Error(error);
+    while (true) {
+      await new Promise(ok => setTimeout(ok, 1000));
+      const job = await (await fetch("/api/jobs/" + id)).json();
+      $("log").textContent = job.log.join("\n");
+      $("log").scrollTop = 1e9;
+      const secs = Math.round((Date.now() - t0) / 1000);
+      $("clock").textContent = `${Math.floor(secs / 60)}:${String(secs % 60).padStart(2, "0")}`;
+      const pr = job.progress || {};
+      if (pr.total) {  // known steps: a real bar; before that (downloads, unzipping) a moving one
+        $("bar").classList.remove("busy");
+        $("bar").firstElementChild.style.width = Math.max(3, Math.round(100 * pr.done / pr.total)) + "%";
+      }
+      $("step").textContent = (pr.total ? `${Math.round(100 * pr.done / pr.total)}% · ` : "") + (pr.step || "");
+      if (job.status === "error") throw new Error(job.error);
+      if (job.status === "done") {
+        out.innerHTML = render(job.report, job.log, Math.round((Date.now() - t0) / 1000));
+        $("dl").onclick = () => download(job.report);
+        break;
+      }
+    }
   } catch (e) {
-    clearInterval(tick);
-    card.innerHTML = `<div class="head"><h2>${esc(file.name)}</h2></div><p class="err">${esc(e.message)}</p>`;
+    out.insertAdjacentHTML("beforeend", `<div class="card"><p class="err">${esc(e.message)}</p></div>`);
   }
+  $("go").disabled = false;
+};
+
+function download(report) {
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(new Blob([JSON.stringify(report, null, 1)], {type: "application/json"}));
+  a.download = "deal-report.json";
+  a.click();
 }
 
-function render(res, secs) {
-  const d = res.report, fl = res.flags, n = Object.keys(fl).length;
-  const banner = n ? `<div class="banner warn">${n} figure${n > 1 ? "s" : ""} flagged for review</div>`
-                   : `<div class="banner ok">All figures pass the checks</div>`;
-  const rows = FIELDS.map(([k, label]) => `<tr><td>${label}</td>${cell(d[k], fl[k], k.endsWith("_pct"))}</tr>`).join("");
-  const notes = (d.notes || []).map(x => { const c = cls(x.class);
-    return `<tr><td>${esc(x.class)}</td>${["beginning_balance", "principal_paid", "interest_paid", "ending_balance"]
-      .map(f => cell(x[f], fl[`notes[${c}].${f}`])).join("")}</tr>`; }).join("");
+const LABEL = Object.fromEntries(FIELDS);
+const label = path => {  // "notes[A3].principal_paid" -> "Class A3 principal paid"
+  const m = path.match(/^(notes|delinquency)\[(.+)\]\.(\w+)$/);
+  if (m) return (m[1] === "notes" ? `Class ${m[2]} ` : `Delinquency ${m[2]} days, `) + m[3].replace(/_/g, " ");
+  return LABEL[path] || path.replace(/_/g, " ");
+};
+const pct = (a, b) => a == null || !b ? null : Math.round(10000 * a / b) / 100;
+const sum = xs => xs.reduce((a, x) => a + (typeof x === "number" ? x : 0), 0);
+
+function review(r) {
+  // every item a person should look at, in one list
+  const items = [];
+  for (const m of r.months) for (const [k, why] of Object.entries(m.flags))
+    items.push([`${m.report.period_end || m.file}: ${label(k)}`, fmt(lookup(m.report, k)), why]);
+  const w = r.waterfall;
+  if (w) {
+    if (w.error) items.push(["Payment waterfall", "", w.error]);
+    const checks = (w.checks || []).filter(c => !c.error);
+    const allConfirmed = checks.length && checks.every(c => c.lines.every(l => ["match", "rounding", "given"].includes(l.status)));
+    // leftover gaps in the rules matter only if the payments couldn't all be confirmed
+    if (w.problems?.length && !allConfirmed) items.push(["Payment waterfall", "", "the contract could not be fully turned into payment rules: " + w.problems.slice(0, 3).join("; ")]);
+    for (const c of w.checks || []) {
+      if (c.error) items.push([`Payment waterfall, ${c.period_end || c.file}`, "", c.error]);
+      for (const l of c.lines || []) if (l.status === "differs" || l.status === "unknown")
+        items.push([`Payment waterfall, ${c.period_end}: ${l.line}`, fmt(l.report),
+          l.status === "differs" ? `the contract's rules give ${fmt(l.contract)} (${l.note})` : l.note]);
+    }
+  }
+  for (const t of r.tapes) {
+    if (t.error) items.push([`Loan tape ${t.file}`, "", t.error]);
+    else if (t.check?.status === "differs") items.push([`Loan tape ${t.file}`, fmt(t.balance), `differs from the report's pool balance by ${fmt(t.check.difference)}`]);
+  }
+  return items;
+}
+
+function lookup(rec, path) {
+  const m = path.match(/^(notes|delinquency)\[(.+)\]\.(\w+)$/);
+  if (!m) return rec[path];
+  const key = m[1] === "notes" ? x => cls(x.class) === m[2] : x => bucket(x.bucket) === m[2];
+  return ((rec[m[1]] || []).find(key) || {})[m[3]];
+}
+
+function render(r, log, secs) {
+  const items = review(r);
+  const last = r.months[r.months.length - 1];
+  const d = last?.report || {};
+  const name = d.trust || "Deal report";
+  const periods = r.months.map(m => m.report.period_end).filter(Boolean);
+  const kinds = {};
+  r.documents.forEach(x => kinds[x.kind] = (kinds[x.kind] || 0) + 1);
+  let html = `<div class="card"><div class="head"><h2>${esc(name)}</h2>
+      <span class="muted">${periods.length ? "Period ending " + esc(periods[periods.length - 1]) + " · " : ""}${secs}s ·
+      <button class="dl" id="dl">Download JSON</button> <button class="dl" onclick="print()">Print / PDF</button></span></div>
+    ${items.length ? `<div class="banner warn">${items.length} item${items.length > 1 ? "s need" : " needs"} review (listed at the end)</div>`
+                   : `<div class="banner ok">Verified: every figure passed the checks</div>`}
+    <p class="muted">Built from ${r.documents.length} documents: ${Object.entries(kinds).map(([k, v]) => `${v} ${KIND[k]}${v > 1 && k !== "other" ? "s" : ""}`).join(", ")}.</p></div>`;
+  if (last) html += glance(d) + notesTable(d, last.flags);
+  if (r.months.length > 1) html += trend(r.months);
+  if (r.waterfall) html += waterfall(r.waterfall);
+  for (const t of r.tapes) html += tapeCard(t);
+  html += `<div class="card"><h2>Needs review</h2>${items.length
+    ? `<div class="scroll"><table><tr><th>Item</th><th>Value</th><th style="text-align:left">Why</th></tr>${items.map(([a, v, why]) =>
+        `<tr><td>${esc(a)}</td><td>${esc(v)}</td><td style="text-align:left">${esc(why)}</td></tr>`).join("")}</table></div>`
+    : `<p class="muted">Nothing: every figure passed the arithmetic checks${r.waterfall ? " and the payments agree with the contract" : ""}.</p>`}
+    ${r.notes.length ? `<p class="muted">${r.notes.map(esc).join("<br>")}</p>` : ""}</div>`;
+  html += `<div class="card"><details><summary>All extracted figures, by servicer report</summary>${r.months.map(monthDetail).join("")}</details>
+    <details><summary>Documents and processing log</summary>
+      <table><tr><th>Document</th><th>Used as</th></tr>${r.documents.map(x => `<tr><td>${esc(x.name)}</td><td>${KIND[x.kind]}</td></tr>`).join("")}</table>
+      <pre class="log">${esc(log.join("\n"))}</pre></details></div>`;
+  return html;
+}
+
+function glance(d) {
+  const notesOut = sum((d.notes || []).map(n => n.ending_balance));
+  const dq60 = sum((d.delinquency || []).filter(x => (String(x.bucket).match(/\d+/) || [0])[0] >= 60).map(x => x.balance));
+  const rows = [
+    ["Pool balance", fmt(d.pool_balance_ending)],
+    ["Pool factor (share of the initial pool left)", d.initial_pool_balance ? fmt(pct(d.pool_balance_ending, d.initial_pool_balance), true) : "—"],
+    ["Notes outstanding", fmt(notesOut)],
+    ["Overcollateralization", fmt(d.overcollateralization_ending)],
+    ["Reserve account", fmt(d.reserve_account_ending)],
+    ["Net losses this month", fmt(d.net_losses)],
+    ["Cumulative net loss (% of initial pool)", fmt(d.cumulative_net_loss_pct, true)],
+    ["Delinquent 60+ days (% of pool)", fmt(pct(dq60, d.pool_balance_ending), true)],
+    ["Receivables outstanding", fmt(d.receivables_count_ending)],
+    ["Paid to the residual holder", fmt(d.excess_to_residual)],
+  ];
+  return `<div class="card"><h2>Deal at a glance</h2><p class="muted">Collection period ${esc(d.period_start || "")} to ${esc(d.period_end || "")}, paid ${esc(d.distribution_date || "")}</p>
+    <table>${rows.map(([a, b]) => `<tr><td>${a}</td><td>${esc(b)}</td></tr>`).join("")}</table></div>`;
+}
+
+function notesTable(d, fl) {
+  const rows = (d.notes || []).filter(x => x.beginning_balance || x.ending_balance || x.interest_paid || x.principal_paid).map(x => { const c = cls(x.class);
+    return `<tr><td>${esc(x.class)}</td>${["beginning_balance", "interest_paid", "principal_paid", "ending_balance"].map(f => cell(x[f], fl[`notes[${c}].${f}`])).join("")}</tr>`; }).join("");
+  return `<div class="card"><h2>Notes</h2><div class="scroll"><table><tr><th>Class</th><th>Balance before</th><th>Interest paid</th><th>Principal paid</th><th>Balance after</th></tr>${rows}</table></div>
+    <p class="muted">Paid-off classes are left out.</p></div>`;
+}
+
+function trend(months) {
+  const cols = [["Pool balance", d => d.pool_balance_ending], ["Net losses", d => d.net_losses],
+                ["Cumulative net loss %", d => d.cumulative_net_loss_pct, true], ["Reserve account", d => d.reserve_account_ending]];
+  return `<div class="card"><h2>Month by month</h2><div class="scroll"><table><tr><th>Period ending</th>${cols.map(c => `<th>${c[0]}</th>`).join("")}</tr>
+    ${months.map(m => `<tr><td>${esc(m.report.period_end || m.file)}</td>${cols.map(c => `<td>${esc(fmt(c[1](m.report), c[2]))}</td>`).join("")}</tr>`).join("")}</table></div></div>`;
+}
+
+function waterfall(w) {
+  if (w.error || !w.spec) return `<div class="card"><h2>Payment waterfall</h2><p class="err">The contract could not be read into payment rules: ${esc(w.error || "")}</p></div>`;
+  const c = (w.checks || []).filter(x => !x.error).slice(-1)[0];
+  const ok = c ? c.lines.filter(l => ["match", "rounding", "given"].includes(l.status)).length : 0;
+  const given = c ? c.lines.filter(l => l.status === "given").map(l => l.line) : [];
+  const verified = c && ok === c.lines.length;
+  const verdict = !c ? `<div class="banner warn">Payment order only: add a servicer report of this deal to work out and confirm the amounts.</div>`
+    : verified ? `<div class="banner ok">Checked against the servicer report: all ${ok} payments agree with the contract${given.length
+        ? ` (${given.map(esc).join(", ")}: floating rate, taken from the report)` : ""}.</div>`
+    : `<div class="banner warn">Payment order only: the contract's rules reproduced ${ok} of ${c.lines.length} payments in the servicer report, so no amounts are shown here. The differences are under Needs review.</div>`;
+  // amounts appear only when every payment was confirmed; an unconfirmed amount is never shown as fact
+  const steps = verified ? c.steps : (w.spec.steps || []).map(s => ({...s, paid: null}));
+  return `<div class="card"><div class="head"><h2>Payment waterfall</h2><span class="muted">from ${esc(w.document)}, Section ${esc(w.section)}</span></div>
+    <p class="muted">Where each month's cash goes, in the order the contract sets${verified ? ` (amounts for the ${esc(c.period_end)} distribution)` : ""}.</p>${verdict}
+    <div class="scroll"><table><tr><th>Order</th><th style="text-align:left">Paid to / for</th><th>Amount</th></tr>
+    ${steps.map(s => `<tr><td>${esc(s.id)}</td><td style="text-align:left">${esc(s.pay)}</td><td>${s.paid == null ? "—" : esc(fmt(s.paid))}</td></tr>`).join("")}</table></div></div>`;
+}
+
+function tapeCard(t) {
+  if (t.error) return `<div class="card"><h2>Loan pool</h2><p class="err">${esc(t.file)}: ${esc(t.error)}</p></div>`;
+  const c = t.check;
+  const note = !c ? "" : c.status === "differs" ? `<div class="banner warn">The tape's balance differs from the servicer report by ${esc(fmt(c.difference))}.</div>`
+    : `<p class="muted">The tape's balance ${c.status === "match" ? "matches" : "is within 0.01% of"} the servicer report's pool balance.</p>`;
+  const dq = t.delinquency_balance || {};
+  return `<div class="card"><div class="head"><h2>Loan pool</h2><span class="muted">from the loan tape, ${esc(t.period_end || "")}</span></div>${note}
+    <table><tr><td>Loans</td><td>${fmt(t.loans)}</td></tr><tr><td>Balance</td><td>${fmt(t.balance)}</td></tr>
+    <tr><td>Weighted average interest rate</td><td>${fmt(t.wa_rate_pct, true)}</td></tr><tr><td>Weighted average credit score</td><td>${fmt(t.wa_credit_score)}</td></tr>
+    <tr><td>Weighted average remaining term (months)</td><td>${fmt(t.wa_remaining_term)}</td></tr>
+    ${Object.entries(dq).map(([k, v]) => `<tr><td>${k === "current" ? "Current" : esc(k) + " days past due"}</td><td>${fmt(v)} (${fmt(pct(v, t.balance), true)})</td></tr>`).join("")}</table></div>`;
+}
+
+function monthDetail(res) {
+  const d = res.report, fl = res.flags;
+  const rows = FIELDS.map(([k, lab]) => `<tr><td>${lab}</td>${cell(d[k], fl[k], k.endsWith("_pct"))}</tr>`).join("");
   const dq = (d.delinquency || []).map(x => { const b = bucket(x.bucket);
     return `<tr><td>${esc(x.bucket)}</td>${cell(x.count, fl[`delinquency[${b}].count`])}${cell(x.balance, fl[`delinquency[${b}].balance`])}</tr>`; }).join("");
-  return `<div class="head"><h2>${esc(d.trust || res.file)}</h2>
-      <span class="muted">${esc(res.file)} · ${secs}s · <button>Download JSON</button></span></div>${banner}
-    <div class="scroll"><table><tr><th>Figure</th><th>Value</th></tr>${rows}</table></div>
-    <h3>Notes</h3><div class="scroll"><table><tr><th>Class</th><th>Beginning</th><th>Principal paid</th><th>Interest paid</th><th>Ending</th></tr>${notes}</table></div>
-    <h3>Delinquency</h3><div class="scroll"><table><tr><th>Bucket</th><th>Count</th><th>Balance</th></tr>${dq}</table></div>`;
+  return `<h3>${esc(res.file)}</h3><div class="scroll"><table>${rows}</table></div>
+    <div class="scroll"><table><tr><th>Delinquency</th><th>Count</th><th>Balance</th></tr>${dq}</table></div>`;
 }
 </script>
 </body>
