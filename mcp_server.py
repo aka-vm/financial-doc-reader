@@ -31,8 +31,8 @@ INSTRUCTIONS = f"""Builds checked reports for US auto-loan ABS deals: monthly se
 (payment waterfall checked against what the servicer paid) and loan tapes. Every figure either passes arithmetic checks
 or is listed under "Needs review".
 
-How to use: call start_deal_report with EDGAR links or "CIK <number>" (for a trust, it downloads the contracts, the
-latest servicer reports and the loan tape), then call get_deal_report with the job id until it is done. One servicer
+How to use: call start_deal_report with a trust's name, "CIK <number>" or EDGAR links (for a trust, it downloads the
+contracts, the latest servicer reports and the loan tape), then call get_deal_report with the job id until it is done. One servicer
 report takes about a minute; a whole deal with contracts takes a few minutes. Present the report faithfully: never
 fill in or guess a figure the report leaves out, and always mention the items under "Needs review".
 
@@ -58,13 +58,15 @@ def work(job, files, links):
 
 @mcp.tool()
 def start_deal_report(sources: list[str]) -> str:
-    """Start building a deal report. sources: EDGAR links (a filing, a document, or a trust's page) or "CIK <number>";
-    when this server runs on the user's own machine, also local file or folder paths (servicer reports, contracts,
-    loan tapes, .zip). Returns a job id for get_deal_report."""
-    links = [s for s in sources if s.lower().startswith(("http", "cik"))]
-    paths = [s for s in sources if s not in links]
+    """Start building a deal report. sources: a trust's name (e.g. "CarMax Auto Owner Trust 2024-1"), "CIK <number>",
+    or EDGAR links (a filing, a document, or a trust's page); when this server runs on the user's own machine, also local
+    file or folder paths (servicer reports, contracts, loan tapes, .zip). Returns a job id for get_deal_report."""
+    def is_path(x):
+        return x.startswith(("/", "~", "./", "../")) or os.path.exists(os.path.expanduser(x))
+    paths = [s for s in sources if not s.lower().startswith(("http", "cik")) and is_path(s)]
+    links = [s for s in sources if s not in paths]  # links, CIKs and trust names
     if paths and not CFG["allow_files"]:
-        return "This server is remote and does not read file paths. Give EDGAR links or 'CIK <number>' instead."
+        return "This server is remote and does not read file paths. Give a trust's name, 'CIK <number>' or EDGAR links."
     files = []
     for p in paths:
         p = os.path.expanduser(p)

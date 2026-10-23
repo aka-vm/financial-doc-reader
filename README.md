@@ -80,7 +80,8 @@ python3 -m reader.selftest                                   # no model needed
 python3 app.py --backend ollama --model <model>              # then open http://localhost:8420
 ```
 
-Drop in documents, a .zip, or an EDGAR link (`CIK 2003263`), press **Build report**, and download it as JSON or PDF.
+Drop in documents or a .zip, or type a trust's name ("Honda 2024-4"), its CIK (`CIK 2003263`) or an EDGAR link, press
+**Build report**, and download it as JSON or PDF. The page also lists the 43 trusts it was tested on.
 Try it with `examples/santander-drive-2024-1-deal/` (contracts, a servicer report and a loan tape).
 
 From the command line:

@@ -1,8 +1,8 @@
 """Anything a user drops in -> a list of documents, each tagged with what it is.
 
 Accepts report / contract files (.htm .html .txt .pdf), loan tapes (.csv, ABS-EE .xml), .zip archives of any of
-these, and links: an EDGAR filing, a document, or a trust (a URL with its CIK, or "CIK 2003263"), which pulls the
-deal's contracts and its latest monthly reports and loan tape.
+these, and links: an EDGAR filing, a document, or a trust (a URL with its CIK, "CIK 2003263", or its name), which
+pulls the deal's contracts and its latest monthly reports and loan tape.
 """
 import json
 import os
@@ -104,7 +104,22 @@ def fetch_trust(cik, folder, months=2, log=print):
     return out
 
 
+def find_trust(name, log=print):
+    """A trust's CIK from (part of) its name, via EDGAR's company lookup: the match containing every word typed."""
+    hits = json.loads(get("https://efts.sec.gov/LATEST/search-index?keysTyped=" + urllib.parse.quote(name)))["hits"]["hits"]
+    words = [w for w in re.split(r"[\s,]+", name.lower()) if w]
+    exact = [h for h in hits if all(w in h["_source"]["entity"].lower() for w in words)]
+    if not exact:
+        raise ValueError(f"no EDGAR company matches {name!r}; try its CIK or EDGAR link")
+    h = exact[0]
+    log(f"{name!r} -> {h['_source']['entity']} (CIK {int(h['_id'])})"
+        + (f"; other matches: {', '.join(x['_source']['entity'] for x in exact[1:4])}" if len(exact) > 1 else ""))
+    return int(h["_id"])
+
+
 def fetch_url(url, folder, log=print):
+    if not re.match(r"(?i)\s*(https?://|cik\b)", url):  # a name: look the trust up
+        return fetch_trust(find_trust(url.strip(), log), folder, log=log)
     cik = re.search(r"(?:CIK=?|/edgar/data/)\s*0*(\d{4,10})", url, re.I)
     acc = re.search(r"/(\d{10}-?\d{2}-?\d{6})", url)
     if cik and "sec.gov" in url or re.fullmatch(r"\s*CIK\s*\d+\s*", url, re.I):
@@ -165,7 +180,7 @@ def classify(path):
 
 
 def collect(files, links, folder, log=print):
-    """files: local paths (uploads); links: URLs or 'CIK n'. Returns [{path, name, kind}]."""
+    """files: local paths (uploads); links: URLs, 'CIK n', or a trust's name. Returns [{path, name, kind}]."""
     paths = []
     for p in files:
         paths += unzip(p, folder) if p.lower().endswith(".zip") else [p]

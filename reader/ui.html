@@ -67,6 +67,13 @@
   .guide ul, .guide ol { margin: 6px 0 12px; padding-left: 18px; }
   .guide li { margin-bottom: 4px; }
   @media (max-width: 700px) { .guide .cols { grid-template-columns: 1fr; gap: 4px; } }
+  .browse { margin-top: 10px; }
+  .browse input { width: 100%; margin: 8px 0 6px; }
+  #deallist { max-height: 220px; overflow: auto; border: 1px solid var(--line); border-radius: 6px; }
+  #deallist button { display: block; width: 100%; text-align: left; border: 0; border-bottom: 1px solid var(--line);
+                     background: var(--card); color: var(--text); padding: 6px 8px; font: inherit; font-size: 13px; cursor: pointer; }
+  #deallist button:hover { background: var(--soft); }
+  #deallist small { color: var(--muted); }
   .credit { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--line); text-align: center; font-size: 15px; }
   .credit a { font-weight: 600; text-decoration: none; }
   .credit a:hover { text-decoration: underline; }
@@ -96,19 +103,28 @@
       <div><b>How to use it</b>
         <ol>
           <li>Drop in documents of one auto-loan ABS deal: monthly servicer reports, the deal contracts (indenture, sale
-            and servicing agreement), loan tapes, or a .zip. Or paste an EDGAR link, or a trust's CIK.</li>
+            and servicing agreement), loan tapes, or a .zip. Or type a trust's name (e.g. "Honda 2024-4"), its CIK, or an
+            EDGAR link: it downloads the documents itself.</li>
           <li>Press <b>Build report</b>. One servicer report takes about a minute; a whole deal with contracts a few minutes.</li>
           <li>Read the report, then download it as JSON or print it to PDF.</li>
         </ol>
-        <button class="dl" id="example">Try an example: CarMax Auto Owner Trust 2024-1</button></div>
+        <button class="dl" id="example">Try an example: CarMax Auto Owner Trust 2024-1</button>
+        <details class="browse"><summary>Browse deals (43 auto-loan trusts it was tested on)</summary>
+          <input id="dealq" placeholder="Filter, e.g. Toyota" autocomplete="off">
+          <div id="deallist"></div>
+          <p class="muted">Not listed? Any auto-loan ABS trust on EDGAR works: find it with
+            <a href="https://www.sec.gov/edgar/searchedgar/companysearch" target="_blank" rel="noopener">EDGAR's company search</a>
+            or <a href="https://www.sec.gov/edgar/search/#/q=%22auto%20receivables%22&forms=10-D" target="_blank" rel="noopener">EDGAR full-text search</a>,
+            then paste its name, CIK or EDGAR link below.</p>
+        </details></div>
     </div></details>
 
   <div id="drop"><b>Drop files here</b><span>servicer reports, contracts, loan tapes (.htm .pdf .txt .csv .xml) or a .zip ·
     or click to choose</span><input id="pick" type="file" multiple hidden></div>
   <div class="picked" id="picked"></div>
   <div class="row">
-    <label>Or links, one per line (an EDGAR filing, a document, or a trust: its EDGAR page or "CIK 2003263")
-      <textarea id="links" placeholder="e.g. CIK 2003263"></textarea></label>
+    <label>Or, one per line: a trust's name, its CIK, its EDGAR page, or an EDGAR filing or document link
+      <textarea id="links" placeholder="e.g. CarMax Auto Owner Trust 2024-1   or   CIK 2003263"></textarea></label>
     <button class="go" id="go">Build report</button>
   </div>
   <div id="out"></div>
@@ -151,7 +167,17 @@ fetch("api/info").then(r => r.json()).then(i => {
   $("mcpcopy").onclick = () => { navigator.clipboard.writeText($("mcpurl").value); $("mcpcopy").textContent = "Copied"; };
 }).catch(() => {});
 
+const DEALS = [["Ally Auto Receivables Trust 2024-1", 2010413], ["Ally Auto Receivables Trust 2024-2", 2035124], ["Ally Auto Receivables Trust 2025-1", 2087070], ["AmeriCredit Automobile Receivables Trust 2024-1", 2020251], ["BMW Vehicle Owner Trust 2024-A", 2021594], ["BMW Vehicle Owner Trust 2025-A", 2049336], ["Capital One Prime Auto Receivables Trust 2024-1", 2039534], ["Capital One Prime Auto Receivables Trust 2025-1", 2089663], ["CarMax Auto Owner Trust 2024-1", 2003263], ["CarMax Auto Owner Trust 2024-3", 2029255], ["CarMax Auto Owner Trust 2025-4", 2089777], ["Carvana Auto Receivables Trust 2024-P4", 1999854], ["Carvana Auto Receivables Trust 2025-P4", 2037952], ["Daimler Trucks Retail Trust 2023-1", 1971264], ["Daimler Trucks Retail Trust 2024-1", 2015976], ["Drive Auto Receivables Trust 2025-2", 2082136], ["Exeter Automobile Receivables Trust 2024-5", 2035303], ["Exeter Automobile Receivables Trust 2025-5", 2092528], ["Exeter Select Automobile Receivables Trust 2025-3", 2086449], ["Fifth Third Auto Trust 2023-1", 1986424], ["Ford Credit Auto Owner Trust 2024-A", 2014176], ["GM Financial Consumer Automobile Receivables Trust 2024-4", 2036780], ["GM Financial Consumer Automobile Receivables Trust 2025-4", 2084404], ["Harley-Davidson Motorcycle Trust 2024-A", 2017611], ["Harley-Davidson Motorcycle Trust 2024-B", 2034427], ["Honda Auto Receivables 2024-4 Owner Trust", 2037549], ["Honda Auto Receivables 2025-4 Owner Trust", 2089171], ["Hyundai Auto Receivables Trust 2024-C", 2037227], ["Hyundai Auto Receivables Trust 2025-D", 2091679], ["Mercedes-Benz Auto Receivables Trust 2024-1", 1998822], ["Mercedes-Benz Auto Receivables Trust 2025-1", 2044492], ["Nissan Auto Receivables 2024-B Owner Trust", 2035264], ["Nissan Auto Receivables 2025-B Owner Trust", 2091790], ["Santander Drive Auto Receivables Trust 2024-1", 2004812], ["Santander Drive Auto Receivables Trust 2024-5", 2039227], ["Santander Drive Auto Receivables Trust 2025-4", 2094373], ["Toyota Auto Receivables 2024-D Owner Trust", 2036936], ["Toyota Auto Receivables 2025-D Owner Trust", 2063141], ["Volkswagen Auto Loan Enhanced Trust 2024-1", 2043149], ["Volkswagen Auto Loan Enhanced Trust 2025-1", 2054483], ["World Omni Auto Receivables Trust 2024-C", 2029490], ["World Omni Auto Receivables Trust 2025-D", 2087069], ["World Omni Select Auto Trust 2025-A", 2082708]];  // trusts this was tested on
+const pick = line => { const box = $("links"); box.value = (box.value.trim() ? box.value.trim() + "\n" : "") + line; box.focus(); };
 $("example").onclick = () => { $("links").value = "CIK 2003263"; $("links").focus(); };
+const showDeals = () => {
+  const q = $("dealq").value.toLowerCase();
+  $("deallist").innerHTML = DEALS.filter(([n]) => n.toLowerCase().includes(q)).map(([n, cik]) =>
+    `<button data-cik="${cik}">${esc(n)} <small>CIK ${cik}</small></button>`).join("") || '<p class="muted" style="padding:6px 8px">No match: try EDGAR below.</p>';
+};
+$("dealq").oninput = showDeals;
+$("deallist").onclick = e => { const b = e.target.closest("button"); if (b) pick("CIK " + b.dataset.cik); };
+showDeals();
 
 // inputs
 let files = [];
