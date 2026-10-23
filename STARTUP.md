@@ -66,12 +66,13 @@ For Claude Desktop, add the same command under `mcpServers` in its config file:
 ```
 Then ask: "Build a deal report for CIK 2003263", or point it at files on your machine.
 
-**In the Claude app (web and mobile)** as a custom connector. Claude's servers call the connector, so it needs a public
-HTTPS address:
+**Host it for others (web page + Claude connector, one link).** Run the hosted mode and put an HTTPS tunnel in front:
 ```
-python3 mcp_server.py --http --port 8421 --backend ollama --model <model>   # prints the endpoint, with a secret
-tailscale funnel 8421                                                        # or any HTTPS tunnel
+python3 mcp_server.py --http --port 8421 --backend ollama --model <model>   # prints the page and connector addresses
+tailscale funnel --bg 8421                                                   # or any HTTPS tunnel
 ```
-Add `https://<your funnel address>/mcp/<secret>` in Claude under Settings > Connectors > Add custom connector; it is then
-available in the mobile app too. The secret in the address is the only lock, so keep it private (set your own with
-`--secret` or `MCP_SECRET`). Over HTTP the server reads only EDGAR links, never file paths.
+Share `https://<your funnel address>/<secret>/`. That page builds reports, and shows its own connector link
+(`.../<secret>/mcp`) with a copy button: in Claude (web or mobile) go to Settings > Connectors > Add custom connector and
+paste it, then ask "Build a deal report for CIK 2003263". The secret in the address is the only lock, so share it only
+with people you want using your machine (set your own with `--secret` or `MCP_SECRET`). Over the connector the server
+reads only EDGAR links, never file paths; at most 2 reports run at once and 20 per hour.

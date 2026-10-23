@@ -10,6 +10,7 @@ import os
 import sys
 import tempfile
 import threading
+import time
 import uuid
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 
@@ -18,8 +19,21 @@ from reader.deal import build  # noqa: E402
 from reader.intake import collect  # noqa: E402
 
 UI = open(os.path.join(os.path.dirname(os.path.abspath(__file__)), "reader", "ui.html"), encoding="utf-8").read()
-DEFAULTS, JOBS = {}, {}
+DEFAULTS, JOBS, STARTS = {}, {}, []
 MAX_UPLOAD = 300 << 20
+MAX_RUNNING, MAX_PER_HOUR = 2, 20  # a shared server's GPU is finite
+
+
+def admit():
+    """None if a new report may start, else the reason it can't (shared by the page and the MCP tools)."""
+    now = time.time()
+    STARTS[:] = [t for t in STARTS if now - t < 3600]
+    if sum(j["status"] == "running" for j in JOBS.values()) >= MAX_RUNNING:
+        return "the server is busy with other reports; try again in a few minutes"
+    if len(STARTS) >= MAX_PER_HOUR:
+        return f"the hourly limit of {MAX_PER_HOUR} reports is reached; try again later"
+    STARTS.append(now)
+    return None
 
 
 def work(job, files, links, backend, model, url):
@@ -52,6 +66,8 @@ class Handler(BaseHTTPRequestHandler):
         self.wfile.write(data)
 
     def do_GET(self):
+        if self.path == "/api/info":
+            return self.send(200, json.dumps({"mcp": None}))
         if self.path.startswith("/api/jobs/"):
             job = JOBS.get(self.path.rsplit("/", 1)[1])
             return self.send(200, json.dumps(job)) if job else self.send(404, "{}")
@@ -64,6 +80,9 @@ class Handler(BaseHTTPRequestHandler):
         if size > MAX_UPLOAD:
             return self.send(413, json.dumps({"error": "upload larger than 300 MB"}))
         req = json.loads(self.rfile.read(size))
+        busy = admit()
+        if busy:
+            return self.send(429, json.dumps({"error": busy}))
         jid = uuid.uuid4().hex[:12]
         JOBS[jid] = {"status": "running", "log": [], "report": None, "error": None}
         threading.Thread(target=work, daemon=True, args=(

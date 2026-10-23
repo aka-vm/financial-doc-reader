@@ -86,6 +86,10 @@
     <button class="go" id="go">Build report</button>
   </div>
   <div id="out"></div>
+  <div class="card" id="mcpbox" hidden><h2>Use it inside Claude</h2>
+    <p class="muted">In Claude (web or mobile): Settings &rarr; Connectors &rarr; Add custom connector, and paste this link. Then
+      ask, for example, "Build a deal report for CIK 2003263".</p>
+    <div class="row"><input id="mcpurl" readonly style="flex:1"><button class="dl" id="mcpcopy">Copy</button></div></div>
   <footer class="credit">Built by <a href="https://aka-vm.github.io" target="_blank" rel="noopener">Vineet</a> ·
     <a href="https://github.com/aka-vm/servicer-report-reader" target="_blank" rel="noopener">source</a></footer>
 </main>
@@ -111,6 +115,14 @@ const FIELDS = [
   ["overcollateralization_ending", "Overcollateralization, ending"], ["excess_to_residual", "Released to residual holder"],
 ];
 const KIND = {servicer_report: "servicer report", contract: "contract", loan_tape: "loan tape", prospectus: "prospectus", other: "not used"};
+
+// a hosted server also offers the same tools as an MCP connector: show its link
+fetch("api/info").then(r => r.json()).then(i => {
+  if (!i.mcp) return;
+  $("mcpurl").value = new URL(i.mcp, location.href).href;
+  $("mcpbox").hidden = false;
+  $("mcpcopy").onclick = () => { navigator.clipboard.writeText($("mcpurl").value); $("mcpcopy").textContent = "Copied"; };
+}).catch(() => {});
 
 // inputs
 let files = [];
@@ -139,12 +151,12 @@ $("go").onclick = async () => {
   const t0 = Date.now();
   try {
     const body = {links, files: await Promise.all(files.map(async f => ({name: f.name, data: await b64(f)})))};
-    const r = await fetch("/api/jobs", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(body)});
+    const r = await fetch("api/jobs", {method: "POST", headers: {"Content-Type": "application/json"}, body: JSON.stringify(body)});
     const {id, error} = await r.json();
     if (error) throw new Error(error);
     while (true) {
       await new Promise(ok => setTimeout(ok, 1000));
-      const job = await (await fetch("/api/jobs/" + id)).json();
+      const job = await (await fetch("api/jobs/" + id)).json();
       $("log").textContent = job.log.join("\n");
       $("log").scrollTop = 1e9;
       const secs = Math.round((Date.now() - t0) / 1000);
