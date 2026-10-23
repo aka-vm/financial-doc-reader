@@ -20,6 +20,10 @@ Ask once, offering these four options (recommend the first two: reports stay on 
 2. **Their own server (a link)**: any OpenAI-compatible endpoint (vLLM, llama.cpp server, LM Studio).
    Ask for the base URL (ends in `/v1`) and the served model name. If the server needs a key, `export LINK_API_KEY=...`.
    Backend: `--backend link --url <URL> --model <name>`.
+   Check it answers first: `curl <URL>/models` (add `-H "Authorization: Bearer $LINK_API_KEY"` if it needs a key).
+   If the server only listens on its own localhost (no answer from other machines), open an SSH tunnel and use
+   the local end: `ssh -N -L 8001:localhost:8000 <user>@<server>` in a separate terminal, then
+   `--url http://localhost:8001/v1`. Ask the user for the SSH login; don't guess it.
 3. **The coding agent they already use**: `codex`, `claude-code` or `gemini-cli`, using the CLI's existing login.
    Check the CLI is installed (`codex --version`, `claude --version`, `gemini --version`).
    Backend: `--backend codex` (or `claude-code`, `gemini-cli`), `--model` optional.
@@ -41,6 +45,8 @@ many were flagged. A flagged figure is the system working, not a failure: it was
 python3 app.py <backend flags>
 ```
 Then tell the user to open http://localhost:8420 and drop a report on it. The backend can also be changed on the page.
+To open the page from other devices on the same private network (e.g. Tailscale), add `--host 0.0.0.0` and give them
+`http://<this machine's network address>:8420`. Say that anyone who can reach that address can use it (there is no login).
 
 ## Rules when changing code
 - Never edit `reader/checks.py` to make a flag go away on one report. A check must hold for every issuer;

@@ -1,6 +1,6 @@
 """Drop-in web page: drag a servicer report onto it, get the standard figures with anything doubtful flagged.
 
-usage: python3 app.py [--backend ollama --model qwen3.5:9b] [--url URL] [--port 8420]
+usage: python3 app.py [--backend ollama --model qwen3.5:9b] [--url URL] [--port 8420] [--host 0.0.0.0]
 The backend and model can also be changed on the page. Nothing is stored; uploads go to a temp file and are deleted.
 """
 import argparse
@@ -61,7 +61,9 @@ if __name__ == "__main__":
     ap.add_argument("--model")
     ap.add_argument("--url")
     ap.add_argument("--port", type=int, default=8420)
+    ap.add_argument("--host", default="127.0.0.1", help="0.0.0.0 to open the page from other devices on your network")
     a = ap.parse_args()
     DEFAULTS.update(backend=a.backend, model=a.model, url=a.url)
-    print(f"open http://localhost:{a.port}  (backend {a.backend}, model {a.model or 'default'})")
-    ThreadingHTTPServer(("127.0.0.1", a.port), Handler).serve_forever()
+    where = "localhost" if a.host == "127.0.0.1" else "<this machine's address>"
+    print(f"open http://{where}:{a.port}  (backend {a.backend}, model {a.model or 'default'})", flush=True)
+    ThreadingHTTPServer((a.host, a.port), Handler).serve_forever()

@@ -86,9 +86,14 @@ def call(backend, model, prompt, schema, url=None):
     if backend == "ollama":
         return ollama(model, prompt, schema)
     if backend == "link":
-        # temperature 0; Qwen-style templates on vLLM answer directly instead of thinking first
-        return openai_compatible(url, model, prompt, schema, os.environ.get("LINK_API_KEY"), temperature=0,
-                                 chat_template_kwargs={"enable_thinking": False})
+        key = os.environ.get("LINK_API_KEY")
+        try:  # temperature 0; Qwen-style templates on vLLM answer directly instead of thinking first
+            return openai_compatible(url, model, prompt, schema, key, temperature=0,
+                                     chat_template_kwargs={"enable_thinking": False})
+        except urllib.error.HTTPError as e:
+            if e.code != 400:
+                raise
+            return openai_compatible(url, model, prompt, schema, key, temperature=0)  # a proxy that rejects the extra field
     if backend in AGENTS:
         return agent(backend, model, prompt)
     if backend == "anthropic":
