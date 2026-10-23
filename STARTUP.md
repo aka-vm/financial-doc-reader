@@ -47,3 +47,31 @@ Ways 3 and 4 send documents to an outside service; 1 and 2 keep them on your har
   `http://<this machine's network address>:8420`. There is no login: anyone who can reach that address can use it.
 
 To change the model, stop the server and start it again with other flags.
+
+## 3. Use it from Claude or Codex (MCP)
+
+`mcp_server.py` gives chat assistants two tools: `start_deal_report` (EDGAR links, `CIK <number>`, or local file
+paths) and `get_deal_report` (progress, then the report). It needs `pip install mcp` and the same backend flags as
+`app.py`.
+
+**On your own machine** (Claude Code, Claude Desktop, Codex): the assistant starts the server itself.
+```
+claude mcp add deal-report -- python3 /path/to/mcp_server.py --backend ollama --model <model>
+codex mcp add deal-report -- python3 /path/to/mcp_server.py --backend ollama --model <model>
+```
+For Claude Desktop, add the same command under `mcpServers` in its config file:
+```json
+{"mcpServers": {"deal-report": {"command": "python3",
+  "args": ["/path/to/mcp_server.py", "--backend", "ollama", "--model", "<model>"]}}}
+```
+Then ask: "Build a deal report for CIK 2003263", or point it at files on your machine.
+
+**In the Claude app (web and mobile)** as a custom connector. Claude's servers call the connector, so it needs a public
+HTTPS address:
+```
+python3 mcp_server.py --http --port 8421 --backend ollama --model <model>   # prints the endpoint, with a secret
+tailscale funnel 8421                                                        # or any HTTPS tunnel
+```
+Add `https://<your funnel address>/mcp/<secret>` in Claude under Settings > Connectors > Add custom connector; it is then
+available in the mobile app too. The secret in the address is the only lock, so keep it private (set your own with
+`--secret` or `MCP_SECRET`). Over HTTP the server reads only EDGAR links, never file paths.

@@ -13,7 +13,8 @@ or just an EDGAR link) and get one deal report back:
 Every figure is checked with arithmetic the documents have to satisfy, so the report is either verified or tells you
 exactly what to look at. Nothing doubtful is passed on silently.
 
-A small project I put together in a few hours. Tested with **Qwen 3.8 27B** running on my own GPU box.
+A small project I put together in a few hours by [aka-vm](https://aka-vm.github.io). Tested with **Qwen 3.8 27B**
+running on my own GPU box. More of my work: **[aka-vm.github.io](https://aka-vm.github.io)**.
 
 ![deal report](docs/screenshot.png)
 
@@ -89,12 +90,16 @@ python3 -m reader.deal examples/santander-drive-2024-1-deal/* --backend ollama -
 python3 -m reader.extract examples/carmax-2024-1__2026-07-31.htm --backend ollama --model <model>   # one report
 ```
 
+**In Claude or Codex (MCP):** `mcp_server.py` lets an assistant build reports in a chat ("Build a deal report for CIK
+2003263"), locally or as a Claude app connector, mobile included. Setup in [STARTUP.md](STARTUP.md#3-use-it-from-claude-or-codex-mcp).
+
 Using a coding agent? Point it at [AGENTS.md](AGENTS.md); it walks through the setup.
 
 ## Files
 
 ```
 app.py               the page (standard-library HTTP server, background jobs with progress)
+mcp_server.py        the same as tools for Claude / Codex (MCP, stdio or HTTP)
 STARTUP.md           how to start the server with each kind of model
 reader/intake.py     files, zips and EDGAR links -> documents, each classified
 reader/convert.py    report file -> model-readable text (table grid rebuild)

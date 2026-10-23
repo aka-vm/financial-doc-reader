@@ -107,6 +107,91 @@ def build(docs, backend, model=None, url=None, log=print, progress=None):
     return report
 
 
+def money(v, pct=False):
+    if v is None:
+        return "—"
+    if pct:
+        return f"{v}%"
+    return f"{v:,.2f}" if isinstance(v, float) and v != int(v) else f"{v:,.0f}" if isinstance(v, (int, float)) else str(v)
+
+
+def review_items(r):
+    """Everything a person should look at, as (item, value, why)."""
+    out = []
+    for m in r["months"]:
+        for k, why in m["flags"].items():
+            out.append((f"{m['report'].get('period_end') or m['file']}: {k.replace('_', ' ')}", "", why))
+    w = r.get("waterfall")
+    if w:
+        checks = [c for c in w.get("checks", []) if not c.get("error")]
+        confirmed = checks and all(ln["status"] in ("match", "rounding", "given") for c in checks for ln in c["lines"])
+        if w.get("error"):
+            out.append(("payment waterfall", "", w["error"]))
+        elif w.get("problems") and not confirmed:
+            out.append(("payment waterfall", "", "the contract could not be fully turned into payment rules"))
+        for c in w.get("checks", []):
+            if c.get("error"):
+                out.append((f"payment waterfall, {c.get('period_end')}", "", c["error"]))
+            for ln in c.get("lines", []):
+                if ln["status"] in ("differs", "unknown"):
+                    out.append((f"payment waterfall, {c.get('period_end')}: {ln['line']}", money(ln["report"]),
+                                f"the contract's rules give {money(ln['contract'])}" if ln["status"] == "differs" else ln["note"]))
+    for t in r["tapes"]:
+        if t.get("error"):
+            out.append((f"loan tape {t['file']}", "", t["error"]))
+        elif (t.get("check") or {}).get("status") == "differs":
+            out.append((f"loan tape {t['file']}", money(t["balance"]), f"differs from the report's pool balance by {money(t['check']['difference'])}"))
+    return out
+
+
+def to_markdown(r, footer=""):
+    """The deal report as Markdown (same content as the page)."""
+    items, md = review_items(r), []
+    last = r["months"][-1]["report"] if r["months"] else {}
+    md.append(f"# {last.get('trust') or 'Deal report'}")
+    md.append(f"**{'Verified: every figure passed the checks.' if not items else f'{len(items)} item(s) need review (listed at the end).'}** "
+              f"Built from {len(r['documents'])} documents.")
+    if last:
+        notes_out = sum(n.get("ending_balance") or 0 for n in last.get("notes") or [])
+        dq60 = sum(d.get("balance") or 0 for d in last.get("delinquency") or [] if int((re.findall(r"\d+", str(d.get("bucket"))) or [0])[0]) >= 60)
+        pool, init = last.get("pool_balance_ending"), last.get("initial_pool_balance")
+        md.append(f"\n## Deal at a glance (period ending {last.get('period_end')}, paid {last.get('distribution_date')})\n")
+        md.append("| | |\n|---|---|")
+        for k, v in [("Pool balance", money(pool)), ("Pool factor", money(round(100 * pool / init, 2) if pool and init else None, True)),
+                     ("Notes outstanding", money(notes_out)), ("Overcollateralization", money(last.get("overcollateralization_ending"))),
+                     ("Reserve account", money(last.get("reserve_account_ending"))), ("Net losses this month", money(last.get("net_losses"))),
+                     ("Cumulative net loss (% of initial pool)", money(last.get("cumulative_net_loss_pct"), True)),
+                     ("Delinquent 60+ days (% of pool)", money(round(100 * dq60 / pool, 2) if pool else None, True)),
+                     ("Paid to the residual holder", money(last.get("excess_to_residual")))]:
+            md.append(f"| {k} | {v} |")
+        md.append("\n## Notes\n\n| Class | Balance before | Interest paid | Principal paid | Balance after |\n|---|---|---|---|---|")
+        for n in last.get("notes") or []:
+            if any(n.get(f) for f in ("beginning_balance", "ending_balance", "interest_paid", "principal_paid")):
+                md.append(f"| {n.get('class')} | {money(n.get('beginning_balance'))} | {money(n.get('interest_paid'))} | "
+                          f"{money(n.get('principal_paid'))} | {money(n.get('ending_balance'))} |")
+    w = r.get("waterfall")
+    if w and w.get("spec"):
+        c = ([c for c in w["checks"] if not c.get("error")] or [None])[-1]
+        ok = c and all(ln["status"] in ("match", "rounding", "given") for ln in c["lines"])
+        md.append(f"\n## Payment waterfall (from {w['document']}, Section {w['section']})\n")
+        md.append("All payments agree with the servicer report." if ok else
+                  "Payment order only: the amounts could not be confirmed against a servicer report.")
+        md.append("\n| Order | Paid to / for | Amount |\n|---|---|---|")
+        for s in (c["steps"] if ok else w["spec"].get("steps", [])):
+            md.append(f"| {s.get('id')} | {s.get('pay')} | {money(s.get('paid')) if ok else '—'} |")
+    for t in r["tapes"]:
+        if not t.get("error"):
+            md.append(f"\n## Loan pool (tape, {t.get('period_end')})\n")
+            md.append(f"{money(t['loans'])} loans, balance {money(t['balance'])}, weighted average rate {t['wa_rate_pct']}%, "
+                      f"credit score {t['wa_credit_score']}, remaining term {t['wa_remaining_term']} months."
+                      + (f" Tape vs report pool balance: {t['check']['status']} (difference {money(t['check']['difference'])})." if t.get("check") else ""))
+    md.append("\n## Needs review\n")
+    md.append("\n".join(f"- **{a}**{f' ({v})' if v else ''}: {why}" for a, v, why in items) or "Nothing: every figure passed the checks.")
+    if r["notes"]:
+        md.append("\n" + "\n".join(f"_{x}_" for x in r["notes"]))
+    return "\n".join(md) + (f"\n\n---\n{footer}" if footer else "")
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("files", nargs="*")

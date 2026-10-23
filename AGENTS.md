@@ -45,6 +45,10 @@ python3 app.py <backend flags>
 Then tell the user to open http://localhost:8420 and drop files, a .zip, or paste an EDGAR link. The model is fixed
 by the start flags; to change it, restart the server. For access from other devices, see STARTUP.md.
 
+## 5. Optional: use it from Claude or Codex
+If the user wants reports inside a chat assistant, set up `mcp_server.py` as described in STARTUP.md section 3
+(`pip install mcp` first).
+
 ## Rules when changing code
 - Never edit `reader/checks.py` to make a flag go away on one report. A check must hold for every issuer;
   after any change, `python3 -m reader.selftest` must still pass (it fails if a check fires on a correct answer).

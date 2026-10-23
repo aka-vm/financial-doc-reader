@@ -60,6 +60,7 @@
   button.dl { font: inherit; font-size: 13px; padding: 4px 10px; border-radius: 6px; border: 1px solid var(--line);
               background: var(--card); color: var(--text); cursor: pointer; }
   .err { color: var(--warn); }
+  a { color: var(--accent); }
   .bar { height: 8px; background: var(--soft); border-radius: 999px; overflow: hidden; margin: 12px 0 6px; }
   .bar > div { height: 100%; background: var(--accent); border-radius: 999px; transition: width .6s ease; }
   .bar.busy > div { width: 30% !important; animation: slide 1.4s ease-in-out infinite; }
@@ -82,6 +83,8 @@
     <button class="go" id="go">Build report</button>
   </div>
   <div id="out"></div>
+  <p class="muted" style="margin-top:32px;text-align:center">Built by <a href="https://aka-vm.github.io" target="_blank" rel="noopener">aka-vm</a> ·
+    <a href="https://github.com/aka-vm/servicer-report-reader" target="_blank" rel="noopener">source</a></p>
 </main>
 
 <script>
