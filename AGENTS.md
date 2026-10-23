@@ -45,9 +45,22 @@ python3 app.py <backend flags>
 Then tell the user to open http://localhost:8420 and drop files, a .zip, or paste an EDGAR link. The model is fixed
 by the start flags; to change it, restart the server. For access from other devices, see STARTUP.md.
 
-## 5. Optional: use it from Claude or Codex
-If the user wants reports inside a chat assistant, set up `mcp_server.py` as described in STARTUP.md section 3
-(`pip install mcp` first).
+## If the user asks to use this as an MCP server
+When the user says something like "set this up as an MCP server" (in Claude Code, Codex or Claude Desktop):
+1. Clone the repo if it isn't local yet (`git clone https://github.com/aka-vm/servicer-report-reader`), and use the
+   absolute path of `mcp_server.py` below.
+2. `python3 -m pip install mcp`, then check `python3 -c "import mcp"` works with the same `python3` you will register.
+3. Ask where the model runs (step 2 above, STARTUP.md section 1) and turn the answer into backend flags.
+4. Ask for a name and email for SEC downloads (EDGAR links), unless the user says they will only use local files.
+5. Register it for the assistant you are running in:
+   - Claude Code: `claude mcp add deal-report -e SEC_USER_AGENT="<name email>" -- python3 <abs path>/mcp_server.py <backend flags>`
+   - Codex: `codex mcp add deal-report --env SEC_USER_AGENT="<name email>" -- python3 <abs path>/mcp_server.py <backend flags>`
+   - Claude Desktop: add the same command under `mcpServers` in
+     `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS) and tell the user to restart the app.
+6. Tell the user the tools appear in a new session, and to ask e.g. "Build a deal report for CIK 2003263" or
+   "Make a deal report from the files in <folder>".
+The Claude web and mobile apps cannot run local servers: for them, follow STARTUP.md section 3 (HTTP mode behind an
+HTTPS tunnel, added as a custom connector).
 
 ## Rules when changing code
 - Never edit `reader/checks.py` to make a flag go away on one report. A check must hold for every issuer;
