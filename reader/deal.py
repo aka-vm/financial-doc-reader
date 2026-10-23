@@ -33,7 +33,7 @@ def build(docs, backend, model=None, url=None, log=print, progress=None):
         if progress:
             progress(done[0], total, name)
         done[0] += weight
-    report = {"documents": [{"name": d["name"], "kind": d["kind"]} for d in docs], "months": [], "waterfall": None,
+    report = {"documents": [{"name": d["name"], "kind": d["kind"], "form": d.get("form")} for d in docs], "months": [], "waterfall": None,
               "tapes": [], "notes": []}
     # 1. servicer reports: checked figures; months of one trust in order, so balances must carry over
     months = []
@@ -150,9 +150,11 @@ def to_markdown(r, footer=""):
     last = r["months"][-1]["report"] if r["months"] else {}
     md.append(f"# {last.get('trust') or 'Deal report'}")
     if not r["months"] and not r.get("waterfall") and not r["tapes"]:
-        return (md[0] + "\n\n**Nothing to report:** none of the documents is a servicer report, a deal contract or a loan "
-                "tape (" + ", ".join(f"{d['name']}: {d['kind']}" for d in r["documents"]) + "). For a monthly report, give the "
-                "whole filing, the trust's name or its CIK." + (f"\n\n---\n{footer}" if footer else ""))
+        what = ", ".join(d["name"] + (f" (EDGAR form {d['form']})" if d.get("form") else "") for d in r["documents"])
+        return (md[0] + f"\n\n**Nothing to report.** This reads US auto-loan asset-backed deals: monthly servicer reports, "
+                f"the deal contracts and loan tapes. None of these documents is one of those: {what}. For a deal, give a "
+                "trust's name (e.g. \"CarMax Auto Owner Trust 2024-1\"), its CIK, or a link to one of its 10-D filings."
+                + (f"\n\n---\n{footer}" if footer else ""))
     md.append(f"**{'Verified: every figure passed the checks.' if not items else f'{len(items)} item(s) need review (listed at the end).'}** "
               f"Built from {len(r['documents'])} documents.")
     if last:

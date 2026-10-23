@@ -296,8 +296,10 @@ function render(r, log, secs) {
   let html = `<div class="card"><div class="head"><h2>${esc(name)}</h2>
       <span class="muted">${periods.length ? "Period ending " + esc(periods[periods.length - 1]) + " · " : ""}${secs}s ·
       <button class="dl" id="dl">Download JSON</button> <button class="dl" onclick="print()">Print / PDF</button></span></div>
-    ${empty ? `<div class="banner warn">Nothing to report: none of these documents is a servicer report, a deal contract or a
-                 loan tape. For a monthly report, give the whole filing, the trust's name or its CIK.</div>`
+    ${empty ? `<div class="banner warn">Nothing to report. This reads US auto-loan asset-backed deals: monthly servicer reports,
+                 the deal contracts and loan tapes. None of these documents is one of those
+                 (${r.documents.map(d => esc(d.name) + (d.form ? " = EDGAR form " + esc(d.form) : "")).join(", ")}).
+                 For a deal, give a trust's name (e.g. "CarMax Auto Owner Trust 2024-1"), its CIK, or a link to one of its 10-D filings.</div>`
       : items.length ? `<div class="banner warn">${items.length} item${items.length > 1 ? "s need" : " needs"} review (listed at the end)</div>`
                      : `<div class="banner ok">Verified: every figure passed the checks</div>`}
     <p class="muted">Built from ${r.documents.length} documents: ${Object.entries(kinds).map(([k, v]) => `${v} ${KIND[k]}${v > 1 && k !== "other" ? "s" : ""}`).join(", ")}.</p></div>`;

@@ -19,6 +19,7 @@ from html.parser import HTMLParser
 UA = os.environ.get("SEC_USER_AGENT", "servicer-report-reader contact@example.com")
 KEEP = (".htm", ".html", ".txt", ".pdf", ".csv", ".xml")
 MAX_UNZIPPED = 500 << 20  # refuse zip bombs
+FORMS = {}  # downloaded path -> its EDGAR document type (10-D, EX-99.1, 40-17F2, ...), to explain what a document is
 
 
 def get(url, dst=None):
@@ -131,7 +132,11 @@ def fetch_url(url, folder, log=print):
             a = f"{a[:10]}-{a[10:12]}-{a[12:]}"
             rows = [r for r in filing_docs(cik.group(1), a) if r["type"]]  # skip the full-submission .txt
             log(f"EDGAR filing {a}: {', '.join(r['type'] for r in rows)}")
-            return [get("https://www.sec.gov" + r["href"], os.path.join(folder, os.path.basename(r["href"]))) for r in rows]
+            out = []
+            for r in rows:
+                out.append(get("https://www.sec.gov" + r["href"], os.path.join(folder, os.path.basename(r["href"]))))
+                FORMS[out[-1]] = r["type"]
+            return out
         if not url.lower().split("?")[0].endswith(KEEP):
             return fetch_trust(cik.group(1), folder, log=log)
     name = os.path.basename(urllib.parse.urlparse(url).path) or "download.htm"
@@ -190,7 +195,7 @@ def collect(files, links, folder, log=print):
     for u in links:
         log(f"fetching {u}")
         paths += fetch_url(u.strip(), folder, log)
-    docs = [{"path": p, "name": os.path.basename(p), "kind": classify(p)} for p in paths]
+    docs = [{"path": p, "name": os.path.basename(p), "kind": classify(p), "form": FORMS.get(p)} for p in paths]
     for d in docs:
         log(f"{d['name']}: {d['kind'].replace('_', ' ')}")
     return docs
