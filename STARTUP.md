@@ -74,5 +74,7 @@ tailscale funnel --bg 8421                                                   # o
 Share `https://<your funnel address>/<secret>/`. That page builds reports, and shows its own connector link
 (`.../<secret>/mcp`) with a copy button: in Claude (web or mobile) go to Settings > Connectors > Add custom connector and
 paste it, then ask "Build a deal report for CIK 2003263". The secret in the address is the only lock, so share it only
-with people you want using your machine (set your own with `--secret` or `MCP_SECRET`). Over the connector the server
+with people you want using your machine (set your own with `--secret` or `MCP_SECRET`). If the tunnel already gives
+you a random address (ngrok, for example), `--secret none` serves the page at its root and the connector at `/mcp`:
+`ngrok http 8421`, then share `https://<random>.ngrok-free.app/`. Over the connector the server
 reads only EDGAR links, never file paths; at most 2 reports run at once and 20 per hour.

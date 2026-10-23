@@ -106,9 +106,10 @@ def serve_page(base):
 
     from starlette.responses import HTMLResponse, JSONResponse, RedirectResponse
 
-    @mcp.custom_route(base, methods=["GET"])
-    async def home(request):
-        return RedirectResponse(base + "/")
+    if base:
+        @mcp.custom_route(base, methods=["GET"])
+        async def home(request):
+            return RedirectResponse(base + "/")
 
     @mcp.custom_route(base + "/", methods=["GET"])
     async def page(request):
@@ -148,7 +149,8 @@ if __name__ == "__main__":
     ap.add_argument("--http", action="store_true", help="serve over HTTP for remote clients instead of stdio")
     ap.add_argument("--host", default="127.0.0.1")
     ap.add_argument("--port", type=int, default=8421)
-    ap.add_argument("--secret", default=os.environ.get("MCP_SECRET"), help="path secret for --http (default: random)")
+    ap.add_argument("--secret", default=os.environ.get("MCP_SECRET"),
+                    help="path secret for --http (default: random); 'none' serves at the root, e.g. behind a random ngrok URL")
     a = ap.parse_args()
     CFG.update(backend=a.backend, model=a.model, url=a.url, allow_files=not a.http)
     if not a.http:
@@ -157,7 +159,7 @@ if __name__ == "__main__":
         # connectors can't send a password header, so the address itself carries an unguessable secret;
         # the page and the connector share it, so whoever has the page link can also use the connector
         secret = a.secret or secrets.token_urlsafe(18)
-        base = f"/{secret}"
+        base = "" if secret == "none" else f"/{secret}"
         app.DEFAULTS.update(backend=a.backend, model=a.model, url=a.url)
         serve_page(base)
         print(f"page:      http://{a.host}:{a.port}{base}/\nconnector: http://{a.host}:{a.port}{base}/mcp\n"
