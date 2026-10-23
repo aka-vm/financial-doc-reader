@@ -124,11 +124,14 @@ def fetch_url(url, folder, log=print):
     acc = re.search(r"/(\d{10}-?\d{2}-?\d{6})", url)
     if cik and "sec.gov" in url or re.fullmatch(r"\s*CIK\s*\d+\s*", url, re.I):
         cik = cik or re.search(r"(\d+)", url)
-        if acc and url.lower().endswith(("index.htm", "index.html", "/")):
+        if acc and "/Archives/edgar/data/" in url:
+            # any page of a filing (its index, the 10-D cover, one exhibit): take the whole filing, so a link to the
+            # cover page still brings the servicer report and loan tape filed with it
             a = acc.group(1).replace("-", "")
             a = f"{a[:10]}-{a[10:12]}-{a[12:]}"
-            return [get("https://www.sec.gov" + r["href"], os.path.join(folder, os.path.basename(r["href"])))
-                    for r in filing_docs(cik.group(1), a)]
+            rows = [r for r in filing_docs(cik.group(1), a) if r["type"]]  # skip the full-submission .txt
+            log(f"EDGAR filing {a}: {', '.join(r['type'] for r in rows)}")
+            return [get("https://www.sec.gov" + r["href"], os.path.join(folder, os.path.basename(r["href"]))) for r in rows]
         if not url.lower().split("?")[0].endswith(KEEP):
             return fetch_trust(cik.group(1), folder, log=log)
     name = os.path.basename(urllib.parse.urlparse(url).path) or "download.htm"

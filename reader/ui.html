@@ -286,6 +286,7 @@ function lookup(rec, path) {
 
 function render(r, log, secs) {
   const items = review(r);
+  const empty = !r.months.length && !r.waterfall && !r.tapes.length;  // nothing was read, so nothing is verified
   const last = r.months[r.months.length - 1];
   const d = last?.report || {};
   const name = d.trust || "Deal report";
@@ -295,8 +296,10 @@ function render(r, log, secs) {
   let html = `<div class="card"><div class="head"><h2>${esc(name)}</h2>
       <span class="muted">${periods.length ? "Period ending " + esc(periods[periods.length - 1]) + " · " : ""}${secs}s ·
       <button class="dl" id="dl">Download JSON</button> <button class="dl" onclick="print()">Print / PDF</button></span></div>
-    ${items.length ? `<div class="banner warn">${items.length} item${items.length > 1 ? "s need" : " needs"} review (listed at the end)</div>`
-                   : `<div class="banner ok">Verified: every figure passed the checks</div>`}
+    ${empty ? `<div class="banner warn">Nothing to report: none of these documents is a servicer report, a deal contract or a
+                 loan tape. For a monthly report, give the whole filing, the trust's name or its CIK.</div>`
+      : items.length ? `<div class="banner warn">${items.length} item${items.length > 1 ? "s need" : " needs"} review (listed at the end)</div>`
+                     : `<div class="banner ok">Verified: every figure passed the checks</div>`}
     <p class="muted">Built from ${r.documents.length} documents: ${Object.entries(kinds).map(([k, v]) => `${v} ${KIND[k]}${v > 1 && k !== "other" ? "s" : ""}`).join(", ")}.</p></div>`;
   if (last) html += glance(d) + notesTable(d, last.flags);
   if (r.months.length > 1) html += trend(r.months);

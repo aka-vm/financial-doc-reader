@@ -149,6 +149,10 @@ def to_markdown(r, footer=""):
     items, md = review_items(r), []
     last = r["months"][-1]["report"] if r["months"] else {}
     md.append(f"# {last.get('trust') or 'Deal report'}")
+    if not r["months"] and not r.get("waterfall") and not r["tapes"]:
+        return (md[0] + "\n\n**Nothing to report:** none of the documents is a servicer report, a deal contract or a loan "
+                "tape (" + ", ".join(f"{d['name']}: {d['kind']}" for d in r["documents"]) + "). For a monthly report, give the "
+                "whole filing, the trust's name or its CIK." + (f"\n\n---\n{footer}" if footer else ""))
     md.append(f"**{'Verified: every figure passed the checks.' if not items else f'{len(items)} item(s) need review (listed at the end).'}** "
               f"Built from {len(r['documents'])} documents.")
     if last:
