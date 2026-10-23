@@ -13,7 +13,7 @@ or just an EDGAR link) and get one deal report back:
 Every figure is checked with arithmetic the documents have to satisfy, so the report is either verified or tells you
 exactly what to look at. Nothing doubtful is passed on silently.
 
-A small project I put together in a few hours by [aka-vm](https://aka-vm.github.io). Tested with **Qwen 3.8 27B**
+A small project I put together in a few hours by [Vineet](https://aka-vm.github.io). Tested with **Qwen 3.8 27B**
 running on my own GPU box. More of my work: **[aka-vm.github.io](https://aka-vm.github.io)**.
 
 ![deal report](docs/screenshot.png)
