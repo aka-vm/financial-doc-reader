@@ -61,6 +61,12 @@
               background: var(--card); color: var(--text); cursor: pointer; }
   .err { color: var(--warn); }
   a { color: var(--accent); }
+  .guide { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 12px 16px; margin: 0 0 16px; }
+  .guide summary { font-size: 14px; color: var(--text); font-weight: 600; }
+  .guide .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 8px; font-size: 14px; }
+  .guide ul, .guide ol { margin: 6px 0 12px; padding-left: 18px; }
+  .guide li { margin-bottom: 4px; }
+  @media (max-width: 700px) { .guide .cols { grid-template-columns: 1fr; gap: 4px; } }
   .credit { margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--line); text-align: center; font-size: 15px; }
   .credit a { font-weight: 600; text-decoration: none; }
   .credit a:hover { text-decoration: underline; }
@@ -77,6 +83,26 @@
   <p class="sub">Drop in a deal's documents: servicer reports, contracts, loan tapes, a .zip of them, or an EDGAR link.
     You get one report where every figure either passes the checks or is flagged with the reason.</p>
 
+  <details class="guide" open><summary>What it does and how to use it</summary>
+    <div class="cols">
+      <div><b>What you get</b>
+        <ul>
+          <li><b>Deal at a glance</b>: pool balance, notes outstanding, overcollateralization, reserve, losses, delinquency.</li>
+          <li><b>Notes</b>: each class's balance, interest and principal for the month.</li>
+          <li><b>Payment waterfall</b>: the payment order from the contract, with amounts confirmed against the servicer report.</li>
+          <li><b>Loan pool</b>: loans, rates, credit scores and delinquency from the loan tape.</li>
+          <li><b>Needs review</b>: anything that failed a check, with the reason. Everything else is verified.</li>
+        </ul></div>
+      <div><b>How to use it</b>
+        <ol>
+          <li>Drop in documents of one auto-loan ABS deal: monthly servicer reports, the deal contracts (indenture, sale
+            and servicing agreement), loan tapes, or a .zip. Or paste an EDGAR link, or a trust's CIK.</li>
+          <li>Press <b>Build report</b>. One servicer report takes about a minute; a whole deal with contracts a few minutes.</li>
+          <li>Read the report, then download it as JSON or print it to PDF.</li>
+        </ol>
+        <button class="dl" id="example">Try an example: CarMax Auto Owner Trust 2024-1</button></div>
+    </div></details>
+
   <div id="drop"><b>Drop files here</b><span>servicer reports, contracts, loan tapes (.htm .pdf .txt .csv .xml) or a .zip ·
     or click to choose</span><input id="pick" type="file" multiple hidden></div>
   <div class="picked" id="picked"></div>
@@ -87,8 +113,9 @@
   </div>
   <div id="out"></div>
   <div class="card" id="mcpbox" hidden><h2>Use it inside Claude</h2>
-    <p class="muted">In Claude (web or mobile): Settings &rarr; Connectors &rarr; Add custom connector, and paste this link. Then
-      ask, for example, "Build a deal report for CIK 2003263".</p>
+    <p class="muted">The same reports, from a chat. In Claude (web or mobile): Settings &rarr; Connectors &rarr; Add custom
+      connector, and paste this link. Then ask, for example, "Build a deal report for CIK 2003263" or "Using CIK 2003263,
+      are losses on this deal rising?". Claude builds the report here and walks you through it.</p>
     <div class="row"><input id="mcpurl" readonly style="flex:1"><button class="dl" id="mcpcopy">Copy</button></div></div>
   <footer class="credit">Built by <a href="https://aka-vm.github.io" target="_blank" rel="noopener">Vineet</a> ·
     <a href="https://github.com/aka-vm/servicer-report-reader" target="_blank" rel="noopener">source</a></footer>
@@ -123,6 +150,8 @@ fetch("api/info").then(r => r.json()).then(i => {
   $("mcpbox").hidden = false;
   $("mcpcopy").onclick = () => { navigator.clipboard.writeText($("mcpurl").value); $("mcpcopy").textContent = "Copied"; };
 }).catch(() => {});
+
+$("example").onclick = () => { $("links").value = "CIK 2003263"; $("links").focus(); };
 
 // inputs
 let files = [];
