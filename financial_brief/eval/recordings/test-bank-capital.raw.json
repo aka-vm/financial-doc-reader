@@ -1,0 +1,194 @@
+[
+  {
+    "facts": [
+      {
+        "label": "CET1 capital ratio",
+        "value": "13.2%",
+        "period": "31 December 2025",
+        "unit": "",
+        "quote": "The CET1 capital ratio was 13.2%."
+      },
+      {
+        "label": "Regulatory minimum CET1 ratio",
+        "value": "10.5%",
+        "period": "",
+        "unit": "",
+        "quote": "The regulatory minimum CET1 ratio was 10.5%."
+      },
+      {
+        "label": "Nonperforming loan ratio",
+        "value": "2.8%",
+        "period": "31 December 2025",
+        "unit": "",
+        "quote": "The nonperforming loan ratio was 2.8%, compared with 2.1% at 31 December 2024."
+      },
+      {
+        "label": "Prior period nonperforming loan ratio",
+        "value": "2.1%",
+        "period": "31 December 2024",
+        "unit": "",
+        "quote": "The nonperforming loan ratio was 2.8%, compared with 2.1% at 31 December 2024."
+      },
+      {
+        "label": "Customer deposits",
+        "value": "USD 900 million",
+        "period": "31 December 2025",
+        "unit": "USD",
+        "quote": "Customer deposits were USD 900 million."
+      },
+      {
+        "label": "Management explanation for increased nonperforming loans",
+        "value": "higher defaults among commercial property borrowers",
+        "period": "",
+        "unit": "",
+        "quote": "Management reported higher defaults among commercial property borrowers."
+      }
+    ]
+  },
+  {
+    "title": "Bank Capital and Loan Quality Update",
+    "subtitle": "Summary of key financial metrics and risk factors",
+    "overview": [
+      {
+        "text": "The bank's Common Equity Tier 1 (CET1) capital ratio stood at 13.2%, which exceeds the regulatory minimum requirement of 10.5% [F1, F2]. This indicates the bank maintains a capital buffer above the mandatory threshold. Additionally, customer deposits were reported at USD 900 million [F5].",
+        "evidence": [
+          "F1",
+          "F2",
+          "F5"
+        ]
+      },
+      {
+        "text": "Loan quality has shown a negative trend. The nonperforming loan ratio increased to 2.8%, up from 2.1% as of 31 December 2024 [F3, F4]. Management attributed this rise to higher defaults among commercial property borrowers [F6].",
+        "evidence": [
+          "F3",
+          "F4",
+          "F6"
+        ]
+      }
+    ],
+    "highlights": [
+      {
+        "text": "CET1 capital ratio of 13.2% is above the 10.5% regulatory minimum [F1, F2].",
+        "evidence": [
+          "F1",
+          "F2"
+        ]
+      },
+      {
+        "text": "Nonperforming loan ratio rose to 2.8% from 2.1% at 31 December 2024 [F3, F4].",
+        "evidence": [
+          "F3",
+          "F4"
+        ]
+      },
+      {
+        "text": "Customer deposits totaled USD 900 million [F5].",
+        "evidence": [
+          "F5"
+        ]
+      },
+      {
+        "text": "Management cited higher defaults among commercial property borrowers as the driver for the increase in nonperforming loans [F6].",
+        "evidence": [
+          "F6"
+        ]
+      }
+    ],
+    "risks": [
+      {
+        "text": "Rising nonperforming loans due to higher defaults among commercial property borrowers [F6].",
+        "evidence": [
+          "F6"
+        ]
+      },
+      {
+        "text": "Increase in nonperforming loan ratio from 2.1% to 2.8% indicates deteriorating asset quality [F3, F4].",
+        "evidence": [
+          "F3",
+          "F4"
+        ]
+      }
+    ],
+    "questions": [
+      "What specific measures is management taking to address the higher defaults among commercial property borrowers [F6]?",
+      "How does the current CET1 capital ratio of 13.2% compare to the regulatory minimum of 10.5% [F1, F2]?",
+      "What is the outlook for the nonperforming loan ratio, which increased from 2.1% to 2.8% [F3, F4]?"
+    ]
+  },
+  {
+    "verdicts": [
+      {
+        "id": "C1",
+        "supported": true,
+        "reason": "The source explicitly states the CET1 ratio (13.2%) and the regulatory minimum (10.5%), and separately states customer deposits were USD 900 million. The claim's inference of a 'capital buffer' is a direct logical consequence of the stated figures."
+      },
+      {
+        "id": "C2",
+        "supported": true,
+        "reason": "The source states the NPL ratio was 2.8% compared with 2.1% at 31 December 2024, and explicitly states 'Management reported higher defaults among commercial property borrowers.' The claim accurately reflects the trend and the stated cause."
+      },
+      {
+        "id": "C3",
+        "supported": true,
+        "reason": "Directly supported by the source figures for CET1 ratio (13.2%) and regulatory minimum (10.5%)."
+      },
+      {
+        "id": "C4",
+        "supported": true,
+        "reason": "Directly supported by the source statement comparing the current NPL ratio (2.8%) with the prior period (2.1% at 31 December 2024)."
+      },
+      {
+        "id": "C5",
+        "supported": true,
+        "reason": "Directly supported by the source statement that customer deposits were USD 900 million."
+      },
+      {
+        "id": "C6",
+        "supported": true,
+        "reason": "The source explicitly states 'Management reported higher defaults among commercial property borrowers,' which supports the claim that management cited this as the driver."
+      },
+      {
+        "id": "C7",
+        "supported": true,
+        "reason": "The source states management reported higher defaults among commercial property borrowers, supporting the risk description."
+      },
+      {
+        "id": "C8",
+        "supported": true,
+        "reason": "The source provides the figures (2.1% to 2.8%) and the causal attribution. The claim's conclusion of 'deteriorating asset quality' is a standard, faithful interpretation of a rising NPL ratio."
+      },
+      {
+        "id": "F1",
+        "supported": true,
+        "reason": "The value 13.2% matches the source text exactly."
+      },
+      {
+        "id": "F2",
+        "supported": true,
+        "reason": "The value 10.5% matches the source text exactly."
+      },
+      {
+        "id": "F3",
+        "supported": true,
+        "reason": "The value 2.8% matches the source text exactly."
+      },
+      {
+        "id": "F4",
+        "supported": true,
+        "reason": "The value 2.1% and the period '31 December 2024' match the source text exactly."
+      },
+      {
+        "id": "F5",
+        "supported": true,
+        "reason": "The value 'USD 900 million' matches the source text exactly."
+      }
+    ]
+  },
+  {
+    "answer": "Commercial property borrowers had higher defaults. Management reported this increase in the illustrative data for Elm Bank at 31 December 2025 (F6, S1).",
+    "evidence": [
+      "F6",
+      "S1"
+    ]
+  }
+]

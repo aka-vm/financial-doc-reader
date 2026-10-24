@@ -130,7 +130,9 @@ def fetch_url(url, folder, log=print):
             # cover page still brings the servicer report and loan tape filed with it
             a = acc.group(1).replace("-", "")
             a = f"{a[:10]}-{a[10:12]}-{a[12:]}"
-            rows = [r for r in filing_docs(cik.group(1), a) if r["type"]]  # skip the full-submission .txt
+            # skip the full-submission .txt, XBRL tag files and images: machine data, not documents to read
+            rows = [r for r in filing_docs(cik.group(1), a)
+                    if r["type"] and not r["type"].startswith(("EX-101", "GRAPHIC", "ZIP", "EXCEL", "JSON", "XML"))]
             log(f"EDGAR filing {a}: {', '.join(r['type'] for r in rows)}")
             out = []
             for r in rows:
@@ -178,7 +180,9 @@ def classify(path):
     words = max(1, len(t.split()))
     amounts = len(re.findall(r"\d{1,3}(?:,\d{3})+(?:\.\d\d)?|\d+\.\d\d\b", t)) / words
     sections = 1000 * len(re.findall(r"(?i)\bsection \d+\.\d+", t)) / words
-    if words < 5000 and amounts >= 0.06:
+    abs_terms = len(set(m.lower() for m in re.findall(r"(?i)collection period|distribution date|payment date|noteholder|"
+                                                    r"pool balance|servicer|reserve account", t)))
+    if words < 5000 and amounts >= 0.06 and abs_terms >= 2:  # numeric and about a securitization (not an earnings table)
         return "servicer_report"
     if words > 40000 and amounts >= 0.02:
         return "prospectus"

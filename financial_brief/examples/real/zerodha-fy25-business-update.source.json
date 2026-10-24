@@ -1,0 +1,18 @@
+{
+  "id": "zerodha-fy25-business-update",
+  "company": "Zerodha",
+  "title": "15 years of Zerodha \u2014 The risk crystallises",
+  "published": "2025-09-30",
+  "period": "FY 2024/25 discussion and June 2025 quarter; update September 2025",
+  "source_url": "https://zerodha.com/z-connect/business-updates/15-years-of-zerodha-the-risk-crystallises",
+  "publisher": "Zerodha",
+  "artifact": "zerodha-fy25-business-update.html",
+  "original": "zerodha-fy25-business-update.original.html",
+  "extracted_text": "zerodha-fy25-business-update.txt",
+  "source_kind": "Official founder business update, not an audited annual report",
+  "cleaning": "Full article body retained; navigation, reader comments and executable embeds removed. Image-only financial tables not transcribed.",
+  "bytes": 27307,
+  "characters": 14147,
+  "sha256": "b9ab34544107eab29e4a53505896c001c945a9da9d866b8558bdb7e1c5f7052f",
+  "fetched": "2026-10-24"
+}

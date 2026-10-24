@@ -1,69 +1,67 @@
-# Setting up servicer-report-reader (instructions for coding agents)
+# Agent instructions — Ledger / Deal Report Reader
 
-You are helping someone run this project. It takes an auto-loan ABS deal's documents (monthly servicer reports,
-the deal contracts, loan tapes, a .zip of them, or an EDGAR link) and builds one report: each servicer report's
-figures with arithmetic checks, the contract's payment waterfall run and compared line by line with what the servicer
-paid, and loan-tape statistics reconciled to the pool balance. Every figure or line either passes or is flagged with
-the reason. Follow these steps in order and ask the user only where a step says so.
+Read this file first. Existing user instructions and choices take precedence; do not
+ask for model selection or permission again when the conversation already provides it.
 
-## 1. Check the basics
-- `python3 --version` must be 3.10 or newer. The core needs no packages; `pip install pypdf` only for PDF reports,
-  `pip install anthropic` only for the Anthropic API backend.
-- Example reports are stored with Git LFS. If `examples/*.htm` are tiny pointer files, run `git lfs install && git lfs pull`.
-- Run `python3 -m reader.selftest`. It needs no model and must print `ok: ...`. If it fails, stop and report it.
+## Context map
 
-## 2. Ask the user where the model should run
-Ask once, offering the four ways in [STARTUP.md](STARTUP.md) (recommend the first two: documents stay on their own
-hardware). Follow that file for the chosen way. For a link, ask for the URL, the model name and, if a tunnel is
-needed, the SSH login; never guess them. For an API key, ask the user to set the variable themselves; never ask them to
-paste a key into the chat. Ways 3 and 4 send documents to an outside service: say so before using them.
-"<backend flags>" below means the flags of the chosen way, e.g. `--backend link --url ... --model ...`.
+- [Architecture](docs/agent/ARCHITECTURE.md): app modes, files and data flow.
+- [LLM routing](docs/agent/LLM_ROUTING.md): registry, task keys, providers and credentials.
+- [Operations](docs/agent/OPERATIONS.md): startup, hosting, limits and troubleshooting.
+- [Evaluation](docs/agent/EVALUATION.md): source checks, independent review and known limits.
+- [Handoff](docs/agent/HANDOFF.md): current implementation and continuation notes.
+- [Setup](SETUP.md), [README](README.md), [original CLI/MCP](STARTUP.md).
 
-## 3. Try one example
-```
-python3 -m reader.extract examples/carmax-2024-1__2026-07-31.htm examples/carmax-2024-1__2026-08-31.htm <backend flags> --out out/
-```
-Compare `out/*.json` with `examples/*.expected.json` (rule-checked answers). Report how many figures match and how
-many were flagged. A flagged figure is the system working, not a failure: it was not trusted.
+## When setting up for someone
 
-To try a whole deal (contracts + reports + loan tape, checked against each other), use the bundled example:
-```
-python3 -m reader.deal examples/santander-drive-2024-1-deal/* <backend flags> --out deal.json
-```
-or an EDGAR trust. Links to sec.gov need a contact in the User-Agent: ask the user for a name and email and
-`export SEC_USER_AGENT="Name email"`. Then:
-```
-python3 -m reader.deal --link "CIK 2003263" <backend flags> --out deal.json
-```
-This downloads the deal's contracts, its latest two servicer reports and its loan tape. Reading the contract into a
-waterfall takes a few minutes per deal on a local 27B model.
+1. Check Python >=3.10, create `.venv-brief`, install `requirements-brief.txt`, install/
+   pull Git LFS if needed, and run `python3 -m reader.selftest` plus unit tests.
+   Stop and fix failed checks before calling a model.
+2. **Ask which LLM provider(s)/models they want**, unless already established. Offer
+   local machine/Ollama, their remote private OpenAI-compatible server, OpenAI API,
+   another compatible hosted provider, or a mix. Ask whether one model should handle
+   all tasks or whether they want separate simple/heavy models.
+3. For a server, establish its exact API URL, model ID, authentication and network
+   access. Never guess them. Reuse a working endpoint/tunnel; do not replace it.
+4. Hosted providers receive document text and can incur charges: explain before
+   using them. Ask the person to set credential environment variables or private key
+   files themselves. Never request keys in chat, print them, or embed them in JSON.
+5. Create ignored `llm-config.json` from the example and tailor registry/task mappings
+   to the answers. Fully local routing must work without an OpenAI key. Validate the
+   file; a connection test makes one small request per selected LLM.
+6. Check `/healthz` for an existing web instance; start `.venv-brief/bin/python -m
+   financial_brief.server` if absent. Tell them to open http://localhost:8422.
+   Try a chosen document, not every library example automatically.
+7. Use SETUP.md for hosting, stable session secrets and reverse proxy configuration.
 
-## 4. Start the page
-```
-python3 app.py <backend flags>
-```
-Then tell the user to open http://localhost:8420 and drop files, a .zip, or paste an EDGAR link. The model is fixed
-by the start flags; to change it, restart the server. For access from other devices, see STARTUP.md.
+## When changing code
 
-## If the user asks to use this as an MCP server
-When the user says something like "set this up as an MCP server" (in Claude Code, Codex or Claude Desktop):
-1. Clone the repo if it isn't local yet (`git clone https://github.com/aka-vm/servicer-report-reader`), and use the
-   absolute path of `mcp_server.py` below.
-2. `python3 -m pip install mcp`, then check `python3 -c "import mcp"` works with the same `python3` you will register.
-3. Ask where the model runs (step 2 above, STARTUP.md section 1) and turn the answer into backend flags.
-4. Ask for a name and email for SEC downloads (EDGAR links), unless the user says they will only use local files.
-5. Register it for the assistant you are running in:
-   - Claude Code: `claude mcp add deal-report -e SEC_USER_AGENT="<name email>" -- python3 <abs path>/mcp_server.py <backend flags>`
-   - Codex: `codex mcp add deal-report --env SEC_USER_AGENT="<name email>" -- python3 <abs path>/mcp_server.py <backend flags>`
-   - Claude Desktop: add the same command under `mcpServers` in
-     `~/Library/Application Support/Claude/claude_desktop_config.json` (macOS) and tell the user to restart the app.
-6. Tell the user the tools appear in a new session, and to ask e.g. "Build a deal report for CIK 2003263" or
-   "Make a deal report from the files in <folder>".
-The Claude web and mobile apps cannot run local servers: for them, follow STARTUP.md section 3 (HTTP mode behind an
-HTTPS tunnel, added as a custom connector).
+- Preserve arithmetic/source checks. Never edit `reader/checks.py` merely to make a
+  report pass. The no-model self-test must continue to pass.
+- Keep arithmetic, pooling, precision and loan-tape aggregation in code, not the LLM.
+- Keep schemas on every backend. Use temperature 0 where supported; GPT-5 nano/mini
+  and Luna reasoning models use supported effort settings and omit temperature.
+- Do not repair PDF numbers by guessing or silently transcribe unreadable images.
+  Preserve quarter/annual, group/segment, reported/adjusted, units, signs and speakers.
+- Fail closed on missing/unsupported review verdicts. Missing review is not proof of
+  a wrong figure. Never depict a failed waterfall as verified.
+- Tests use fake calls unless explicitly doing live evaluation. Do not add network
+  calls or API keys to ordinary CI. Record which model/config generated live artifacts.
+- Registry edits are read per job; changing Python needs a safe restart. Never reload
+  active/queued work just to apply frontend or registry changes.
+- Never commit `.brief-data`, local model registries, API keys, browser-session state,
+  private user uploads or private generated reports. Public example assets are allowlisted.
 
-## Rules when changing code
-- Never edit `reader/checks.py` to make a flag go away on one report. A check must hold for every issuer;
-  after any change, `python3 -m reader.selftest` must still pass (it fails if a check fires on a correct answer).
-- Keep the model's job to reading, not arithmetic: totals and precision are fixed in code (`checks.finalize`, `checks.exact`).
-- Keep temperature 0 and the JSON schema on every backend.
+## Independent review workflow
+
+The current user requested **agy models**, with **Gemini Flash as coordinator**,
+for independent report review. Do not replace this with session subagents. Run the
+review CLI described in the evaluation guide; preserve actual reviewer IDs and any
+quota/format fallbacks. Treat reviewer claims and scores critically against sources.
+
+## Original CLI/MCP
+
+The original workflow remains available. For local stdio MCP or HTTP, follow
+STARTUP.md and the user's chosen backend. SEC downloads need a supplied name/email
+in `SEC_USER_AGENT`; never invent that identity. Local bundled examples do not need it.
+Do not send email/Slack messages or publish content as part of setup unless authorized.

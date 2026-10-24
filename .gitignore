@@ -2,3 +2,11 @@ out/
 __pycache__/
 *.pyc
 .DS_Store
+.venv-brief/
+.brief-data/
+.env
+
+.brief-config.json
+.openai_key
+
+llm-config.json

@@ -1,0 +1,191 @@
+[
+  {
+    "facts": [
+      {
+        "label": "Facility size",
+        "value": "GBP 40 million",
+        "period": "",
+        "unit": "",
+        "quote": "The committed revolving facility is GBP 40 million."
+      },
+      {
+        "label": "Interest rate",
+        "value": "SONIA plus 2.25%",
+        "period": "",
+        "unit": "",
+        "quote": "Interest is SONIA plus 2.25%."
+      },
+      {
+        "label": "Leverage covenant ceiling",
+        "value": "3.50 times",
+        "period": "",
+        "unit": "",
+        "quote": "The maximum permitted net leverage ratio is 3.50 times."
+      },
+      {
+        "label": "Compliance testing frequency",
+        "value": "quarterly",
+        "period": "",
+        "unit": "",
+        "quote": "Compliance is tested quarterly."
+      },
+      {
+        "label": "Covenant nature",
+        "value": "covenant ceiling, not the borrower's actual leverage",
+        "period": "",
+        "unit": "",
+        "quote": "A ratio of 3.50 times is a covenant ceiling, not the borrower's actual leverage."
+      },
+      {
+        "label": "Facility maturity",
+        "value": "14 March 2028",
+        "period": "",
+        "unit": "",
+        "quote": "The facility matures on 14 March 2028."
+      },
+      {
+        "label": "Agreement date",
+        "value": "14 March 2025",
+        "period": "",
+        "unit": "",
+        "quote": "ILLUSTRATIVE DATA: Birch Ltd credit agreement dated 14 March 2025."
+      }
+    ]
+  },
+  {
+    "title": "Birch Ltd Credit Facility Overview",
+    "subtitle": "Summary of key terms from the 14 March 2025 agreement",
+    "overview": [
+      {
+        "text": "Birch Ltd has a committed revolving credit facility of GBP 40 million, which matures on 14 March 2028. The agreement was dated 14 March 2025. Interest is calculated as SONIA plus 2.25%. SONIA is a benchmark interest rate used in the UK.",
+        "evidence": [
+          "F1",
+          "F6",
+          "F7",
+          "F2"
+        ]
+      },
+      {
+        "text": "The facility includes a leverage covenant with a maximum permitted net leverage ratio of 3.50 times. This figure represents a covenant ceiling, not the borrower's actual leverage. Compliance with this covenant is tested quarterly.",
+        "evidence": [
+          "F3",
+          "F5",
+          "F4"
+        ]
+      }
+    ],
+    "highlights": [
+      {
+        "text": "The committed revolving facility size is GBP 40 million.",
+        "evidence": [
+          "F1"
+        ]
+      },
+      {
+        "text": "Interest rate is set at SONIA plus 2.25%.",
+        "evidence": [
+          "F2"
+        ]
+      },
+      {
+        "text": "The maximum permitted net leverage ratio is 3.50 times, which is a covenant ceiling rather than the borrower's actual leverage.",
+        "evidence": [
+          "F3",
+          "F5"
+        ]
+      },
+      {
+        "text": "Covenant compliance is tested quarterly, and the facility matures on 14 March 2028.",
+        "evidence": [
+          "F4",
+          "F6"
+        ]
+      }
+    ],
+    "risks": [
+      {
+        "text": "The 3.50 times ratio is a covenant ceiling, not the borrower's actual leverage, meaning the actual leverage could be higher or lower than this limit.",
+        "evidence": [
+          "F5"
+        ]
+      }
+    ],
+    "questions": [
+      "What is the borrower's actual net leverage ratio compared to the 3.50 times covenant ceiling?",
+      "How does the quarterly compliance testing affect the borrower's cash flow planning?",
+      "What are the consequences if the borrower exceeds the 3.50 times leverage covenant?"
+    ]
+  },
+  {
+    "verdicts": [
+      {
+        "id": "C1",
+        "supported": true,
+        "reason": "All elements (facility size, maturity, agreement date, interest rate, and SONIA definition) are directly stated or implied in the source text."
+      },
+      {
+        "id": "C2",
+        "supported": true,
+        "reason": "The source explicitly states the 3.50x ratio is a covenant ceiling, not actual leverage, and that compliance is tested quarterly."
+      },
+      {
+        "id": "C3",
+        "supported": true,
+        "reason": "Directly supported by the source statement: 'The committed revolving facility is GBP 40 million.'"
+      },
+      {
+        "id": "C4",
+        "supported": true,
+        "reason": "Directly supported by the source statement: 'Interest is SONIA plus 2.25%.'"
+      },
+      {
+        "id": "C5",
+        "supported": true,
+        "reason": "Directly supported by the source statement: 'A ratio of 3.50 times is a covenant ceiling, not the borrower's actual leverage.'"
+      },
+      {
+        "id": "C6",
+        "supported": true,
+        "reason": "Both facts (quarterly testing and 14 March 2028 maturity) are explicitly stated in the source."
+      },
+      {
+        "id": "C7",
+        "supported": true,
+        "reason": "The source states the ratio is a ceiling, not actual leverage. The claim's inference that actual leverage could be higher or lower is a logical consequence of it being a ceiling, not a fixed value."
+      },
+      {
+        "id": "F1",
+        "supported": true,
+        "reason": "Matches source: 'The committed revolving facility is GBP 40 million.'"
+      },
+      {
+        "id": "F2",
+        "supported": true,
+        "reason": "Matches source: 'Interest is SONIA plus 2.25%.'"
+      },
+      {
+        "id": "F3",
+        "supported": true,
+        "reason": "Matches source: 'The maximum permitted net leverage ratio is 3.50 times.'"
+      },
+      {
+        "id": "F6",
+        "supported": true,
+        "reason": "Matches source: 'The facility matures on 14 March 2028.'"
+      },
+      {
+        "id": "F7",
+        "supported": true,
+        "reason": "Matches source: 'ILLUSTRATIVE DATA: Birch Ltd credit agreement dated 14 March 2025.'"
+      }
+    ]
+  },
+  {
+    "answer": "No. The 3.50 times figure is a covenant ceiling, not the borrower's actual leverage (F5, S1). The document explicitly states that this ratio represents the maximum permitted net leverage ratio (F3, S1). No actual leverage figure is provided in the supplied evidence. Therefore, 3.50 times is a limit, not a measured value.",
+    "evidence": [
+      "F5",
+      "F3",
+      "S1"
+    ]
+  }
+]

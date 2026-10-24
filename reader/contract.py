@@ -228,7 +228,63 @@ def names_in(expr):
     return {n.id for n in ast.walk(ast.parse(expr, mode="eval")) if isinstance(n, ast.Name)} - set(FUNCS)
 
 
+def structure_problems(spec, classes):
+    """Reject incomplete model output before validating the formulas it happens to contain."""
+    if not isinstance(spec, dict):
+        return ["the payment spec must be one JSON object"]
+    out = []
+    for name, kind in (("definitions", dict), ("steps", list), ("principal_order", list)):
+        if name not in spec:
+            nested = isinstance(spec.get("terms"), dict) and name in spec["terms"]
+            out.append(f"missing top-level {name!r}" +
+                       (f"; move {name!r} out of 'terms' and return the full corrected JSON" if nested else
+                        "; return the full payment spec, not only its descriptive terms"))
+        elif not isinstance(spec[name], kind):
+            out.append(f"top-level {name!r} must be a JSON {'object' if kind is dict else 'array'}")
+    # Descriptive terms are optional for callers of the engine, but must be an object when supplied.
+    if "terms" in spec and not isinstance(spec["terms"], dict):
+        out.append("top-level 'terms' must be a JSON object")
+    if out:
+        return out
+    for name, expression in spec["definitions"].items():
+        if not isinstance(name, str) or not name.isidentifier():
+            out.append(f"definition name {name!r} must be an identifier")
+        if not isinstance(expression, str) or not expression.strip():
+            out.append(f"definition {name!r} must contain a nonempty formula string")
+    if not spec["steps"]:
+        out.append("'steps' is empty: include every priority-of-payments clause, ending with the residual")
+    ids = set()
+    for index, step in enumerate(spec["steps"]):
+        if not isinstance(step, dict):
+            out.append(f"step {index + 1} must be a JSON object")
+            continue
+        for key in ("id", "pay", "kind", "amount"):
+            if not isinstance(step.get(key), str) or not step[key].strip():
+                out.append(f"step {index + 1} needs a nonempty {key!r} string")
+        if isinstance(step.get("id"), str):
+            if step["id"] in ids:
+                out.append(f"step id {step['id']!r} is duplicated; give every payment clause its own id")
+            ids.add(step["id"])
+        if step.get("kind") not in {"fee", "interest", "principal", "reserve", "residual"}:
+            out.append(f"step {index + 1} kind must be fee, interest, principal, reserve or residual")
+    seen = set()
+    for index, group in enumerate(spec["principal_order"]):
+        if not isinstance(group, list) or not group or any(not isinstance(c, str) for c in group):
+            out.append(f"principal_order group {index + 1} must be a nonempty array of class identifiers")
+            continue
+        for c in group:
+            if c in seen:
+                out.append(f"principal_order repeats class {c!r}; each class may receive principal in only one group")
+            seen.add(c)
+    if classes and not spec["principal_order"]:
+        out.append("principal_order is empty: include the contract's ordering of note classes")
+    return out
+
+
 def problems(spec, classes):
+    structural = structure_problems(spec, classes)
+    if structural:
+        return structural
     out, known = [], INPUT_NAMES | {f"bal_{c}" for c in classes} | set(spec.get("definitions", {}))
     exprs = [("definition", k, e) for k, e in spec.get("definitions", {}).items()]
     exprs += [("step", s.get("id"), s.get("amount", "0")) for s in spec.get("steps", [])]
@@ -258,7 +314,14 @@ def close_parens(spec):
     """Long formulas sometimes end one ')' short; add the missing closers when that alone makes them parse.
     The comparison with the servicer report still has to confirm the result."""
     fixed = []
-    slots = [(spec.get("definitions", {}), k) for k in spec.get("definitions", {})] + [(s, "amount") for s in spec.get("steps", [])]
+    if not isinstance(spec, dict):
+        return fixed
+    defs = spec.get("definitions")
+    defs = defs if isinstance(defs, dict) else {}
+    steps = spec.get("steps")
+    steps = steps if isinstance(steps, list) else []
+    slots = [(defs, k) for k, value in defs.items() if isinstance(value, str)] + [
+        (step, "amount") for step in steps if isinstance(step, dict) and isinstance(step.get("amount"), str)]
     for holder, k in slots:
         e = holder[k]
         gap = e.count("(") - e.count(")")

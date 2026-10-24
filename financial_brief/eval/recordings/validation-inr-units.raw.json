@@ -1,0 +1,209 @@
+[
+  {
+    "facts": [
+      {
+        "label": "Revenue",
+        "value": "INR 250 crore",
+        "period": "FY2025",
+        "unit": "INR crore",
+        "quote": "Revenue was INR 250 crore in FY2025, compared with INR 220 crore in FY2024."
+      },
+      {
+        "label": "Prior Year Revenue",
+        "value": "INR 220 crore",
+        "period": "FY2024",
+        "unit": "INR crore",
+        "quote": "Revenue was INR 250 crore in FY2025, compared with INR 220 crore in FY2024."
+      },
+      {
+        "label": "Profit after tax",
+        "value": "INR 18 crore",
+        "period": "FY2025",
+        "unit": "INR crore",
+        "quote": "Profit after tax was INR 18 crore in FY2025."
+      },
+      {
+        "label": "Borrowings",
+        "value": "INR 65 crore",
+        "period": "31 March 2025",
+        "unit": "INR crore",
+        "quote": "Borrowings were INR 65 crore at 31 March 2025."
+      },
+      {
+        "label": "Receivables",
+        "value": "INR 92 crore",
+        "period": "",
+        "unit": "INR crore",
+        "quote": "Receivables were INR 92 crore."
+      },
+      {
+        "label": "Receivables driver",
+        "value": "Customer payment delays",
+        "period": "",
+        "unit": "",
+        "quote": "Customer payment delays increased receivables."
+      },
+      {
+        "label": "Currency constraint",
+        "value": "must not be relabelled as USD or as millions",
+        "period": "",
+        "unit": "",
+        "quote": "These amounts must not be relabelled as USD or as millions."
+      }
+    ]
+  },
+  {
+    "title": "FY2025 Financial Snapshot",
+    "subtitle": "Key figures and drivers for the fiscal year ending 31 March 2025",
+    "overview": [
+      {
+        "text": "The company reported revenue of INR 250 crore in FY2025, up from INR 220 crore in FY2024. This indicates growth in top-line sales over the prior year. Profit after tax for FY2025 was INR 18 crore. The financial position as of 31 March 2025 shows borrowings of INR 65 crore and receivables of INR 92 crore. All amounts are denominated in Indian Rupees (INR) and measured in crores (1 crore equals 10 million).",
+        "evidence": [
+          "F1",
+          "F2",
+          "F3",
+          "F4",
+          "F5",
+          "F7"
+        ]
+      },
+      {
+        "text": "The increase in receivables is attributed to customer payment delays. This suggests that while revenue grew, cash collection faced headwinds, leading to a higher balance of money owed to the company. The document explicitly states that these figures must not be relabelled as USD or converted into millions, preserving the original INR crore units.",
+        "evidence": [
+          "F5",
+          "F6",
+          "F7"
+        ]
+      }
+    ],
+    "highlights": [
+      {
+        "text": "Revenue increased from INR 220 crore in FY2024 to INR 250 crore in FY2025.",
+        "evidence": [
+          "F1",
+          "F2"
+        ]
+      },
+      {
+        "text": "Profit after tax stood at INR 18 crore in FY2025.",
+        "evidence": [
+          "F3"
+        ]
+      },
+      {
+        "text": "Borrowings were recorded at INR 65 crore as of 31 March 2025.",
+        "evidence": [
+          "F4"
+        ]
+      },
+      {
+        "text": "Receivables reached INR 92 crore, driven by customer payment delays.",
+        "evidence": [
+          "F5",
+          "F6"
+        ]
+      }
+    ],
+    "risks": [
+      {
+        "text": "Customer payment delays have increased receivables, which may impact cash flow and working capital efficiency.",
+        "evidence": [
+          "F6"
+        ]
+      },
+      {
+        "text": "The presence of INR 65 crore in borrowings indicates debt obligations that require servicing.",
+        "evidence": [
+          "F4"
+        ]
+      }
+    ],
+    "questions": [
+      "What specific measures are being taken to address customer payment delays?",
+      "How does the INR 65 crore in borrowings affect the company's debt service coverage?",
+      "Are there any changes in credit policies that contributed to the increase in receivables?"
+    ]
+  },
+  {
+    "verdicts": [
+      {
+        "id": "C1",
+        "supported": false,
+        "reason": "The claim states that the document explicitly instructs that figures must not be relabelled as USD or converted into millions. While the source text does state 'These amounts must not be relabelled as USD or as millions,' the claim's phrasing 'The document explicitly states that these figures must not be relabelled as USD or converted into millions' is a meta-instruction about data handling, not a factual claim about the financial results. More critically, the claim attributes the increase in receivables to customer payment delays, which is supported by the source ('Customer payment delays increased receivables'). However, the claim also includes a meta-statement about unit preservation that is not a financial fact but a data-handling instruction. The instruction says 'supported=true only if the entire meaning is supported.' The claim mixes a supported causal statement with a meta-instruction. The meta-instruction is present in the source, so technically the text is supported. However, the claim's structure presents the unit-preservation rule as part of the narrative about receivables, which is a distortion of the source's intent. The source lists the unit rule as a separate constraint, not as a cause or effect of the receivables increase. Therefore, the claim's narrative flow is misleading, but the individual facts are present. Let's re-read the instruction: 'supported=true only if the entire meaning is supported.' The claim says 'The increase in receivables is attributed to customer payment delays.' This is supported. It then says 'This suggests that while revenue grew, cash collection faced headwinds...' This is an inference. The source says 'Customer payment delays increased receivables.' It does not explicitly state 'cash collection faced headwinds' or link it to '"
+      },
+      {
+        "id": "C2",
+        "supported": true,
+        "reason": "The source explicitly states: 'Revenue was INR 250 crore in FY2025, compared with INR 220 crore in FY2024.' The claim accurately reflects this comparison."
+      },
+      {
+        "id": "C3",
+        "supported": true,
+        "reason": "The source explicitly states: 'Profit after tax was INR 18 crore in FY2025.' The claim matches this exactly."
+      },
+      {
+        "id": "C4",
+        "supported": true,
+        "reason": "The source explicitly states: 'Borrowings were INR 65 crore at 31 March 2025.' The claim matches this exactly."
+      },
+      {
+        "id": "C5",
+        "supported": true,
+        "reason": "The source states: 'Receivables were INR 92 crore. Customer payment delays increased receivables.' The claim states 'Receivables reached INR 92 crore, driven by customer payment delays.' This is a faithful paraphrase of the source's causal statement."
+      },
+      {
+        "id": "C6",
+        "supported": false,
+        "reason": "The source states 'Customer payment delays increased receivables.' The claim adds 'which may impact cash flow and working capital efficiency.' The source does not mention cash flow or working capital efficiency. This is an unsupported inference/conclusion not present in the source text."
+      },
+      {
+        "id": "C7",
+        "supported": false,
+        "reason": "The source states 'Borrowings were INR 65 crore at 31 March 2025.' The claim adds 'indicates debt obligations that require servicing.' The source does not state that these borrowings 'indicate debt obligations that require servicing.' This is an external inference not supported by the provided text."
+      },
+      {
+        "id": "F1",
+        "supported": true,
+        "reason": "The key figure card matches the source text exactly: 'Revenue was INR 250 crore in FY2025'."
+      },
+      {
+        "id": "F2",
+        "supported": true,
+        "reason": "The key figure card matches the source text exactly: 'compared with INR 220 crore in FY2024'."
+      },
+      {
+        "id": "F3",
+        "supported": true,
+        "reason": "The key figure card matches the source text exactly: 'Profit after tax was INR 18 crore in FY2025'."
+      },
+      {
+        "id": "F4",
+        "supported": true,
+        "reason": "The key figure card matches the source text exactly: 'Borrowings were INR 65 crore at 31 March 2025'."
+      },
+      {
+        "id": "F5",
+        "supported": true,
+        "reason": "The key figure card matches the source text exactly: 'Receivables were INR 92 crore'."
+      },
+      {
+        "id": "F6",
+        "supported": true,
+        "reason": "The key figure card matches the source text exactly: 'Customer payment delays increased receivables'."
+      },
+      {
+        "id": "F7",
+        "supported": true,
+        "reason": "The key figure card matches the source text exactly: 'These amounts must not be relabelled as USD or as millions'."
+      }
+    ]
+  },
+  {
+    "answer": "According to the provided source, customer payment delays caused receivables to increase (F6, S1). The document states that receivables were INR 92 crore (F5, S1). No specific reporting period is explicitly labeled for the receivables figure in the source text.",
+    "evidence": [
+      "F6",
+      "F5",
+      "S1"
+    ]
+  }
+]

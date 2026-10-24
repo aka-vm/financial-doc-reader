@@ -1,0 +1,181 @@
+[
+  {
+    "facts": [
+      {
+        "label": "Year-end cash position",
+        "value": "Cash was AUD 2.1 million at year end",
+        "period": "2025",
+        "unit": "AUD",
+        "quote": "Cash was AUD 2.1 million at year end."
+      },
+      {
+        "label": "Debt repayment obligation",
+        "value": "A loan of AUD 8 million is repayable on 30 September 2026",
+        "period": "2026",
+        "unit": "AUD",
+        "quote": "A loan of AUD 8 million is repayable on 30 September 2026."
+      },
+      {
+        "label": "Going concern uncertainty",
+        "value": "a material uncertainty exists about the company's ability to continue as a going concern",
+        "period": "",
+        "unit": "",
+        "quote": "Management states that a material uncertainty exists about the company's ability to continue as a going concern."
+      },
+      {
+        "label": "Refinancing status",
+        "value": "Refinancing discussions are ongoing and no binding agreement has been signed",
+        "period": "",
+        "unit": "",
+        "quote": "Refinancing discussions are ongoing and no binding agreement has been signed."
+      },
+      {
+        "label": "Bankruptcy status",
+        "value": "The accounts do not state that bankruptcy has occurred",
+        "period": "",
+        "unit": "",
+        "quote": "The accounts do not state that bankruptcy has occurred."
+      }
+    ]
+  },
+  {
+    "title": "Liquidity and Going Concern Status",
+    "subtitle": "Summary of cash position, debt obligations, and refinancing status",
+    "overview": [
+      {
+        "text": "The company reported a year-end cash position of AUD 2.1 million (F1). This cash balance is significantly lower than the AUD 8 million loan that is repayable on 30 September 2026 (F2). The financial statements explicitly note that a material uncertainty exists regarding the company's ability to continue as a going concern (F3).",
+        "evidence": [
+          "F1",
+          "F2",
+          "F3"
+        ]
+      },
+      {
+        "text": "Management indicates that refinancing discussions are currently ongoing, but no binding agreement has been signed (F4). The accounts do not state that bankruptcy has occurred (F5). This brief summarizes the documented liquidity position and associated uncertainties without making investment recommendations.",
+        "evidence": [
+          "F4",
+          "F5"
+        ]
+      }
+    ],
+    "highlights": [
+      {
+        "text": "Year-end cash was AUD 2.1 million (F1).",
+        "evidence": [
+          "F1"
+        ]
+      },
+      {
+        "text": "A loan of AUD 8 million is repayable on 30 September 2026 (F2).",
+        "evidence": [
+          "F2"
+        ]
+      },
+      {
+        "text": "A material uncertainty exists about the company's ability to continue as a going concern (F3).",
+        "evidence": [
+          "F3"
+        ]
+      },
+      {
+        "text": "Refinancing discussions are ongoing, and no binding agreement has been signed (F4).",
+        "evidence": [
+          "F4"
+        ]
+      }
+    ],
+    "risks": [
+      {
+        "text": "The company faces a material uncertainty regarding its ability to continue as a going concern (F3).",
+        "evidence": [
+          "F3"
+        ]
+      },
+      {
+        "text": "The AUD 8 million loan is repayable on 30 September 2026, creating a significant future cash outflow (F2).",
+        "evidence": [
+          "F2"
+        ]
+      },
+      {
+        "text": "Refinancing remains unresolved as no binding agreement has been signed (F4).",
+        "evidence": [
+          "F4"
+        ]
+      }
+    ],
+    "questions": [
+      "What is the current status of the refinancing discussions mentioned in the accounts?",
+      "How does the AUD 2.1 million cash position compare to the AUD 8 million loan repayment due in 2026?",
+      "What specific factors contribute to the stated material uncertainty about the company's ability to continue as a going concern?"
+    ]
+  },
+  {
+    "verdicts": [
+      {
+        "id": "C1",
+        "supported": true,
+        "reason": "The claim accurately reflects the source: cash of AUD 2.1 million, an AUD 8 million loan due 30 September 2026, and the explicit note on material uncertainty regarding going concern. The comparison of cash vs. loan is a direct inference from the stated figures, and the going-concern uncertainty is explicitly stated in the source."
+      },
+      {
+        "id": "C2",
+        "supported": true,
+        "reason": "The source states that refinancing discussions are ongoing and no binding agreement has been signed, and that the accounts do not state that bankruptcy has occurred. The claim faithfully paraphrases these points and correctly notes that the summary makes no investment recommendations, which is a meta-statement about the document's scope, not a factual claim about the company."
+      },
+      {
+        "id": "C3",
+        "supported": true,
+        "reason": "Directly supported by the source statement: 'Cash was AUD 2.1 million at year end.'"
+      },
+      {
+        "id": "C4",
+        "supported": true,
+        "reason": "Directly supported by the source statement: 'A loan of AUD 8 million is repayable on 30 September 2026.'"
+      },
+      {
+        "id": "C5",
+        "supported": true,
+        "reason": "Directly supported by the source statement: 'Management states that a material uncertainty exists about the company's ability to continue as a going concern.'"
+      },
+      {
+        "id": "C6",
+        "supported": true,
+        "reason": "Directly supported by the source statement: 'Refinancing discussions are ongoing and no binding agreement has been signed.'"
+      },
+      {
+        "id": "C7",
+        "supported": true,
+        "reason": "Directly supported by the source statement regarding the material uncertainty about going concern."
+      },
+      {
+        "id": "C8",
+        "supported": true,
+        "reason": "The source states the loan is repayable on 30 September 2026. Describing this as a 'significant future cash outflow' is a reasonable and faithful characterization of a large debt repayment obligation, not an unsupported causal or accounting conclusion."
+      },
+      {
+        "id": "C9",
+        "supported": true,
+        "reason": "Directly supported by the source statement that refinancing discussions are ongoing and no binding agreement has been signed."
+      },
+      {
+        "id": "F1",
+        "supported": true,
+        "reason": "The key figure card accurately reflects the source: 'Cash was AUD 2.1 million at year end.' The label, value, unit (AUD), and quote all match the original text."
+      },
+      {
+        "id": "F2",
+        "supported": true,
+        "reason": "The key figure card accurately reflects the source: 'A loan of AUD 8 million is repayable on 30 September 2026.' The label, value, period (2026), unit (AUD), and quote all match the original text."
+      }
+    ]
+  },
+  {
+    "answer": "No, the company has not secured refinancing. The accounts state that refinancing discussions are ongoing, but no binding agreement has been signed (F4, S1). Additionally, management identifies a material uncertainty regarding the company's ability to continue as a going concern (F3, S1). While a loan of AUD 8 million is repayable on 30 September 2026 (F2, S1), the absence of a signed agreement means refinancing remains unsecured.",
+    "evidence": [
+      "F4",
+      "F3",
+      "F2",
+      "S1"
+    ]
+  }
+]

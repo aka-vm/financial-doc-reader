@@ -1,0 +1,188 @@
+[
+  {
+    "facts": [
+      {
+        "label": "Gross written premiums",
+        "value": "CHF 340 million",
+        "period": "2025",
+        "unit": "CHF",
+        "quote": "Gross written premiums were CHF 340 million."
+      },
+      {
+        "label": "Combined ratio",
+        "value": "103.4%",
+        "period": "2025",
+        "unit": "%",
+        "quote": "The combined ratio was 103.4% in 2025, compared with 96.8% in 2024."
+      },
+      {
+        "label": "Prior year combined ratio",
+        "value": "96.8%",
+        "period": "2024",
+        "unit": "%",
+        "quote": "The combined ratio was 103.4% in 2025, compared with 96.8% in 2024."
+      },
+      {
+        "label": "Catastrophe claims losses",
+        "value": "CHF 28 million",
+        "period": "2025",
+        "unit": "CHF",
+        "quote": "Catastrophe claims contributed CHF 28 million of losses."
+      },
+      {
+        "label": "Solvency coverage",
+        "value": "184%",
+        "period": "2025",
+        "unit": "%",
+        "quote": "Solvency coverage was 184%."
+      },
+      {
+        "label": "Earnings forecast",
+        "value": "did not publish a forecast",
+        "period": "next year",
+        "unit": "",
+        "quote": "The company did not publish a forecast for next year's earnings."
+      }
+    ]
+  },
+  {
+    "title": "Insurance Performance Summary",
+    "subtitle": "Key metrics and solvency status",
+    "overview": [
+      {
+        "text": "The insurer reported gross written premiums of CHF 340 million [F1]. The combined ratio, a measure of underwriting efficiency, stood at 103.4% in 2025, up from 96.8% in 2024 [F2, F3]. This increase indicates that claims and expenses exceeded premiums in the current period.",
+        "evidence": [
+          "F1",
+          "F2",
+          "F3"
+        ]
+      },
+      {
+        "text": "Catastrophe claims contributed CHF 28 million of losses [F4]. Despite the higher combined ratio, the company maintained a solvency coverage of 184% [F5]. The company did not publish a forecast for next year's earnings [F6].",
+        "evidence": [
+          "F4",
+          "F5",
+          "F6"
+        ]
+      }
+    ],
+    "highlights": [
+      {
+        "text": "Gross written premiums were CHF 340 million [F1].",
+        "evidence": [
+          "F1"
+        ]
+      },
+      {
+        "text": "The combined ratio rose to 103.4% in 2025, compared with 96.8% in 2024 [F2, F3].",
+        "evidence": [
+          "F2",
+          "F3"
+        ]
+      },
+      {
+        "text": "Catastrophe claims accounted for CHF 28 million in losses [F4].",
+        "evidence": [
+          "F4"
+        ]
+      },
+      {
+        "text": "Solvency coverage remained strong at 184% [F5].",
+        "evidence": [
+          "F5"
+        ]
+      }
+    ],
+    "risks": [
+      {
+        "text": "The combined ratio exceeding 100% in 2025 suggests underwriting losses, driven partly by catastrophe claims of CHF 28 million [F2, F4].",
+        "evidence": [
+          "F2",
+          "F4"
+        ]
+      },
+      {
+        "text": "The absence of a published earnings forecast for the next year creates uncertainty for stakeholders [F6].",
+        "evidence": [
+          "F6"
+        ]
+      }
+    ],
+    "questions": [
+      "What specific factors drove the increase in the combined ratio from 96.8% to 103.4%?",
+      "How does the 184% solvency coverage compare to regulatory minimums?",
+      "What is the expected impact of the CHF 28 million in catastrophe claims on future pricing?"
+    ]
+  },
+  {
+    "verdicts": [
+      {
+        "id": "C1",
+        "supported": true,
+        "reason": "The source explicitly states gross written premiums of CHF 340 million, a combined ratio of 103.4% in 2025 versus 96.8% in 2024, and defines the combined ratio as a measure of underwriting efficiency. The statement that claims and expenses exceeded premiums is a standard accounting definition of a combined ratio above 100%, which is supported by the provided figures."
+      },
+      {
+        "id": "C2",
+        "supported": true,
+        "reason": "The source confirms catastrophe claims contributed CHF 28 million in losses, solvency coverage was 184%, and the company did not publish a forecast for next year's earnings. All elements of the claim are directly supported by the source text."
+      },
+      {
+        "id": "C3",
+        "supported": true,
+        "reason": "The source explicitly states that gross written premiums were CHF 340 million."
+      },
+      {
+        "id": "C4",
+        "supported": true,
+        "reason": "The source explicitly states the combined ratio was 103.4% in 2025, compared with 96.8% in 2024."
+      },
+      {
+        "id": "C5",
+        "supported": true,
+        "reason": "The source explicitly states that catastrophe claims contributed CHF 28 million of losses."
+      },
+      {
+        "id": "C6",
+        "supported": true,
+        "reason": "The source explicitly states that solvency coverage was 184%. The descriptor 'remained strong' is a qualitative interpretation consistent with a coverage ratio significantly above 100%."
+      },
+      {
+        "id": "C7",
+        "supported": true,
+        "reason": "The source states the company did not publish a forecast for next year's earnings. The claim that this creates uncertainty for stakeholders is a logical inference from the absence of a forecast, which is a standard business implication."
+      },
+      {
+        "id": "F1",
+        "supported": true,
+        "reason": "The source explicitly states 'Gross written premiums were CHF 340 million.'"
+      },
+      {
+        "id": "F2",
+        "supported": true,
+        "reason": "The source explicitly states 'The combined ratio was 103.4% in 2025'."
+      },
+      {
+        "id": "F3",
+        "supported": true,
+        "reason": "The source explicitly states 'compared with 96.8% in 2024'."
+      },
+      {
+        "id": "F4",
+        "supported": true,
+        "reason": "The source explicitly states 'Catastrophe claims contributed CHF 28 million of losses.'"
+      },
+      {
+        "id": "F5",
+        "supported": true,
+        "reason": "The source explicitly states 'Solvency coverage was 184%.'"
+      }
+    ]
+  },
+  {
+    "answer": "The company did not publish a forecast for next year's earnings (F6, S1).",
+    "evidence": [
+      "F6",
+      "S1"
+    ]
+  }
+]

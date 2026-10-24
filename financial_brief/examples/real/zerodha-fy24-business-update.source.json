@@ -1,0 +1,18 @@
+{
+  "id": "zerodha-fy24-business-update",
+  "company": "Zerodha",
+  "title": "Business updates: 14 years of Zerodha \u2014 The Pivot?",
+  "published": "2024-09-24",
+  "period": "FY 2023/24; management outlook as of September 2024",
+  "source_url": "https://zerodha.com/z-connect/business-updates/business-updates-14-years-of-zerodha-the-pivot",
+  "publisher": "Zerodha",
+  "artifact": "zerodha-fy24-business-update.html",
+  "original": "zerodha-fy24-business-update.original.html",
+  "extracted_text": "zerodha-fy24-business-update.txt",
+  "source_kind": "Official founder business update, not an audited annual report",
+  "cleaning": "Full article body retained; navigation, reader comments and executable embeds removed. Image-only financial tables not transcribed.",
+  "bytes": 18596,
+  "characters": 12905,
+  "sha256": "91ac73eeb5687c34aab004b4c06e23278d5de0744ecaab7a542b1d68619be8b1",
+  "fetched": "2026-10-24"
+}

@@ -1,0 +1,166 @@
+[
+  {
+    "facts": [
+      {
+        "label": "Revenue growth",
+        "value": "USD 24 million in Q2 2025 versus USD 21 million in Q2 2024",
+        "period": "Q2 2025",
+        "unit": "USD",
+        "quote": "Revenue was USD 24 million in Q2 2025 versus USD 21 million in Q2 2024."
+      },
+      {
+        "label": "Operating profit",
+        "value": "USD 3 million",
+        "period": "Q2 2025",
+        "unit": "USD",
+        "quote": "Operating profit was USD 3 million in Q2 2025."
+      },
+      {
+        "label": "Revenue driver",
+        "value": "increased service subscriptions",
+        "period": "",
+        "unit": "",
+        "quote": "Management attributed higher revenue to increased service subscriptions."
+      },
+      {
+        "label": "Cash position",
+        "value": "USD 7 million",
+        "period": "30 June 2025",
+        "unit": "USD",
+        "quote": "Cash was USD 7 million at 30 June 2025."
+      },
+      {
+        "label": "Dividend policy",
+        "value": "No dividend was declared",
+        "period": "",
+        "unit": "",
+        "quote": "No dividend was declared."
+      }
+    ]
+  },
+  {
+    "title": "Q2 2025 Earnings Summary",
+    "subtitle": "Key financial metrics and management commentary",
+    "overview": [
+      {
+        "text": "The company reported revenue of USD 24 million in Q2 2025, compared with USD 21 million in Q2 2024 (F1). Management attributed this increase to higher service subscriptions (F3).",
+        "evidence": [
+          "F1",
+          "F3"
+        ]
+      },
+      {
+        "text": "Operating profit for Q2 2025 was USD 3 million (F2). The company held USD 7 million in cash as of 30 June 2025 (F4). No dividend was declared (F5).",
+        "evidence": [
+          "F2",
+          "F4",
+          "F5"
+        ]
+      }
+    ],
+    "highlights": [
+      {
+        "text": "Revenue grew from USD 21 million in Q2 2024 to USD 24 million in Q2 2025 (F1).",
+        "evidence": [
+          "F1"
+        ]
+      },
+      {
+        "text": "Management cited increased service subscriptions as the driver of higher revenue (F3).",
+        "evidence": [
+          "F3"
+        ]
+      },
+      {
+        "text": "Operating profit stood at USD 3 million in Q2 2025 (F2).",
+        "evidence": [
+          "F2"
+        ]
+      },
+      {
+        "text": "The company did not declare a dividend (F5).",
+        "evidence": [
+          "F5"
+        ]
+      }
+    ],
+    "risks": [
+      {
+        "text": "The evidence does not document specific risks or uncertainties; therefore, no risks are listed.",
+        "evidence": [
+          "F1",
+          "F2",
+          "F3",
+          "F4",
+          "F5"
+        ]
+      }
+    ],
+    "questions": [
+      "What specific service subscriptions drove the revenue increase?",
+      "How does the USD 7 million cash position compare to prior periods?",
+      "What is the company's policy regarding future dividends?"
+    ]
+  },
+  {
+    "verdicts": [
+      {
+        "id": "C1",
+        "supported": true,
+        "reason": "The source explicitly states revenue figures for Q2 2025 and Q2 2024, and explicitly attributes the increase to increased service subscriptions."
+      },
+      {
+        "id": "C2",
+        "supported": true,
+        "reason": "The source confirms operating profit of USD 3 million in Q2 2025, cash of USD 7 million at 30 June 2025, and that no dividend was declared."
+      },
+      {
+        "id": "C3",
+        "supported": true,
+        "reason": "The source states revenue was USD 24 million in Q2 2025 versus USD 21 million in Q2 2024."
+      },
+      {
+        "id": "C4",
+        "supported": true,
+        "reason": "The source explicitly states management attributed higher revenue to increased service subscriptions."
+      },
+      {
+        "id": "C5",
+        "supported": true,
+        "reason": "The source states operating profit was USD 3 million in Q2 2025."
+      },
+      {
+        "id": "C6",
+        "supported": true,
+        "reason": "The source explicitly states no dividend was declared."
+      },
+      {
+        "id": "C7",
+        "supported": true,
+        "reason": "The source contains no mention of risks or uncertainties, so the claim that no risks are listed is supported by the absence of such information in the provided text."
+      },
+      {
+        "id": "F1",
+        "supported": true,
+        "reason": "The key figure matches the source text exactly: revenue USD 24 million in Q2 2025 versus USD 21 million in Q2 2024."
+      },
+      {
+        "id": "F2",
+        "supported": true,
+        "reason": "The key figure matches the source text: operating profit USD 3 million in Q2 2025."
+      },
+      {
+        "id": "F4",
+        "supported": true,
+        "reason": "The key figure matches the source text: cash USD 7 million at 30 June 2025."
+      }
+    ]
+  },
+  {
+    "answer": "Revenue increased from USD 21 million in Q2 2024 to USD 24 million in Q2 2025 (F1). Management attributed this higher revenue to increased service subscriptions (F3). The source does not provide further detail on the specific services or the magnitude of the subscription growth.",
+    "evidence": [
+      "F1",
+      "F3"
+    ]
+  }
+]

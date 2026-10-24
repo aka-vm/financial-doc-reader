@@ -1,0 +1,63 @@
+{
+  "version": 1,
+  "llms": {
+    "nano": {
+      "provider": "openai",
+      "model": "gpt-5-nano",
+      "api_key_env": "OPENAI_API_KEY",
+      "api_key_file": "~/.openai_key"
+    },
+    "luna": {
+      "provider": "openai",
+      "model": "gpt-6-luna",
+      "api_key_env": "OPENAI_API_KEY",
+      "api_key_file": "~/.openai_key"
+    },
+    "local": {
+      "provider": "link",
+      "model": "your-served-model-id",
+      "base_url": "http://127.0.0.1:8001/v1",
+      "enabled": false
+    },
+    "ollama": {
+      "provider": "ollama",
+      "model": "your-ollama-model",
+      "base_url": "http://127.0.0.1:11434",
+      "enabled": false
+    }
+  },
+  "tasks": {
+    "extract": {
+      "llm": "nano",
+      "reasoning_effort": "minimal"
+    },
+    "write": {
+      "llm": "luna",
+      "reasoning_effort": "low"
+    },
+    "review": {
+      "llm": "luna",
+      "reasoning_effort": "medium"
+    },
+    "answer": {
+      "llm": "luna",
+      "reasoning_effort": "low"
+    },
+    "contract": {
+      "llm": "luna",
+      "reasoning_effort": "medium"
+    },
+    "month_inputs": {
+      "llm": "nano",
+      "reasoning_effort": "minimal"
+    },
+    "extract_tables": {
+      "llm": "luna",
+      "reasoning_effort": "low"
+    },
+    "recover_extract": {
+      "llm": "luna",
+      "reasoning_effort": "low"
+    }
+  }
+}

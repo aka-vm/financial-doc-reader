@@ -1,0 +1,212 @@
+[
+  {
+    "facts": [
+      {
+        "label": "NAV per share",
+        "value": "USD 10.82",
+        "period": "31 December 2025",
+        "unit": "USD",
+        "quote": "Net asset value per share was USD 10.82."
+      },
+      {
+        "label": "Fund net return",
+        "value": "4.1%",
+        "period": "2025",
+        "unit": "%",
+        "quote": "The fund's net return for 2025 was 4.1%, versus the benchmark return of 4.8%."
+      },
+      {
+        "label": "Benchmark return",
+        "value": "4.8%",
+        "period": "2025",
+        "unit": "%",
+        "quote": "The fund's net return for 2025 was 4.1%, versus the benchmark return of 4.8%."
+      },
+      {
+        "label": "Modified duration",
+        "value": "5.6 years",
+        "period": "",
+        "unit": "years",
+        "quote": "Modified duration was 5.6 years."
+      },
+      {
+        "label": "Concentration risk",
+        "value": "28% of net assets",
+        "period": "",
+        "unit": "%",
+        "quote": "The five largest holdings represented 28% of net assets."
+      },
+      {
+        "label": "Performance disclaimer",
+        "value": "Past performance does not guarantee future returns.",
+        "period": "",
+        "unit": "",
+        "quote": "Past performance does not guarantee future returns."
+      }
+    ]
+  },
+  {
+    "title": "Fund Performance and Risk Snapshot",
+    "subtitle": "Summary of key metrics from the provided fund report",
+    "overview": [
+      {
+        "text": "The fund reported a net asset value (NAV) per share of USD 10.82 (F1). For the 2025 period, the fund's net return was 4.1%, which was lower than the benchmark return of 4.8% (F2, F3).",
+        "evidence": [
+          "F1",
+          "F2",
+          "F3"
+        ]
+      },
+      {
+        "text": "The fund's modified duration was 5.6 years (F4), indicating its sensitivity to interest rate changes. Additionally, the five largest holdings accounted for 28% of net assets (F5), reflecting a moderate level of concentration. The document includes a standard disclaimer that past performance does not guarantee future returns (F6).",
+        "evidence": [
+          "F4",
+          "F5",
+          "F6"
+        ]
+      }
+    ],
+    "highlights": [
+      {
+        "text": "NAV per share stood at USD 10.82 (F1).",
+        "evidence": [
+          "F1"
+        ]
+      },
+      {
+        "text": "In 2025, the fund's net return of 4.1% lagged the benchmark return of 4.8% (F2, F3).",
+        "evidence": [
+          "F2",
+          "F3"
+        ]
+      },
+      {
+        "text": "Modified duration was 5.6 years (F4).",
+        "evidence": [
+          "F4"
+        ]
+      },
+      {
+        "text": "The five largest holdings represented 28% of net assets (F5).",
+        "evidence": [
+          "F5"
+        ]
+      }
+    ],
+    "risks": [
+      {
+        "text": "Concentration risk: The five largest holdings represented 28% of net assets (F5).",
+        "evidence": [
+          "F5"
+        ]
+      },
+      {
+        "text": "Interest rate sensitivity: Modified duration of 5.6 years suggests the fund's value will fluctuate with interest rate movements (F4).",
+        "evidence": [
+          "F4"
+        ]
+      },
+      {
+        "text": "Performance uncertainty: The document states that past performance does not guarantee future returns (F6).",
+        "evidence": [
+          "F6"
+        ]
+      }
+    ],
+    "questions": [
+      "How does the fund's 4.1% net return compare to its 4.8% benchmark return in 2025? (F2, F3)",
+      "What is the impact of a 5.6-year modified duration on the fund's value if interest rates change? (F4)",
+      "How significant is the concentration risk given that the top five holdings make up 28% of net assets? (F5)"
+    ]
+  },
+  {
+    "verdicts": [
+      {
+        "id": "C1",
+        "supported": true,
+        "reason": "The source explicitly states the NAV per share was USD 10.82, the 2025 net return was 4.1%, and the benchmark return was 4.8%. The claim accurately reflects these figures and the comparison."
+      },
+      {
+        "id": "C2",
+        "supported": true,
+        "reason": "The source confirms the modified duration of 5.6 years, the 28% concentration of the five largest holdings, and the standard disclaimer regarding past performance. The interpretation of duration as interest rate sensitivity is a standard financial definition, and the concentration level is described as moderate, which is a reasonable qualitative assessment of 28%."
+      },
+      {
+        "id": "C3",
+        "supported": true,
+        "reason": "The source explicitly states: 'Net asset value per share was USD 10.82.' The claim is a direct paraphrase."
+      },
+      {
+        "id": "C4",
+        "supported": true,
+        "reason": "The source states the fund's net return for 2025 was 4.1% versus the benchmark return of 4.8%. The claim accurately reflects this comparison."
+      },
+      {
+        "id": "C5",
+        "supported": true,
+        "reason": "The source explicitly states: 'Modified duration was 5.6 years.' The claim is a direct paraphrase."
+      },
+      {
+        "id": "C6",
+        "supported": true,
+        "reason": "The source explicitly states: 'The five largest holdings represented 28% of net assets.' The claim is a direct paraphrase."
+      },
+      {
+        "id": "C7",
+        "supported": true,
+        "reason": "The source states the five largest holdings represented 28% of net assets. Labeling this as 'Concentration risk' is a standard financial interpretation of holding concentration."
+      },
+      {
+        "id": "C8",
+        "supported": true,
+        "reason": "The source states the modified duration was 5.6 years. The claim interprets this as interest rate sensitivity, which is the standard definition of modified duration in finance."
+      },
+      {
+        "id": "C9",
+        "supported": true,
+        "reason": "The source explicitly states: 'Past performance does not guarantee future returns.' The claim accurately reflects this disclaimer."
+      },
+      {
+        "id": "F1",
+        "supported": true,
+        "reason": "The source explicitly states: 'Net asset value per share was USD 10.82.' The key figure card matches the source exactly."
+      },
+      {
+        "id": "F2",
+        "supported": true,
+        "reason": "The source states: 'The fund's net return for 2025 was 4.1%.' The key figure card matches the source exactly."
+      },
+      {
+        "id": "F3",
+        "supported": true,
+        "reason": "The source states: '...versus the benchmark return of 4.8%.' The key figure card matches the source exactly."
+      },
+      {
+        "id": "F4",
+        "supported": true,
+        "reason": "The source explicitly states: 'Modified duration was 5.6 years.' The key figure card matches the source exactly."
+      },
+      {
+        "id": "F5",
+        "supported": true,
+        "reason": "The source explicitly states: 'The five largest holdings represented 28% of net assets.' The key figure card matches the source exactly."
+      }
+    ]
+  },
+  {
+    "answer": "No, the fund did not outperform its benchmark. For 2025, the fund's net return was 4.1%, while the benchmark return was 4.8% (F2, F3, S1). The fund underperformed by 0.7 percentage points. This data is from the Delta Bond Fund factsheet as of 31 December 2025 (S1). Past performance does not guarantee future returns (F6, S1).",
+    "evidence": [
+      "F2",
+      "F3",
+      "S1"
+    ]
+  },
+  {
+    "answer": "No. The fund did not outperform its benchmark. The source states: \u201cThe fund's net return for 2025 was 4.1%, versus the benchmark return of 4.8%.\u201d (S1, F2, F3). This data is from the Delta Bond Fund factsheet as of 31 December 2025 (S1).",
+    "evidence": [
+      "S1",
+      "F2",
+      "F3"
+    ]
+  }
+]

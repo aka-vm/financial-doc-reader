@@ -1,0 +1,20 @@
+{
+  "id": "zerodha-two-year",
+  "company": "Zerodha",
+  "title": "Zerodha FY24\u2013FY25 founder business updates",
+  "artifact": "zerodha-fy24-fy25-business-updates.zip",
+  "documents": [
+    "zerodha-fy24-business-update.html",
+    "zerodha-fy25-business-update.html"
+  ],
+  "source_kind": "Two full official founder articles, not audited accounts",
+  "period": "FY2023/24 actuals plus September2024 outlook; FY2024/25 discussion and June2025 quarter commentary",
+  "bytes": 15865,
+  "characters": 27052,
+  "sha256": "1a30d5de55c4513d495740b1ce67cfa6c3dc3890e4fa3aece5f2e2d810a6a8c5",
+  "source_urls": [
+    "https://zerodha.com/z-connect/business-updates/business-updates-14-years-of-zerodha-the-pivot",
+    "https://zerodha.com/z-connect/business-updates/15-years-of-zerodha-the-risk-crystallises"
+  ],
+  "limitations": "Charts contained as image elements are not transcribed. Numbers and narratives in body text retained; comments excluded."
+}

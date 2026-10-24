@@ -8,11 +8,16 @@
               a hosted model with your API key (ANTHROPIC_API_KEY / OPENAI_API_KEY / GEMINI_API_KEY)
 """
 import json
+from contextvars import ContextVar
 import os
+from pathlib import Path
 import subprocess
+import ssl
 import tempfile
 import urllib.error
 import urllib.request
+
+LLM_ROUTER = ContextVar("llm_router", default=None)
 
 AGENTS = {"codex", "claude-code", "gemini-cli"}
 HOSTED_URLS = {"openai": "https://api.openai.com/v1", "gemini": "https://generativelanguage.googleapis.com/v1beta/openai"}
@@ -27,10 +32,18 @@ def first_json(text):
 RUNAWAY = 300  # this many whitespace characters in a row: valid JSON never needs it; the model is looping
 
 
-def post(url, body, headers=None, timeout=1800):
+def post(url, body, headers=None, timeout=1800, context=None):
     req = urllib.request.Request(url, json.dumps(body).encode(), {"Content-Type": "application/json", **(headers or {})})
-    with urllib.request.urlopen(req, timeout=timeout) as r:
-        return json.load(r)
+    if context is not None:
+        # urlopen(context=...) builds a fresh opener, which otherwise discovers
+        # macOS system proxies even when the server installed a proxy-free opener.
+        opener = urllib.request.build_opener(
+            urllib.request.ProxyHandler(urllib.request.getproxies_environment()),
+            urllib.request.HTTPSHandler(context=context))
+        with opener.open(req, timeout=timeout) as response:
+            return json.load(response)
+    with urllib.request.urlopen(req, timeout=timeout) as response:
+        return json.load(response)
 
 
 def stream(url, body, piece, headers=None, timeout=1800):
@@ -54,13 +67,13 @@ def gather(chunks):
     return "".join(text)
 
 
-def ollama(model, prompt, schema, max_tokens=16384):
-    host = os.environ.get("OLLAMA_HOST", "http://localhost:11434")
-    host = host if host.startswith("http") else "http://" + host
+def ollama(model, prompt, schema, max_tokens=16384, host=None, key=None):
+    host = host or os.environ.get("OLLAMA_HOST", "http://localhost:11434")
+    host = (host if host.startswith("http") else "http://" + host).rstrip("/")
     body = {"model": model, "stream": True, "format": schema, "think": False, "messages": [{"role": "user", "content": prompt}],
             "options": {"temperature": 0, "num_ctx": 32768, "num_predict": max_tokens}}
     try:
-        text = stream(f"{host}/api/chat", body, lambda ln: ln and json.loads(ln).get("message", {}).get("content"))
+        text = stream(f"{host}/api/chat", body, lambda ln: ln and json.loads(ln).get("message", {}).get("content"), headers={"Authorization": f"Bearer {key}"} if key else {})
     except urllib.error.HTTPError as e:
         if e.code == 404:
             raise RuntimeError(f"Ollama has no model {model!r}: run `ollama pull {model}`") from e
@@ -80,6 +93,82 @@ def openai_compatible(url, model, prompt, schema, key=None, max_tokens=16384, **
             "response_format": {"type": "json_schema", "json_schema": {"name": "report", "schema": schema}}, **extra}
     text = stream(url.rstrip("/") + "/chat/completions", body, _sse, {"Authorization": f"Bearer {key}"} if key else {})
     return first_json(text)
+
+
+class ModelError(RuntimeError):
+    """A safe, actionable provider error that may be displayed to the user."""
+
+
+def openai_key(env="OPENAI_API_KEY", key_file=None):
+    key = os.environ.get(env, "").strip()
+    if not key:
+        path = Path(key_file or os.environ.get("OPENAI_API_KEY_FILE", "~/.openai_key")).expanduser()
+        try:
+            key = path.read_text().strip()
+        except OSError:
+            raise ModelError("OpenAI key unavailable. Set OPENAI_API_KEY or OPENAI_API_KEY_FILE on the server.") from None
+        if key.startswith("export "):
+            key = key[7:].strip()
+        if key.startswith("OPENAI_API_KEY="):
+            key = key.split("=", 1)[1].strip()
+        key = key.strip("\"'")
+    if not key or any(c.isspace() for c in key):
+        raise ModelError("Invalid OpenAI key file. Use a single API key or set OPENAI_API_KEY on the server.")
+    return key
+
+
+def closed_schema(schema):
+    """Strict OpenAI output requires closed objects; waterfall specs contain open maps."""
+    if isinstance(schema, dict):
+        if schema.get("type") == "object" and (schema.get("additionalProperties") is not False or
+                set(schema.get("required", [])) != set(schema.get("properties", {}))):
+            return False
+        return all(closed_schema(value) for value in schema.values())
+    if isinstance(schema, list):
+        return all(closed_schema(value) for value in schema)
+    return True
+
+
+def openai(model, prompt, schema, max_tokens=16384, reasoning_effort=None, key=None):
+    # Reasoning models use their supported effort setting and default sampling.
+    body = {"model": model, "input": prompt, "store": False,
+            "max_output_tokens": max_tokens,
+            "text": {"format": {"type": "json_schema", "name": "report", "strict": closed_schema(schema), "schema": schema}}}
+    if model.startswith(("gpt-5-mini", "gpt-5-nano")):
+        body["reasoning"] = {"effort": reasoning_effort or "minimal"}
+    elif model.startswith(("gpt-5.6-luna", "gpt-6-luna")):
+        body["reasoning"] = {"effort": reasoning_effort or "low"}
+    else:
+        body["temperature"] = 0
+    import certifi
+    # Avoid macOS Keychain discovery after Gunicorn forks: it can abort the worker.
+    # TLS client defaults still require a valid certificate and matching hostname.
+    context = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
+    context.load_verify_locations(certifi.where())
+    try:
+        result = post("https://api.openai.com/v1/responses", body,
+                      {"Authorization": f"Bearer {openai_key() if key is None else key}"}, timeout=180, context=context)
+    except urllib.error.HTTPError as exc:
+        messages = {
+            400: "OpenAI rejected the model request or output schema. Check the server configuration.",
+            401: "OpenAI rejected the API key. Update the key on the server.",
+            403: "The OpenAI project does not have permission to use this model.",
+            404: f"OpenAI model {model!r} is unavailable to this project. Check BRIEF_MODEL.",
+            429: "OpenAI rate limit or quota reached. Check API billing and retry shortly.",
+        }
+        raise ModelError(messages.get(exc.code, f"OpenAI is unavailable (HTTP {exc.code}). Please retry.")) from None
+    except (urllib.error.URLError, TimeoutError):
+        raise ModelError("Cannot reach OpenAI. Check the server's internet connection and DNS, then retry.") from None
+    if result.get("status") != "completed":
+        raise ModelError("OpenAI did not finish the response. Try a smaller document or retry.")
+    parts = [part for item in result.get("output", []) if item.get("type") == "message"
+             for part in item.get("content", [])]
+    if any(part.get("type") == "refusal" for part in parts):
+        raise ModelError("OpenAI declined to process this content.")
+    text = "".join(part.get("text", "") for part in parts if part.get("type") == "output_text")
+    if not text:
+        raise ModelError("OpenAI returned no report text. Please retry.")
+    return json.loads(text)
 
 
 def anthropic(model, prompt, schema):
@@ -117,21 +206,25 @@ RETRY = ("\n\nYour previous answer broke off before the JSON was complete (it re
          "Write the JSON compactly on a single line, with no spaces between items.")
 
 
-def call(backend, model, prompt, schema, url=None, max_tokens=16384):
+def call(backend, model, prompt, schema, url=None, max_tokens=16384, reasoning_effort=None):
     """One answer as parsed JSON. Constrained JSON can loop on whitespace until the length limit (max_tokens is only
     that safety net, set far above any real answer); a broken answer is asked for again with a different prompt,
     since at temperature 0 the same prompt would loop the same way."""
     try:
-        return _call(backend, model, prompt, schema, url, max_tokens)
+        return _call(backend, model, prompt, schema, url, max_tokens, reasoning_effort)
     except (ValueError, KeyError):  # json.JSONDecodeError is a ValueError
         pass
     try:
-        return _call(backend, model, prompt + RETRY, schema, url, max_tokens)
+        return _call(backend, model, prompt + RETRY, schema, url, max_tokens, reasoning_effort)
     except (ValueError, KeyError) as e:
         raise RuntimeError(f"the model's answer was not valid JSON, also on a retry ({e})") from e
 
 
-def _call(backend, model, prompt, schema, url, max_tokens):
+def _call(backend, model, prompt, schema, url, max_tokens, reasoning_effort=None):
+    if backend == "registry":
+        router=LLM_ROUTER.get()
+        if router is None:raise ModelError("No LLM registry snapshot was assigned to this job.")
+        return router.invoke(model,prompt,schema,max_tokens,reasoning_effort)
     if backend == "ollama":
         return ollama(model, prompt, schema, max_tokens)
     if backend == "link":
@@ -147,6 +240,8 @@ def _call(backend, model, prompt, schema, url, max_tokens):
         return agent(backend, model, prompt)
     if backend == "anthropic":
         return anthropic(model or DEFAULT_MODEL_ANTHROPIC, prompt, schema)
+    if backend == "openai":
+        return openai(model, prompt, schema, max_tokens, reasoning_effort)
     if backend in HOSTED_URLS:
         return openai_compatible(HOSTED_URLS[backend], model, prompt, schema, os.environ[f"{backend.upper()}_API_KEY"], max_tokens)
     raise ValueError(f"unknown backend {backend!r}")

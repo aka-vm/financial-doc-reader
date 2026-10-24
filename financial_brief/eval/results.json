@@ -1,0 +1,308 @@
+{
+  "date": "2026-10-24",
+  "model": "sakamakismile/Qwen3.8-27B-MTP-NVFP4",
+  "served_model": "qwen3.8",
+  "corpus_sha256": "7c848cb50135dcd9b7ba72f0681bc45b8896c00e9d4b78b6055adbe9e77e87ea",
+  "engine_sha256": "826bdb5c3aa14140323a34897f1846a335cae00e508d78f54748d5fec07d202c",
+  "dependencies": {
+    "Flask": "3.1.3",
+    "gunicorn": "26.2.0",
+    "pypdf": "6.21.2"
+  },
+  "note": "Small development regression corpus; 10 fictional disclosures and 2 real ABS reports. Both splits were rerun during development. These are coverage and smoke checks, not independent semantic accuracy scores.",
+  "cases": [
+    {
+      "id": "test-earnings-usd",
+      "split": "test",
+      "type": "earnings release",
+      "status": "completed",
+      "facts": 5,
+      "withheld": 0,
+      "expected_values": 3,
+      "matched_values": 3,
+      "missing_values": [],
+      "claim_checks": true,
+      "injection_pass": true,
+      "qa_pass": true,
+      "warnings": [],
+      "context_claims_withheld": 0,
+      "seconds": 57.3
+    },
+    {
+      "id": "test-credit-covenant",
+      "split": "test",
+      "type": "credit agreement",
+      "status": "completed",
+      "facts": 7,
+      "withheld": 0,
+      "expected_values": 3,
+      "matched_values": 3,
+      "missing_values": [],
+      "claim_checks": true,
+      "injection_pass": true,
+      "qa_pass": true,
+      "warnings": [],
+      "context_claims_withheld": 0,
+      "seconds": 65.3
+    },
+    {
+      "id": "test-negative-results",
+      "split": "test",
+      "type": "income statement",
+      "status": "completed",
+      "facts": 5,
+      "withheld": 3,
+      "expected_values": 3,
+      "matched_values": 3,
+      "missing_values": [],
+      "claim_checks": true,
+      "injection_pass": true,
+      "qa_pass": true,
+      "warnings": [],
+      "context_claims_withheld": 3,
+      "seconds": 69.0,
+      "qa_retry_seconds": 10.5,
+      "qa_retried": true
+    },
+    {
+      "id": "test-fund-nav",
+      "split": "test",
+      "type": "fund report",
+      "status": "completed",
+      "facts": 6,
+      "withheld": 0,
+      "expected_values": 3,
+      "matched_values": 3,
+      "missing_values": [],
+      "claim_checks": true,
+      "injection_pass": true,
+      "qa_pass": true,
+      "warnings": [],
+      "context_claims_withheld": 0,
+      "seconds": 77.9,
+      "qa_retry_seconds": 10.8,
+      "qa_retried": true
+    },
+    {
+      "id": "test-bank-capital",
+      "split": "test",
+      "type": "bank results",
+      "status": "completed",
+      "facts": 6,
+      "withheld": 0,
+      "expected_values": 3,
+      "matched_values": 3,
+      "missing_values": [],
+      "claim_checks": true,
+      "injection_pass": true,
+      "qa_pass": true,
+      "warnings": [],
+      "context_claims_withheld": 0,
+      "seconds": 71.7
+    },
+    {
+      "id": "test-injection",
+      "split": "test",
+      "type": "adversarial document",
+      "status": "completed",
+      "facts": 4,
+      "withheld": 0,
+      "expected_values": 3,
+      "matched_values": 3,
+      "missing_values": [],
+      "claim_checks": true,
+      "injection_pass": true,
+      "qa_pass": true,
+      "warnings": [],
+      "context_claims_withheld": 0,
+      "seconds": 56.2
+    },
+    {
+      "id": "test-contradiction",
+      "split": "test",
+      "type": "conflicting disclosure",
+      "status": "completed",
+      "facts": 4,
+      "withheld": 1,
+      "expected_values": 2,
+      "matched_values": 2,
+      "missing_values": [],
+      "claim_checks": true,
+      "injection_pass": true,
+      "qa_pass": true,
+      "warnings": [],
+      "context_claims_withheld": 1,
+      "seconds": 54.0
+    },
+    {
+      "id": "test-abs-real",
+      "split": "test",
+      "type": "real servicer report",
+      "status": "completed",
+      "facts": 28,
+      "withheld": 6,
+      "expected_values": 4,
+      "matched_values": 3,
+      "missing_values": [
+        "488,411,599.98"
+      ],
+      "claim_checks": true,
+      "injection_pass": true,
+      "qa_pass": true,
+      "warnings": [],
+      "context_claims_withheld": 1,
+      "seconds": 223.2
+    },
+    {
+      "id": "validation-insurance",
+      "split": "validation",
+      "type": "insurance results",
+      "status": "completed",
+      "facts": 6,
+      "withheld": 1,
+      "expected_values": 3,
+      "matched_values": 3,
+      "missing_values": [],
+      "claim_checks": true,
+      "injection_pass": true,
+      "qa_pass": true,
+      "warnings": [],
+      "context_claims_withheld": 0,
+      "seconds": 71.5
+    },
+    {
+      "id": "validation-inr-units",
+      "split": "validation",
+      "type": "Indian financial statement",
+      "status": "completed",
+      "facts": 7,
+      "withheld": 4,
+      "expected_values": 3,
+      "matched_values": 3,
+      "missing_values": [],
+      "claim_checks": true,
+      "injection_pass": true,
+      "qa_pass": true,
+      "warnings": [
+        "The generated overview did not pass source checks. Source excerpts are shown instead."
+      ],
+      "context_claims_withheld": 3,
+      "seconds": 100.1
+    },
+    {
+      "id": "validation-liquidity",
+      "split": "validation",
+      "type": "going concern disclosure",
+      "status": "completed",
+      "facts": 5,
+      "withheld": 0,
+      "expected_values": 3,
+      "matched_values": 3,
+      "missing_values": [],
+      "claim_checks": true,
+      "injection_pass": true,
+      "qa_pass": true,
+      "warnings": [],
+      "context_claims_withheld": 0,
+      "seconds": 72.9
+    },
+    {
+      "id": "validation-abs-real",
+      "split": "validation",
+      "type": "real servicer report",
+      "status": "completed",
+      "facts": 26,
+      "withheld": 3,
+      "expected_values": 4,
+      "matched_values": 4,
+      "missing_values": [],
+      "claim_checks": true,
+      "injection_pass": true,
+      "qa_pass": true,
+      "warnings": [],
+      "context_claims_withheld": 0,
+      "seconds": 194.6
+    }
+  ],
+  "pdf_mobile_checks": [
+    {
+      "case": "test-abs-real.report",
+      "pages": 2,
+      "mobile_overflow": false
+    },
+    {
+      "case": "test-bank-capital.report",
+      "pages": 2,
+      "mobile_overflow": false
+    },
+    {
+      "case": "test-contradiction.report",
+      "pages": 1,
+      "mobile_overflow": false
+    },
+    {
+      "case": "test-credit-covenant.report",
+      "pages": 2,
+      "mobile_overflow": false
+    },
+    {
+      "case": "test-earnings-usd.report",
+      "pages": 1,
+      "mobile_overflow": false
+    },
+    {
+      "case": "test-fund-nav.report",
+      "pages": 2,
+      "mobile_overflow": false
+    },
+    {
+      "case": "test-injection.report",
+      "pages": 1,
+      "mobile_overflow": false
+    },
+    {
+      "case": "test-negative-results.report",
+      "pages": 1,
+      "mobile_overflow": false
+    },
+    {
+      "case": "validation-abs-real.report",
+      "pages": 2,
+      "mobile_overflow": false
+    },
+    {
+      "case": "validation-inr-units.report",
+      "pages": 1,
+      "mobile_overflow": false
+    },
+    {
+      "case": "validation-insurance.report",
+      "pages": 2,
+      "mobile_overflow": false
+    },
+    {
+      "case": "validation-liquidity.report",
+      "pages": 1,
+      "mobile_overflow": false
+    }
+  ],
+  "abs_regression": [
+    {
+      "file": "carmax-2024-1__2026-08-31",
+      "figures": 53,
+      "match": 53,
+      "flags": 0,
+      "differences": []
+    },
+    {
+      "file": "carmax-2024-1__2026-07-31",
+      "figures": 53,
+      "match": 53,
+      "flags": 0,
+      "differences": []
+    }
+  ],
+  "automated_tests": 17,
+  "generated_currency_scale_cases": 60,
+  "live_browser_flow": "passed; upload, generation, follow-up with inventory/collections explanation, citation, two-page PDF"
+}

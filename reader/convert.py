@@ -248,10 +248,38 @@ def render(src):
     return "\n".join(walk(src)[1])
 
 
+from pathlib import Path
+
+
+def pdf_page_text(page):
+    """Use aligned rows only when they preserve the original numeric tokens."""
+    plain=page.extract_text() or ""
+    layout=page.extract_text(extraction_mode="layout") or ""
+    important={token for token in re.findall(r"\d[\d,]*(?:\.\d+)?",plain)
+               if len(token)>=3}
+    # Layout extraction can split a glyph run such as 1,071,174 into 1,071, 174.
+    # Never repair/join numbers by guessing; keep the original plain extraction.
+    text=plain if any(token not in layout for token in important) else layout
+    return "\n".join(re.sub(r" {2,}", " ", line.strip()) for line in text.splitlines()).strip()
+
+
+def pdf_reader(path):
+    """Read ordinary and permission-restricted PDFs; never guess a user password."""
+    from pypdf import PdfReader
+    reader = PdfReader(path)
+    if reader.is_encrypted:
+        try:
+            unlocked = reader.decrypt("")
+        except Exception:
+            unlocked = False
+        if not unlocked:
+            raise ValueError(f"{Path(path).name}: encrypted PDF requires a password. Upload an unlocked copy.")
+    return reader
+
+
 def to_text(path):
     if path.lower().endswith((".htm", ".html")):
         return render(open(path, encoding="utf-8", errors="replace").read())
     if path.lower().endswith(".pdf"):
-        from pypdf import PdfReader  # optional: pip install pypdf
-        return "\n".join(p.extract_text() or "" for p in PdfReader(path).pages)
+        return "\n".join(pdf_page_text(p) for p in pdf_reader(path).pages)
     return open(path, encoding="utf-8", errors="replace").read()

@@ -9,7 +9,7 @@ import json
 import re
 import tempfile
 
-from . import contract, tape
+from . import contract, general, tape
 from .checks import issues
 from .convert import plain, to_text
 from .extract import read_report
@@ -21,11 +21,13 @@ def iso(date):
     return f"{m[3]}-{m[1]}-{m[2]}" if m else date
 
 
-def build(docs, backend, model=None, url=None, log=print, progress=None):
+def build(docs, backend, model=None, url=None, log=print, progress=None, extract_model=None, month_model=None):
     """progress(done, total, step): called before each step; steps are weighted by typical time (a contract ~ 4 reports)."""
     n_rep = sum(d["kind"] == "servicer_report" for d in docs)
     has_contract = any(d["kind"] == "contract" for d in docs)
-    total = n_rep + (4 + n_rep if has_contract else 0) + sum(d["kind"] == "loan_tape" for d in docs)
+    deal_docs = [d for d in docs if d["kind"] in ("servicer_report", "contract", "loan_tape")]
+    others = [] if deal_docs else [d for d in docs if d["kind"] in ("other", "prospectus")][:5]  # not a deal: read what it is
+    total = n_rep + (4 + n_rep if has_contract else 0) + sum(d["kind"] == "loan_tape" for d in docs) + 2 * len(others)
     done = [0]
 
     def step(name, weight=1):
@@ -34,13 +36,13 @@ def build(docs, backend, model=None, url=None, log=print, progress=None):
             progress(done[0], total, name)
         done[0] += weight
     report = {"documents": [{"name": d["name"], "kind": d["kind"], "form": d.get("form")} for d in docs], "months": [], "waterfall": None,
-              "tapes": [], "notes": []}
+              "tapes": [], "read": [], "notes": []}
     # 1. servicer reports: checked figures; months of one trust in order, so balances must carry over
     months = []
     for d in [d for d in docs if d["kind"] == "servicer_report"]:
         step(f"reading {d['name']}")
         try:
-            months.append(read_report(d["path"], backend, model, url) | {"path": d["path"]})
+            months.append(read_report(d["path"], backend, extract_model or model, url) | {"path": d["path"]})
         except Exception as e:  # one unreadable report shouldn't sink the rest
             report["notes"].append(f"{d['name']}: could not be read ({type(e).__name__}: {e})")
     months.sort(key=lambda m: (m["report"].get("trust") or "", m["report"].get("period_end") or ""))
@@ -69,7 +71,7 @@ def build(docs, backend, model=None, url=None, log=print, progress=None):
         for m in months if "spec" in w else []:
             step(f"running the waterfall on {m['file']}")
             try:
-                inp, in_flags = contract.month_inputs(to_text(m["path"]), m["report"], backend, model, url)
+                inp, in_flags = contract.month_inputs(to_text(m["path"]), m["report"], backend, month_model or model, url)
                 res = contract.check(w["spec"], inp, m["report"], m["flags"], in_flags)
                 res |= {"inputs": {k: inp[k] for k in contract.MONTH_FIELDS}, "input_flags": in_flags}
             except Exception as e:  # this month can't be checked; say so and go on
@@ -88,10 +90,18 @@ def build(docs, backend, model=None, url=None, log=print, progress=None):
             t["check"] = tape.against_report(t, same[0]["report"])
         report["tapes"].append(t)
 
-    unused = [d["name"] for d in docs if d["kind"] == "other"]
+    # 4. no deal documents at all: say what each document is and what it states, with checked quotes
+    for d in others:
+        step(f"reading {d['name']}", 2)
+        try:
+            report["read"].append(general.read_document(d["path"], backend, model, url, d.get("form")) | {"file": d["name"]})
+        except Exception as e:
+            report["notes"].append(f"{d['name']}: could not be read ({type(e).__name__}: {e})")
+
+    unused = [d["name"] for d in docs if d["kind"] == "other" and d not in others]
     if unused:
         report["notes"].append("not used (not a servicer report, contract or loan tape): " + ", ".join(unused))
-    if any(d["kind"] == "prospectus" for d in docs):
+    if any(d["kind"] == "prospectus" for d in docs) and not others:
         report["notes"].append("the prospectus is not read; the contracts define the payments")
     flagged = sum(len(m["flags"]) for m in report["months"])
     w = report["waterfall"]
@@ -101,6 +111,7 @@ def build(docs, backend, model=None, url=None, log=print, progress=None):
         flagged += 1 if w.get("error") or (w.get("problems") and not confirmed) else 0
         flagged += sum(1 if c.get("error") else sum(ln["status"] not in ("match", "rounding", "given") for ln in c["lines"])
                        for c in w.get("checks", []))
+    flagged += sum(1 for g in report["read"] for f in g.get("facts", []) if f.get("problem"))
     report["flagged"] = flagged
     if progress:
         progress(total, total, "done")
@@ -136,6 +147,10 @@ def review_items(r):
                 if ln["status"] in ("differs", "unknown"):
                     out.append((f"payment waterfall, {c.get('period_end')}: {ln['line']}", money(ln["report"]),
                                 f"the contract's rules give {money(ln['contract'])}" if ln["status"] == "differs" else ln["note"]))
+    for g in r.get("read", []):
+        for f in g.get("facts", []):
+            if f.get("problem"):
+                out.append((f"{g['file']}: {f['label']}", f["value"], f["problem"]))
     for t in r["tapes"]:
         if t.get("error"):
             out.append((f"loan tape {t['file']}", "", t["error"]))
@@ -148,7 +163,20 @@ def to_markdown(r, footer=""):
     """The deal report as Markdown (same content as the page)."""
     items, md = review_items(r), []
     last = r["months"][-1]["report"] if r["months"] else {}
-    md.append(f"# {last.get('trust') or 'Deal report'}")
+    md.append(f"# {last.get('trust') or ('Document report' if r.get('read') else 'Deal report')}")
+    if r.get("read") and not r["months"] and not r.get("waterfall") and not r["tapes"]:
+        for g in r["read"]:
+            md.append(f"\n## {g.get('filer')}: {g.get('document_type')} ({g['file']}"
+                      + (f", EDGAR form {g['form']}" if g.get("form") else "") + (f", {g['date']}" if g.get("date") else "") + ")\n")
+            if g["read_words"] < g["words"]:
+                md.append(f"_Read the first {g['read_words']:,} of {g['words']:,} words._\n")
+            md.append(f"**Summary** (the model's words): {g.get('summary')}\n\n| Fact | Value | Checked |\n|---|---|---|")
+            for f in g.get("facts", []):
+                md.append(f"| {f['label']} | {f['value']} | {'yes: quoted in the document' if not f.get('problem') else 'NO: ' + f['problem']} |")
+        items = review_items(r)
+        md.append("\n## Needs review\n")
+        md.append("\n".join(f"- **{a}** ({v}): {why}" for a, v, why in items) or "Nothing: every fact is quoted from the document.")
+        return "\n".join(md) + (f"\n\n---\n{footer}" if footer else "")
     if not r["months"] and not r.get("waterfall") and not r["tapes"]:
         what = ", ".join(d["name"] + (f" (EDGAR form {d['form']})" if d.get("form") else "") for d in r["documents"])
         return (md[0] + f"\n\n**Nothing to report.** This reads US auto-loan asset-backed deals: monthly servicer reports, "
@@ -188,9 +216,22 @@ def to_markdown(r, footer=""):
     for t in r["tapes"]:
         if not t.get("error"):
             md.append(f"\n## Loan pool (tape, {t.get('period_end')})\n")
-            md.append(f"{money(t['loans'])} loans, balance {money(t['balance'])}, weighted average rate {t['wa_rate_pct']}%, "
+            count_note = f" ({money(t['total_assets'])} total tape rows)" if t.get("total_assets") is not None else ""
+            md.append(f"{money(t['loans'])} active loans with positive ending balance{count_note}; "
+                      f"balance {money(t['balance'])}, weighted average rate {t['wa_rate_pct']}%, "
                       f"credit score {t['wa_credit_score']}, remaining term {t['wa_remaining_term']} months."
-                      + (f" Tape vs report pool balance: {t['check']['status']} (difference {money(t['check']['difference'])})." if t.get("check") else ""))
+                      + (f" Tape vs report pool balance: {t['check']['status']} "
+                         + ("within the comparison tolerance " if t['check']['status'] in ("match", "close") else "beyond the comparison tolerance ")
+                         + f"(difference {money(t['check']['difference'])})." if t.get("check") else ""))
+            if t.get("missing_delinquency_assets"):
+                md.append(f"Delinquency status is unknown for {money(t['missing_delinquency_assets'])} active loans "
+                          f"with balance {money(t['missing_delinquency_balance'])}. They remain in the pool balance "
+                          "and are not classified as current or delinquent.")
+            if t.get("delinquency_balance"):
+                md.append("\n| Loan-tape delinquency status | Balance |\n|---|---|")
+                for bucket, balance in t["delinquency_balance"].items():
+                    label = "Unknown / not reported" if bucket == "unknown" else "Current / under 30 days" if bucket == "current" else bucket + " days"
+                    md.append(f"| {label} | {money(balance)} |")
     md.append("\n## Needs review\n")
     md.append("\n".join(f"- **{a}**{f' ({v})' if v else ''}: {why}" for a, v, why in items) or "Nothing: every figure passed the checks.")
     if r["notes"]:

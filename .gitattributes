@@ -1,3 +1,6 @@
 examples/*.htm filter=lfs diff=lfs merge=lfs -text
 examples/**/*.htm filter=lfs diff=lfs merge=lfs -text
 examples/**/*.csv filter=lfs diff=lfs merge=lfs -text
+
+# Preserve downloaded public source documents byte-for-byte (including whitespace).
+financial_brief/examples/real/** -whitespace

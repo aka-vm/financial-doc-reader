@@ -78,3 +78,15 @@ with people you want using your machine (set your own with `--secret` or `MCP_SE
 you a random address (ngrok, for example), `--secret none` serves the page at its root and the connector at `/mcp`:
 `ngrok http 8421`, then share `https://<random>.ngrok-free.app/`. Over the connector the server
 reads only EDGAR links, never file paths; at most 2 reports run at once and 20 per hour.
+
+### OpenAI with a server-side key file
+
+The OpenAI backend also accepts `OPENAI_API_KEY_FILE` (default `~/.openai_key`)
+instead of `OPENAI_API_KEY`. This sends document text to OpenAI and uses API billing.
+For example, the original reader can run with:
+
+```sh
+python3 app.py --backend openai --model gpt-5-mini
+```
+
+For Ledger's OpenAI deployment option, use [SETUP.md](SETUP.md#openai-api-current-local-configuration).

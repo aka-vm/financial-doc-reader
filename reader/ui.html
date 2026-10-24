@@ -4,16 +4,53 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Deal Report Reader</title>
+<script>(() => {
+  const root = document.documentElement;
+  const system = window.matchMedia('(prefers-color-scheme: dark)');
+  const key = 'reader-theme';
+  let choice = 'auto';
+  try { const saved = localStorage.getItem(key); if (['auto', 'light', 'dark'].includes(saved)) choice = saved; } catch {}
+  function apply() {
+    const dark = choice === 'dark' || (choice === 'auto' && system.matches);
+    root.dataset.theme = dark ? 'dark' : 'light';
+    root.style.colorScheme = dark ? 'dark' : 'light';
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.content = dark ? '#171a1f' : '#f6f2e9';
+  }
+  apply();
+  system.addEventListener('change', apply);
+  window.addEventListener('storage', event => {
+    if (event.key !== key && event.key !== null) return;
+    choice = ['auto', 'light', 'dark'].includes(event.newValue) ? event.newValue : 'auto';
+    apply();
+    const select = document.getElementById('theme-select');
+    if (select) select.value = choice;
+  });
+  document.addEventListener('DOMContentLoaded', () => {
+    const select = document.getElementById('theme-select');
+    select.value = choice;
+    select.addEventListener('change', () => {
+      choice = select.value;
+      try { localStorage.setItem(key, choice); } catch {}
+      apply();
+    });
+  });
+})();
+</script>
 <style>
   :root {
     --bg: #f7f7f5; --card: #ffffff; --text: #1d1d1b; --muted: #6b6b66; --line: #e4e3de;
     --ok: #1f7a4d; --ok-bg: #e8f5ee; --warn: #9a5b00; --warn-bg: #fdf3e1; --accent: #2b5fd9; --soft: #f1f0ec;
   }
   @media print { #drop, .row, .picked, button, h1, .sub { display: none !important; } body { background: #fff; } }
-  @media (prefers-color-scheme: dark) {
-    :root { --bg: #161615; --card: #1f1f1d; --text: #ecebe6; --muted: #9b9a94; --line: #34332f;
-            --ok: #5ccf94; --ok-bg: #16301f; --warn: #f0b45a; --warn-bg: #352812; --accent: #7aa2ff; --soft: #282826; }
-  }
+  :root { color-scheme: light; --bg: #f6f2e9; --card: #fffdf8; --text: #302d28; --muted: #70695f; --line: #dfd8ca; --soft: #eee8dc; }
+  :root[data-theme="dark"] { color-scheme: dark; --bg: #161615; --card: #1f1f1d; --text: #ecebe6; --muted: #aaa99f; --line: #34332f;
+    --ok: #5ccf94; --ok-bg: #16301f; --warn: #f0b45a; --warn-bg: #352812; --accent: #7aa2ff; --soft: #282826; }
+  .page-heading { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  .theme-picker { flex-direction: row; align-items: center; gap: 8px; }
+  .theme-picker select { min-width: 0; }
+  .theme-picker select:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  @media print { .theme-picker { display: none; } :root[data-theme] { --bg: white; --card: white; --text: #1d1d1b; --muted: #6b6b66; --line: #e4e3de; --soft: #f1f0ec; --ok: #1f7a4d; --ok-bg: #e8f5ee; --warn: #9a5b00; --warn-bg: #fdf3e1; --accent: #2b5fd9; color-scheme: light; } }
   * { box-sizing: border-box; }
   body { margin: 0; background: var(--bg); color: var(--text); font: 15px/1.5 system-ui, -apple-system, sans-serif; }
   main { max-width: 1000px; margin: 0 auto; padding: 32px 16px 64px; }
@@ -86,7 +123,7 @@
 </head>
 <body>
 <main>
-  <h1>Deal Report Reader</h1>
+  <div class="page-heading"><h1>Deal Report Reader</h1><label class="theme-picker" for="theme-select">Theme <select id="theme-select"><option value="auto">Auto</option><option value="light">Light</option><option value="dark">Dark</option></select></label></div>
   <p class="sub">Drop in a deal's documents: servicer reports, contracts, loan tapes, a .zip of them, or an EDGAR link.
     You get one report where every figure either passes the checks or is flagged with the reason.</p>
 
@@ -99,6 +136,8 @@
           <li><b>Payment waterfall</b>: the payment order from the contract, with amounts confirmed against the servicer report.</li>
           <li><b>Loan pool</b>: loans, rates, credit scores and delinquency from the loan tape.</li>
           <li><b>Needs review</b>: anything that failed a check, with the reason. Everything else is verified.</li>
+          <li><b>Any other SEC document</b> (10-K, 8-K, prospectus, fund filings...): what it is, a summary, and key facts,
+            each with the exact sentence it came from, checked against the document.</li>
         </ul></div>
       <div><b>How to use it</b>
         <ol>
@@ -286,10 +325,11 @@ function lookup(rec, path) {
 
 function render(r, log, secs) {
   const items = review(r);
-  const empty = !r.months.length && !r.waterfall && !r.tapes.length;  // nothing was read, so nothing is verified
+  const read = r.read || [];
+  const empty = !r.months.length && !r.waterfall && !r.tapes.length && !read.length;  // nothing read, nothing verified
   const last = r.months[r.months.length - 1];
   const d = last?.report || {};
-  const name = d.trust || "Deal report";
+  const name = d.trust || (read.length ? read[0].filer || "Document report" : "Deal report");
   const periods = r.months.map(m => m.report.period_end).filter(Boolean);
   const kinds = {};
   r.documents.forEach(x => kinds[x.kind] = (kinds[x.kind] || 0) + 1);
@@ -301,8 +341,9 @@ function render(r, log, secs) {
                  (${r.documents.map(d => esc(d.name) + (d.form ? " = EDGAR form " + esc(d.form) : "")).join(", ")}).
                  For a deal, give a trust's name (e.g. "CarMax Auto Owner Trust 2024-1"), its CIK, or a link to one of its 10-D filings.</div>`
       : items.length ? `<div class="banner warn">${items.length} item${items.length > 1 ? "s need" : " needs"} review (listed at the end)</div>`
-                     : `<div class="banner ok">Verified: every figure passed the checks</div>`}
+                     : `<div class="banner ok">${read.length && !r.months.length ? "Every fact below is quoted from the document" : "Verified: every figure passed the checks"}</div>`}
     <p class="muted">Built from ${r.documents.length} documents: ${Object.entries(kinds).map(([k, v]) => `${v} ${KIND[k]}${v > 1 && k !== "other" ? "s" : ""}`).join(", ")}.</p></div>`;
+  for (const g of read) html += readCard(g);
   if (last) html += glance(d) + notesTable(d, last.flags);
   if (r.months.length > 1) html += trend(r.months);
   if (r.waterfall) html += waterfall(r.waterfall);
@@ -310,13 +351,27 @@ function render(r, log, secs) {
   html += `<div class="card"><h2>Needs review</h2>${items.length
     ? `<div class="scroll"><table><tr><th>Item</th><th>Value</th><th style="text-align:left">Why</th></tr>${items.map(([a, v, why]) =>
         `<tr><td>${esc(a)}</td><td>${esc(v)}</td><td style="text-align:left">${esc(why)}</td></tr>`).join("")}</table></div>`
-    : `<p class="muted">Nothing: every figure passed the arithmetic checks${r.waterfall ? " and the payments agree with the contract" : ""}.</p>`}
+    : `<p class="muted">Nothing: ${read.length && !r.months.length ? "every fact is quoted from the document"
+        : "every figure passed the arithmetic checks" + (r.waterfall ? " and the payments agree with the contract" : "")}.</p>`}
     ${r.notes.length ? `<p class="muted">${r.notes.map(esc).join("<br>")}</p>` : ""}</div>`;
-  html += `<div class="card"><details><summary>All extracted figures, by servicer report</summary>${r.months.map(monthDetail).join("")}</details>
+  html += `<div class="card">${r.months.length ? `<details><summary>All extracted figures, by servicer report</summary>${r.months.map(monthDetail).join("")}</details>` : ""}
     <details><summary>Documents and processing log</summary>
       <table><tr><th>Document</th><th>Used as</th></tr>${r.documents.map(x => `<tr><td>${esc(x.name)}</td><td>${KIND[x.kind]}</td></tr>`).join("")}</table>
       <pre class="log">${esc(log.join("\n"))}</pre></details></div>`;
   return html;
+}
+
+function readCard(g) {
+  const facts = (g.facts || []).map(f => `<tr><td style="text-align:left">${esc(f.label)}</td><td style="text-align:left">${esc(f.value)}</td>
+      <td class="${f.problem ? "flag" : "good"}" style="text-align:left">${f.problem ? "&#10007; " + esc(f.problem) : "&#10003; quoted"}
+      <span class="why">&ldquo;${esc(f.quote)}&rdquo;</span></td></tr>`).join("");
+  const kind = (g.document_type || "Document").replace(/^./, c => c.toUpperCase());
+  return `<div class="card"><div class="head"><h2>${esc(kind)}</h2>
+      <span class="muted">${esc(g.file)}${g.form ? " · EDGAR form " + esc(g.form) : ""}${g.date ? " · " + esc(g.date) : ""}</span></div>
+    ${g.read_words < g.words ? `<p class="muted">Read the first ${fmt(g.read_words)} of ${fmt(g.words)} words.</p>` : ""}
+    <h3>Summary (the model's words)</h3><p>${esc(g.summary)}</p>
+    <h3>Key facts, each with the sentence it came from</h3>
+    <div class="scroll"><table><tr><th>Fact</th><th style="text-align:left">Value</th><th style="text-align:left">Checked</th></tr>${facts}</table></div></div>`;
 }
 
 function glance(d) {

@@ -1,0 +1,158 @@
+{
+  "title": "AmeriCredit Automobile Receivables Trust 2024-1",
+  "id": "americredit-2024-1",
+  "archive": "financial_brief/examples/real/americredit-2024-1.zip",
+  "archive_bytes": 11997718,
+  "uncompressed_bytes": 121632536,
+  "file_count": 17,
+  "contents": [
+    {
+      "name": "docs/ex-1.1.htm",
+      "bytes": 247202,
+      "sha256": "205c1a5d9ff0ba8390e96e3fd08a305177eb81468b6ecbb6128ef5e474bf4f4d"
+    },
+    {
+      "name": "docs/ex-10.1.htm",
+      "bytes": 27419993,
+      "sha256": "3b7d0b530450dcd7a56a592a447d968d50033b2507ca789ca4fea2931502ef26"
+    },
+    {
+      "name": "docs/ex-10.6.htm",
+      "bytes": 221885,
+      "sha256": "c2f83219a04ef178f385c2aa78ca5ae5c4b3bdfbd075489136469fdb7a093eea"
+    },
+    {
+      "name": "docs/ex-36.1.htm",
+      "bytes": 5871,
+      "sha256": "921ca19ba93ebdeec6191d9c043a49c467b0c32c376e0543e9c976648a5a7e52"
+    },
+    {
+      "name": "docs/ex-4.1.htm",
+      "bytes": 722423,
+      "sha256": "91de9149afbdefa1e562ff0655cd4a707ec0a0038deddc6e45495aade64aab42"
+    },
+    {
+      "name": "docs/ex-4.2.htm",
+      "bytes": 307292,
+      "sha256": "c98e901a32893700b87ca74884e90dd4c0b94eee26488c5ab02803206b5025a4"
+    },
+    {
+      "name": "docs/ex-4.3.htm",
+      "bytes": 28203842,
+      "sha256": "f74425f881d85dbecfe92033d0a4d403d2d85b2cd278d760a4f9bba132c21ec8"
+    },
+    {
+      "name": "docs/ex-5.1.htm",
+      "bytes": 74500,
+      "sha256": "f1bedc000cc65a5462af4aa51ce4ce184b1e78f2dfd72d435623ea39f6af005c"
+    },
+    {
+      "name": "docs/ex-8.1.htm",
+      "bytes": 26927,
+      "sha256": "3fd41bad86076a1abd3b2169f3a756a5bd699de9efdf62e20ff2caad072766f6"
+    },
+    {
+      "name": "docs/prospectus.htm",
+      "bytes": 2103412,
+      "sha256": "37815d9d3a58b294085c621edb0efc5aba7b3f5008a05d8e0c8178d3c14a38c7"
+    },
+    {
+      "name": "manifest.json",
+      "bytes": 6270,
+      "sha256": "e5a49379ea1fd16597e3a646c2f76198d9df1d8ac05f9e23780aa0806c70d182"
+    },
+    {
+      "name": "servicer/2026-06-30_ex-99.1.htm",
+      "bytes": 436564,
+      "sha256": "276463244ea9326c87c333ffc163faa07616b7c9e957e6e93544f063faae66e2"
+    },
+    {
+      "name": "servicer/2026-07-31_ex-99.1.htm",
+      "bytes": 435139,
+      "sha256": "55d35121e661a155fce49c303939cfdb07cacbb5de8cba508a63acd442ac8ea3"
+    },
+    {
+      "name": "servicer/2026-08-31_ex-99.1.htm",
+      "bytes": 448477,
+      "sha256": "29f3985e7fa25d9eb22f1ddc6dc12a2568527daf36a917b82c132d4d9ad9b397"
+    },
+    {
+      "name": "tapes/2026-06-30.csv",
+      "bytes": 20879826,
+      "sha256": "bb1b069e4482e4377ca4fb122da844a67fc5bc2544f6d889861fcd3622057708"
+    },
+    {
+      "name": "tapes/2026-07-31.csv",
+      "bytes": 20298514,
+      "sha256": "76690292fd69f4d1e9bfde92b3d59202752caad71b136c9a7280f9771e21fdc0"
+    },
+    {
+      "name": "tapes/2026-08-31.csv",
+      "bytes": 19794399,
+      "sha256": "e02cd43e4861cb892f13c396c8f6bc628261e737cb3936b95ed46075d9a62f5a"
+    }
+  ],
+  "source_manifest": "manifest.json inside ZIP, retaining original SEC URLs",
+  "loan_tapes": "Original local CSV exports of SEC ABS-EE XML; source XML URLs retained in manifest.",
+  "baselines": [
+    {
+      "period": "06-30-2026",
+      "report_period": "2026-06-30",
+      "csv_rows": 37160,
+      "active_positive_balance_count": 35591,
+      "active_balance_decimal": "702381103.90000000",
+      "printed_report_pool_balance": "702381104",
+      "tape_less_report": "-0.10000000",
+      "active_missing_delinquency_count": 327,
+      "active_missing_delinquency_balance": "7293984.60000000",
+      "spot_checked_report_values_printed_in_source": {
+        "pool_balance_ending": true,
+        "servicing_fee": true,
+        "net_losses": true,
+        "cumulative_net_losses": true,
+        "excess_to_residual": true,
+        "reserve_account_ending": true
+      }
+    },
+    {
+      "period": "07-31-2026",
+      "report_period": "2026-07-31",
+      "csv_rows": 36112,
+      "active_positive_balance_count": 34667,
+      "active_balance_decimal": "675150502.86000000",
+      "printed_report_pool_balance": "675150503",
+      "tape_less_report": "-0.14000000",
+      "active_missing_delinquency_count": 323,
+      "active_missing_delinquency_balance": "7268477.55000000",
+      "spot_checked_report_values_printed_in_source": {
+        "pool_balance_ending": true,
+        "servicing_fee": true,
+        "net_losses": true,
+        "cumulative_net_losses": true,
+        "excess_to_residual": true,
+        "reserve_account_ending": true
+      }
+    },
+    {
+      "period": "08-31-2026",
+      "report_period": "2026-08-31",
+      "csv_rows": 35225,
+      "active_positive_balance_count": 33807,
+      "active_balance_decimal": "650276943.00000000",
+      "printed_report_pool_balance": "650276942",
+      "tape_less_report": "1.00000000",
+      "active_missing_delinquency_count": 323,
+      "active_missing_delinquency_balance": "7166098.33000000",
+      "spot_checked_report_values_printed_in_source": {
+        "pool_balance_ending": true,
+        "servicing_fee": true,
+        "net_losses": true,
+        "cumulative_net_losses": true,
+        "excess_to_residual": true,
+        "reserve_account_ending": true
+      }
+    }
+  ],
+  "model": "gpt-5-mini",
+  "baseline_report": "out/americredit-2024-1-gpt5-mini.json"
+}

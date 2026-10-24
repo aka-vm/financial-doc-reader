@@ -1,0 +1,95 @@
+15 years of Zerodha — The risk crystallisesPublic company business update. Original publisher: Zerodha. Source: https://zerodha.com/z-connect/business-updates/15-years-of-zerodha-the-risk-crystallises. Published 2025-09-30. Article body retained; site navigation and reader comments removed. Financial figures presented only in images are not transcribed.
+15 years of Zerodha — The risk crystallises
+September 30, 2025
+We turned 15 on August 15, 2025. Firstly, about my stroke from last January, I have recovered about 90%. I still face some issues while speaking, with the inability to articulate all the thoughts that come to my mind. All my skill levels from reading, speaking, singing, playing the guitar, writing, etc., had gone down close to zero when it happened, but they have been slowly returning with practice and time. As I had mentioned in last year’s post, what doesn’t kill you makes you stronger, and everything in life is a learning opportunity. 🙂
+The Risk Crystallises
+“Another year where I was pessimistic about the business has passed, and it’s been another year where I’ve been pleasantly surprised. 🙂 That said, the regulatory actions, be it the drop in transaction charges revenue, the increase in STT on F&O, the proposal to make futures and options trading tougher, ASBA for trading, the increase in BSDA limit, etc., will have a significant impact on our revenues and profitability. The time has finally come for business to pivot.”
+I wrote this in a post on our internal forum. If you look at all my updates from the last few years, I have generally been pessimistic about the industry’s future. This is because almost every brokerage business model relies on earnings from active traders who trade options.
+With retail option volumes skyrocketing, there was always a risk of regulators questioning the utility of options turnover, whether they help in capital formation, and doing something to curb options trading. As I have said in the past, 90% of traders lose money, and this ratio is very similar to those starting a business, playing a sport, or making music for a living, or anything that is competitive. What is unique about trading is that it’s very easy to get started, unlike starting a business.
+This risk has now crystallised with the increase in STT on options and the reduction of expiries to two weekly contracts on options. Along with these changes, the increase in the BSDA (Basic Services Demat Account) limit, the removal of the exchange transaction charges rebate, and a general drop in market activity, our revenues and profits took a hit last year, as we had expected.
+The impact of all these changes started hitting us from October 2024, so the numbers don’t fully reflect in the financial year 2024/25. This year, we are seeing a substantial hit of about 40% in brokerage revenues in the latest quarter (June 2025) compared to the same quarter last year.
+Video AMA
+Financial update
+When you are used to growing every year, you take it for granted, even though I have been calling out the market risk and the regulatory risk for our business. 🙂 As I mentioned earlier, the drop in numbers doesn’t look big for the last financial year because all the changes kicked in only after October 2024.
+Planning for the long term
+When you are investing, beyond a point, the more data and information you have, the more likely you are to react more, which increases the odds of you losing money. Investing for the long term and ignoring the short-term noise is the right way to build wealth. Similarly, as an entrepreneur, if you look at the volatility in revenue on a quarterly or yearly basis, you will react more, and this is detrimental to the business.
+In a similar vein, if one’s outlook is long-term, then looking at financials quarterly or even annually does not make sense. When you are so focused on short-term financial growth, the chances are high that you’ll make the wrong decisions whenever you see a dip in revenues. So, for many years, I have been looking at a 5-year moving average to see if the business is trending up or not, like in the chart above.
+Let me reiterate that we are extremely privileged to be able to think this way, and not many businesses can do this in the world, let alone in India. This is possible because we don’t have external investors, and internally, our philosophies of running the business align. Anyway, when we are building with 10-20 years in mind, who said that MoM, QoQ, and YoY growth are the right metrics to chase?
+That said, the options business might be at further risk, with the regulators evaluating whether to stop weekly options completely. If this were to happen, we would be forced to start charging brokerage for equity delivery trades to make the business tenable. Most of our competitors already charge for delivery trades.
+In any case, most of this is not really under our control. How much we earn is dependent on market cycles, regulations, and other factors. Those who think they have some of this in control and constantly tweak their businesses and products to chase optimisation, end up enshittifying their products.
+Business update
+New account openings were lower due to the overall market activity. By the way, we made account opening free in February last year, which kind of coincides with the peak in terms of accounts. This goes on to show that market cycles trump a lot of business decisions. 🙂
+Our overall share of NSE’s active client list has trended down. A person trading once a year is considered active by NSE. I don’t pay much attention to this data because brokers are constantly gaming this by pestering customers to trade via notifications and dark patterns. By triggering people to trade, you not only generate turnover but also move up the list.
+One area where we have done phenomenally well is our total market share in terms of client assets. Assets held by Zerodha customers now account for about 10% of all retail and HNI AUM in the country.
+Another phenomenal number has been our share of the Margin Trading Facility (MTF), where customers can buy shares for more than the money in their account. The product has been live for about nine months, and we already have ~5% of the market. The MTF book size is ~₹5000 crores.
+How safe is Zerodha?
+This is a question I keep getting asked constantly, despite Zerodha being 15 years old.
+Financially
+Starting last year, exchanges have been sharing brokers’ net worth using the LC Gupta method (excludes private investments, 50% of pledged value, etc.). As calculated by the exchanges, our net worth is a little over Rs 13,000 crores.
+The chart below has the net worth of brokers according to the exchange’s website (LC Gupta method, in blue) and last year’s financials declared on the MCA (in green).
+Our net worth as a percentage of client funds we handle is unprecedented—more than 50% on any given day. We have zero debt on the books, and as we are fully privately held, we have more skin in the game than any other broker in India.
+Customer-centricity
+Our focus has always been building the best quality products and services, not just in terms of technology, but also in our practices and philosophies. As a recent Mint article noted, we’re the only broker that doesn’t ask for intrusive mobile app permissions. We do not have any sort of trackers or analytics in our apps, and neither do we employ tactics like revenue-generation A/B testing on our user interfaces. In fact, we do not look at our applications or their user interface through a revenue lens.
+Our philosophy is simple: Don’t do unto others what you don’t want done unto you.
+Over the last 15 years, we have shown that you don’t need to mine, harvest, or profile personal data, nor rely on dark patterns and constantly trigger customers to trade to be a profitable business. This philosophy of ours has today become a strong moat thanks to customer trust.
+Because we self-host and self-manage systems, everything from core financial systems to customer support portals, we have zero external business dependencies, which means that all the customer data stays within our infrastructure.
+Platform Reliability and System Resilience
+Investment and trading platforms are incredibly complex. We connect to stock exchanges through dedicated lines, run systems across multiple cloud and physical data centers, and handle everything in real time. The risks are huge; a problem anywhere can spread and disrupt the entire system.
+We’ve spent years building robust systems to prevent issues from cascading globally, and our reliability data shows the results. While we had some challenges in 2023 during busy trading periods, 2024 and 2025 were much better, with only one minor issue.
+For years, we have been transparently reporting all incidents on our disclosures page, despite this not being a regulatory requirement. Recently, we launched Kite Backup, a WhatsApp-based emergency trading service that runs on a completely parallel infrastructure from Kite web and mobile platforms, including using a completely different cloud provider in the background.
+Customer ratings
+Call ratings have been good, but we’re constantly working on improving ticket responses. A common complaint is that our team “copy-pastes” support articles even for simple queries. We’re changing how we monitor and coach the team.
+Please rate your customer support interactions. We take it very seriously and constantly use it to improve services.
+Product updates
+Over the past year, we have rolled out significant enhancements across our platforms, both behind the scenes and customer-facing. We have a whole host of big ones in the pipeline for the coming months.
+Here are a few highlights from the last year:
+Kite
+Margin Trading Facility (MTF) for leveraged trades
+Trade from the Chart and other chart enhancements
+AI integration with Kite MCP
+Complete revamp of the watchlist experience with 25 watchlists of 250 stocks each. Coming to mobile soon
+A completely new native Option Chain
+Tijori-powered Stock Pages for company research
+Alert Triggered Orders (ATO) for automated trading
+Order slicing for large trades
+Mutual fund tracking on Kite Web
+Console
+Portfolio Performance Curve to track your account like a mutual fund NAV
+Secondary demat accounts for managing multiple portfolios
+Fully digital signup process
+Online minor account opening
+NRI onboarding
+Coin
+UPI autopay for systematic mutual fund investments (SIPs)
+Systematic Transfer Plans to move money between funds
+Conditional orders to buy or sell mutual funds at a specific NAV
+Auto unpledge: Pledged mutual fund units can be sold without unpledging
+Ability to cancel buy and sell orders
+Other updates
+Our own content initiatives have been doing quite well, and more importantly, the quality has remained top-notch. Varsity, Daily Brief, Zero1, and other initiatives have become the go-to places for people to learn about finance.
+Varsity Live has turned out to be a great way to teach people about finance interactively instead of those boring webinars. Over 2 lakh people have registered for a free course in a short span of time.
+Loan against securities
+Zerodha Capital has grown steadily, and the loan book is at ₹430 crores. In the last few months, we’ve put in a lot of effort to improve the onboarding experience and reduce the processing times. A few other updates:
+Same-day disbursement—complete formalities before 5:30 PM, get funds by 7 PM
+3-year term loans with tiered rates
+Free credit score checking and tracking
+UPI mandate setup for easy loan repayments
+Coming Soon:
+Instant loan drawdown for pre-approved pledges (next 2 months)
+UPI mandate setup for easy loan repayments (next 1 month)
+Direct mutual fund pledging through CAMS integration (this year)
+Rainmatter
+The number of investments we’ve made through Rainmatter in the last year has grown quite a bit. We typically invest up to Rs 10 crores, and then if we want to double down, we can invest as much as Rs 100 crores or more. We are not obsessed with the percentage stake we own. Some of our bigger fintech investments are in areas outside the core broking business, like Ditto (insurance), Zerodha AMC (mutual funds), Tijori (market research), and others.
+Rainmatter started with fintech, but we are now investing in other areas. Outside of fintech, we invest in climate, health, and new-age media, and we have recently started investing in deep tech.
+Rainmatter Foundation & Zerodha Rewilding Fund
+We continue to allocate 10% of everything we earn to invest in societal and environmental well-being and to support social entrepreneurs. The Rainmatter Foundation, which we started in 2020, has been doing systemic work across the country, tackling the urgent problem of climate change and environmental degradation with an interdisciplinary approach.
+On our 15th anniversary, in addition to everything else we are doing, we are announcing the creation of the Zerodha Rewilding Fund—a 100 crore commitment to the restoration of degraded landscapes. We are structuring this as a corporate endeavor at Zerodha supported by the Rainmatter Foundation and hope that this will become a model that other corporates replicate.
+Rewilding is the process of restoring landscapes with minimal human intervention, allowing nature, wildlife, and biodiversity to reclaim their space. This could be any natural landscape, like a forest, a grassland, or a wetland. This is different from “re-greening” and monoculture tree plantation drives. Large-scale rewilding requires a deep scientific, social, and environmental understanding of landscapes, including the involvement of multiple stakeholders—communities, civil society orgs, and government bodies.
+Our first endeavor is an 800-acre project in Maharashtra’s Tadoba region.
+The project is being carried out in close collaboration with the Maharashtra Forest Department, the Government of Maharashtra, and Farmers for Forests. We deeply appreciate the support from the Maharashtra government and the collaboration with Farmers for Forests on this vital project. Read more.
+Day 1:
+Happy trading and investing,
+❤️
+Tags:
+Nithin Kamath
+Founder & CEO @ Zerodha

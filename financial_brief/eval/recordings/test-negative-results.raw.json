@@ -1,0 +1,193 @@
+[
+  {
+    "facts": [
+      {
+        "label": "2025 revenue",
+        "value": "EUR 8,400 thousand",
+        "period": "2025",
+        "unit": "EUR thousands",
+        "quote": "Revenue for 2025 was EUR 8,400 thousand."
+      },
+      {
+        "label": "2025 net loss",
+        "value": "EUR (620) thousand",
+        "period": "2025",
+        "unit": "EUR thousands",
+        "quote": "The net loss for 2025 was EUR (620) thousand."
+      },
+      {
+        "label": "2025 operating cash flow",
+        "value": "EUR (310) thousand",
+        "period": "2025",
+        "unit": "EUR thousands",
+        "quote": "Operating cash outflow for 2025 was EUR (310) thousand."
+      },
+      {
+        "label": "Impairment charge included in loss",
+        "value": "EUR 450 thousand",
+        "period": "2025",
+        "unit": "EUR thousands",
+        "quote": "The loss includes an impairment charge of EUR 450 thousand."
+      },
+      {
+        "label": "Currency and unit clarification",
+        "value": "not stated in millions",
+        "period": "",
+        "unit": "",
+        "quote": "These figures are not stated in millions."
+      }
+    ]
+  },
+  {
+    "title": "2025 Financial Results Summary",
+    "subtitle": "Key figures from test-negative-results.txt",
+    "overview": [
+      {
+        "text": "The 2025 financial results show a revenue of EUR 8,400 thousand (F1). The company reported a net loss of EUR (620) thousand (F2) and an operating cash outflow of EUR (310) thousand (F3). These figures are explicitly noted as not being stated in millions (F5).",
+        "evidence": [
+          "F1",
+          "F2",
+          "F3",
+          "F5"
+        ]
+      },
+      {
+        "text": "The net loss includes a specific impairment charge of EUR 450 thousand (F4). This charge is a non-cash accounting entry that reduces the book value of assets, contributing to the overall loss figure.",
+        "evidence": [
+          "F4"
+        ]
+      }
+    ],
+    "highlights": [
+      {
+        "text": "Revenue for 2025 was EUR 8,400 thousand.",
+        "evidence": [
+          "F1"
+        ]
+      },
+      {
+        "text": "The net loss for 2025 was EUR (620) thousand.",
+        "evidence": [
+          "F2"
+        ]
+      },
+      {
+        "text": "Operating cash outflow for 2025 was EUR (310) thousand.",
+        "evidence": [
+          "F3"
+        ]
+      },
+      {
+        "text": "The loss includes an impairment charge of EUR 450 thousand.",
+        "evidence": [
+          "F4"
+        ]
+      }
+    ],
+    "risks": [
+      {
+        "text": "The company is generating negative operating cash flow, indicating that its core business activities are consuming cash rather than generating it.",
+        "evidence": [
+          "F3"
+        ]
+      },
+      {
+        "text": "The presence of a significant impairment charge suggests that the value of certain assets has declined, which may impact future profitability and asset base.",
+        "evidence": [
+          "F4"
+        ]
+      }
+    ],
+    "questions": [
+      "What specific assets were impaired, and what triggered the EUR 450 thousand charge?",
+      "What is the primary driver of the EUR (310) thousand operating cash outflow?",
+      "How does the EUR 8,400 thousand revenue compare to prior periods, and what is the path to positive cash flow?"
+    ]
+  },
+  {
+    "verdicts": [
+      {
+        "id": "C1",
+        "supported": true,
+        "reason": "The claim accurately reflects the source data: revenue EUR 8,400 thousand, net loss EUR (620) thousand, operating cash outflow EUR (310) thousand, and the explicit note that figures are not in millions. All elements are directly supported by S1."
+      },
+      {
+        "id": "C2",
+        "supported": false,
+        "reason": "The source states the loss includes an impairment charge of EUR 450 thousand, but does not describe it as a 'non-cash accounting entry that reduces the book value of assets.' This is an external accounting interpretation not present in the source."
+      },
+      {
+        "id": "C3",
+        "supported": true,
+        "reason": "Directly supported by S1: 'Revenue for 2025 was EUR 8,400 thousand.'"
+      },
+      {
+        "id": "C4",
+        "supported": true,
+        "reason": "Directly supported by S1: 'The net loss for 2025 was EUR (620) thousand.'"
+      },
+      {
+        "id": "C5",
+        "supported": true,
+        "reason": "Directly supported by S1: 'Operating cash outflow for 2025 was EUR (310) thousand.'"
+      },
+      {
+        "id": "C6",
+        "supported": true,
+        "reason": "Directly supported by S1: 'The loss includes an impairment charge of EUR 450 thousand.'"
+      },
+      {
+        "id": "C7",
+        "supported": false,
+        "reason": "The source states the operating cash outflow figure, but the claim adds an interpretive conclusion that 'core business activities are consuming cash rather than generating it.' This causal/interpretive language is not in the source."
+      },
+      {
+        "id": "C8",
+        "supported": false,
+        "reason": "The source states the impairment charge amount, but the claim adds speculative consequences ('may impact future profitability and asset base') that are not stated in the source."
+      },
+      {
+        "id": "F1",
+        "supported": true,
+        "reason": "Matches S1 exactly: 'Revenue for 2025 was EUR 8,400 thousand.'"
+      },
+      {
+        "id": "F2",
+        "supported": true,
+        "reason": "Matches S1 exactly: 'The net loss for 2025 was EUR (620) thousand.'"
+      },
+      {
+        "id": "F3",
+        "supported": true,
+        "reason": "Matches S1 exactly: 'Operating cash outflow for 2025 was EUR (310) thousand.'"
+      },
+      {
+        "id": "F4",
+        "supported": true,
+        "reason": "Matches S1 exactly: 'The loss includes an impairment charge of EUR 450 thousand.'"
+      },
+      {
+        "id": "F5",
+        "supported": true,
+        "reason": "Matches S1 exactly: 'These figures are not stated in millions.'"
+      }
+    ]
+  },
+  {
+    "answer": "The 2025 net loss of EUR (620) thousand was partly due to an impairment charge of EUR 450 thousand (F4). The source also notes 2025 revenue of EUR 8,400 thousand (F1) and an operating cash outflow of EUR (310) thousand (F3). All amounts are in EUR thousands, not millions (F5).",
+    "evidence": [
+      "F4",
+      "F1",
+      "F3",
+      "F5"
+    ]
+  },
+  {
+    "answer": "The 2025 net loss of EUR (620) thousand included an impairment charge of EUR 450 thousand (F4). The source states: \u201cThe net loss for 2025 was EUR (620) thousand\u201d and \u201cThe loss includes an impairment charge of EUR 450 thousand\u201d (S1).",
+    "evidence": [
+      "F4",
+      "F2",
+      "S1"
+    ]
+  }
+]

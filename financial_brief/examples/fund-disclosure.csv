@@ -1,0 +1,9 @@
+Notice,Entity,Metric,Period,Value,Unit
+FICTIONAL EXAMPLE,Meadow Balanced Fund,Net asset value,2024,48,USD million
+FICTIONAL EXAMPLE,Meadow Balanced Fund,Net asset value,2025,52,USD million
+FICTIONAL EXAMPLE,Meadow Balanced Fund,Expense ratio,2024,0.80,%
+FICTIONAL EXAMPLE,Meadow Balanced Fund,Expense ratio,2025,0.75,%
+FICTIONAL EXAMPLE,Meadow Balanced Fund,Equity allocation,2025,60,%
+FICTIONAL EXAMPLE,Meadow Balanced Fund,Bond allocation,2025,35,%
+FICTIONAL EXAMPLE,Meadow Balanced Fund,Cash allocation,2025,5,%
+FICTIONAL EXAMPLE,Meadow Balanced Fund,Largest holding,2025,12,%

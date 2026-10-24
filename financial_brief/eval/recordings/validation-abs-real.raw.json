@@ -1,0 +1,380 @@
+[
+  {
+    "facts": [
+      {
+        "label": "Collection Period",
+        "value": "August 2026",
+        "period": "August 2026",
+        "unit": "",
+        "quote": "Collection Period | August 2026"
+      },
+      {
+        "label": "Payment Date",
+        "value": "9/15/2026",
+        "period": "",
+        "unit": "",
+        "quote": "Payment Date | 9/15/2026"
+      },
+      {
+        "label": "Initial Pool Balance",
+        "value": "1,696,683,364.30",
+        "period": "",
+        "unit": "USD",
+        "quote": "Initial Pool Balance :: Dollar Amount = 1,696,683,364.30 ; # of Receivables = 46,551 ; 55.8 months"
+      },
+      {
+        "label": "Total Original Securities",
+        "value": "1,578,910,000.00",
+        "period": "",
+        "unit": "USD",
+        "quote": "Total :: Dollar Amount = 1,578,910,000.00"
+      },
+      {
+        "label": "Interest Collections",
+        "value": "2,219,904.75",
+        "period": "August 2026",
+        "unit": "USD",
+        "quote": "Interest Collections :: 2,219,904.75"
+      },
+      {
+        "label": "Principal Collections",
+        "value": "17,316,632.07",
+        "period": "August 2026",
+        "unit": "USD",
+        "quote": "Principal Collections :: 17,316,632.07"
+      },
+      {
+        "label": "Available Funds - Total",
+        "value": "29,592,713.56",
+        "period": "August 2026",
+        "unit": "USD",
+        "quote": "Available Funds - Total :: 29,592,713.56"
+      },
+      {
+        "label": "Servicing Fee Paid",
+        "value": "421,004.30",
+        "period": "August 2026",
+        "unit": "USD",
+        "quote": "Servicing Fee :: Calculated Amount = 421,004.30 ; Amount Paid = 421,004.30 ; Shortfall = 0.00 ; Carryover Shortfall = 0.00 ; Remaining Available Funds = 29,171,709.26"
+      },
+      {
+        "label": "Regular Principal Payment",
+        "value": "25,640,609.68",
+        "period": "August 2026",
+        "unit": "USD",
+        "quote": "Regular Principal Payment :: Calculated Amount = 25,640,609.68 ; Amount Paid = 25,640,609.68 ; Shortfall = 0.00 ; Carryover Shortfall = 0.00 ; Remaining Available Funds = 1,795,395.12"
+      },
+      {
+        "label": "Residual Released to Depositor",
+        "value": "1,795,395.12",
+        "period": "August 2026",
+        "unit": "USD",
+        "quote": "Residual Released to Depositor :: Calculated Amount = 0.00 ; Amount Paid = 1,795,395.12 ; Shortfall = 0.00 ; Carryover Shortfall = 0.00 ; Remaining Available Funds = 0.00"
+      },
+      {
+        "label": "Class A-3 Note Balance Change",
+        "value": "260,810,148.80",
+        "period": "August 2026",
+        "unit": "USD",
+        "quote": "Class A-3 Notes :: Beginning of Period > Balance = 286,450,758.48 ; Beginning of Period > Note Factor = 0.5115192 ; End of Period > Balance = 260,810,148.80 ; End of Period > Note Factor = 0.4657324"
+      },
+      {
+        "label": "Total Note Balance (Beginning)",
+        "value": "440,360,758.48",
+        "period": "August 2026",
+        "unit": "USD",
+        "quote": "Total :: Beginning of Period > Balance = 440,360,758.48 ; Beginning of Period > Note Fact"
+      },
+      {
+        "label": "Class A-2b Interest Rate Structure",
+        "value": "30-day average SOFR + 0.36%",
+        "period": "",
+        "unit": "",
+        "quote": "* 30-day average SOFR + 0.36%"
+      },
+      {
+        "label": "Total Noteholder Payments",
+        "value": "27,376,314.14",
+        "period": "August 2026",
+        "unit": "USD",
+        "quote": "Total :: Noteholder Principal Payments > Actual = 25,640,609.68 ; Noteholder Principal Payments > Per $1,000 of > Original Balance = 16.24 ; Noteholder Interest Payments > Actual = 1,735,704.46 ; Noteholder Interest Payments > Per $1,000 of > Original Balance = 1.10 ; Total Payment > Actual = 27,376,314.14 ; Total Payment > Per $1,000 of > Original Balance = 17.34"
+      }
+    ]
+  },
+  {
+    "facts": [
+      {
+        "label": "Pool Balance",
+        "value": "505,205,155.09 ; 477,396,344.41",
+        "period": "",
+        "unit": "",
+        "quote": "Pool Balance :: 505,205,155.09 ; 477,396,344.41"
+      },
+      {
+        "label": "Adjusted Pool Balance",
+        "value": "475,569,830.99 ; 449,512,089.15",
+        "period": "",
+        "unit": "",
+        "quote": "Adjusted Pool Balance (Pool Balance - YSOC Amount) :: 475,569,830.99 ; 449,512,089.15"
+      },
+      {
+        "label": "Total Note Balance",
+        "value": "440,360,758.48 ; 414,720,148.80",
+        "period": "",
+        "unit": "",
+        "quote": "Total :: Beginning of Period > Balance = 440,360,758.48 ; Beginning of Period > Note Factor = 0.2789017 ; End of Period > Balance = 414,720,148.80 ; End of Period > Note Factor = 0.2626623"
+      },
+      {
+        "label": "Specified Reserve Balance",
+        "value": "3,947,285.02",
+        "period": "",
+        "unit": "",
+        "quote": "Specified Reserve Balance :: 3,947,285.02"
+      },
+      {
+        "label": "Reserve Account Change",
+        "value": "0.00",
+        "period": "",
+        "unit": "",
+        "quote": "Change in Reserve Account Balance :: 0.00"
+      },
+      {
+        "label": "Net Loss for Current Collection Period",
+        "value": "436,001.87",
+        "period": "",
+        "unit": "",
+        "quote": "Net Loss for Current Collection Period :: Amount = 436,001.87"
+      },
+      {
+        "label": "Cumulative Net Loss",
+        "value": "9,976,739.65",
+        "period": "",
+        "unit": "",
+        "quote": "Cumulative Net Loss for All Collection Periods :: 9,976,739.65"
+      },
+      {
+        "label": "Total Delinquent Receivables",
+        "value": "8,223,108.90",
+        "period": "",
+        "unit": "",
+        "quote": "Total Delinquent Receivables :: % of EOP Pool Balance = 1.72% ; # of Receivables = 277 ; Amount = 8,223,108.90"
+      },
+      {
+        "label": "Total Repossessed Inventory",
+        "value": "1,190,026.69",
+        "period": "",
+        "unit": "",
+        "quote": "Total Repossessed Inventory :: # of Receivables = 31 ; Amount = 1,190,026.69"
+      },
+      {
+        "label": "Total Receivables Extended",
+        "value": "$6,728,141.78",
+        "period": "",
+        "unit": "",
+        "quote": "Total Receivables Extended :: 203 ; $6,728,141.78"
+      },
+      {
+        "label": "Delinquency Trigger Status",
+        "value": "No",
+        "period": "",
+        "unit": "",
+        "quote": "Delinquency Trigger Occurred | No"
+      },
+      {
+        "label": "Repurchase Demand Activity",
+        "value": "No Activity to report",
+        "period": "",
+        "unit": "",
+        "quote": "No Activity to report"
+      },
+      {
+        "label": "Benchmark Transition Event",
+        "value": "N/A",
+        "period": "",
+        "unit": "",
+        "quote": "Benchmark Transition Event: | N/A"
+      },
+      {
+        "label": "Servicer Certification",
+        "value": "THIS REPORT IS ACCURATE IN ALL MATERIAL RESPECTS.",
+        "period": "",
+        "unit": "",
+        "quote": "THIS REPORT IS ACCURATE IN ALL MATERIAL RESPECTS."
+      }
+    ]
+  },
+  {
+    "title": "Ford Credit 2024-A Servicing Report",
+    "subtitle": "August 2026 Collection Period Summary",
+    "overview": [
+      {
+        "text": "This brief summarizes the August 2026 servicing report for the Ford Credit 2024-A asset-backed securities. The report covers the collection period ending August 2026, with a scheduled payment date of 9/15/2026. The initial pool balance was 1,696,683,364.30, comprising 46,551 receivables with an average term of 55.8 months. Total original securities issued were 1,578,910,000.00.",
+        "evidence": [
+          "F1",
+          "F2",
+          "F3",
+          "F4"
+        ]
+      },
+      {
+        "text": "During the period, the servicer collected 2,219,904.75 in interest and 17,316,632.07 in principal. After paying a servicing fee of 421,004.30 and a regular principal payment of 25,640,609.68, a residual amount of 1,795,395.12 was released to the depositor. The report confirms that no delinquency trigger occurred and no repurchase demands were made.",
+        "evidence": [
+          "F5",
+          "F6",
+          "F7",
+          "F8",
+          "F9",
+          "F10",
+          "F23",
+          "F24"
+        ]
+      }
+    ],
+    "highlights": [
+      {
+        "text": "The Class A-3 note balance decreased from 286,450,758.48 at the beginning of the period to 260,810,148.80 at the end, reflecting the amortization of the notes.",
+        "evidence": [
+          "F11"
+        ]
+      },
+      {
+        "text": "Total payments to noteholders amounted to 27,376,314.14, which includes both principal and interest payments for the period.",
+        "evidence": [
+          "F13"
+        ]
+      },
+      {
+        "text": "The pool balance at the end of the period was 477,396,344.41, down from 505,205,155.09 at the beginning, indicating ongoing principal collection and pool reduction.",
+        "evidence": [
+          "F14"
+        ]
+      },
+      {
+        "text": "Cumulative net loss for all collection periods reached 9,976,739.65, while the net loss for the current period was 436,001.87.",
+        "evidence": [
+          "F18",
+          "F19"
+        ]
+      }
+    ],
+    "risks": [
+      {
+        "text": "Delinquent receivables totaled 8,223,108.90, representing 1.72% of the end-of-period pool balance, involving 277 receivables.",
+        "evidence": [
+          "F20"
+        ]
+      },
+      {
+        "text": "Repossessed inventory stood at 1,190,026.69 across 31 receivables, indicating assets that have been repossessed but not yet liquidated.",
+        "evidence": [
+          "F21"
+        ]
+      },
+      {
+        "text": "A total of 203 receivables with a value of $6,728,141.78 were extended, which may impact cash flow timing and pool performance.",
+        "evidence": [
+          "F22"
+        ]
+      },
+      {
+        "text": "The specified reserve balance remained at 3,947,285.02 with no change in the reserve account balance during the period.",
+        "evidence": [
+          "F16",
+          "F17"
+        ]
+      }
+    ],
+    "questions": [
+      "How does the 1.72% delinquency rate compare to historical averages for this pool?",
+      "What is the expected impact of the 203 extended receivables on future principal collections?",
+      "Will the cumulative net loss of 9,976,739.65 affect the credit ratings of the securities?"
+    ]
+  },
+  {
+    "verdicts": [
+      {
+        "id": "C1",
+        "supported": true,
+        "reason": "The source explicitly lists Interest Collections (2,219,904.75), Principal Collections (17,316,632.07), Servicing Fee (421,004.30), Regular Principal Payment (25,640,609.68), and Residual Released to Depositor (1,795,395.12). The source also states 'Delinquency Trigger Occurred | No' and 'No Activity to report' for repurchase demands."
+      },
+      {
+        "id": "C2",
+        "supported": true,
+        "reason": "The source table 'NOTE BALANCE AND POOL INFORMATION' shows Class A-3 Notes beginning balance of 286,450,758.48 and ending balance of 260,810,148.80. The decrease is a direct reflection of the principal payments made to noteholders."
+      },
+      {
+        "id": "C3",
+        "supported": true,
+        "reason": "The source table 'NOTEHOLDER PAYMENTS' shows the Total Payment Actual amount as 27,376,314.14, which is the sum of principal and interest payments to noteholders."
+      },
+      {
+        "id": "C4",
+        "supported": true,
+        "reason": "The source table 'POOL INFORMATION' shows the Pool Balance at the beginning of the period as 505,205,155.09 and at the end of the period as 477,396,344.41. The decrease indicates principal collection and pool reduction."
+      },
+      {
+        "id": "C5",
+        "supported": true,
+        "reason": "The source section 'NET LOSS AND DELINQUENT RECEIVABLES' lists 'Cumulative Net Loss for All Collection Periods' as 9,976,739.65 and 'Net Loss for Current Collection Period' as 436,001.87."
+      },
+      {
+        "id": "C6",
+        "supported": true,
+        "reason": "The source section 'NET LOSS AND DELINQUENT RECEIVABLES' lists 'Total Delinquent Receivables' with an amount of 8,223,108.90, representing 1.72% of the EOP Pool Balance, involving 277 receivables."
+      },
+      {
+        "id": "C7",
+        "supported": true,
+        "reason": "The source section 'NET LOSS AND DELINQUENT RECEIVABLES' lists 'Total Repossessed Inventory' with 31 receivables and an amount of 1,190,026.69."
+      },
+      {
+        "id": "C8",
+        "supported": true,
+        "reason": "The source section 'NET LOSS AND DELINQUENT RECEIVABLES' lists 'Total Receivables Extended' as 203 receivables with a value of $6,728,141.78."
+      },
+      {
+        "id": "C9",
+        "supported": true,
+        "reason": "The source section 'RECONCILIATION OF RESERVE ACCOUNT' shows the Beginning and Ending Reserve Account Balance both as 3,947,285.02, with a change of 0.00, confirming no change in the reserve account balance."
+      },
+      {
+        "id": "F1",
+        "supported": true,
+        "reason": "The source explicitly states 'Collection Period | August 2026'."
+      },
+      {
+        "id": "F2",
+        "supported": true,
+        "reason": "The source explicitly states 'Payment Date | 9/15/2026'."
+      },
+      {
+        "id": "F3",
+        "supported": true,
+        "reason": "The source explicitly states 'Initial Pool Balance :: Dollar Amount = 1,696,683,364.30'."
+      },
+      {
+        "id": "F4",
+        "supported": true,
+        "reason": "The source explicitly states 'Total :: Dollar Amount = 1,578,910,000.00' under Original Securities."
+      },
+      {
+        "id": "F5",
+        "supported": true,
+        "reason": "The source explicitly states 'Interest Collections :: 2,219,904.75'."
+      },
+      {
+        "id": "F6",
+        "supported": true,
+        "reason": "The source explicitly states 'Principal Collections :: 17,316,632.07'."
+      }
+    ]
+  },
+  {
+    "answer": "The document covers the collection period of August 2026. This is explicitly labeled as the \u201cCollection Period\u201d in the report header (F1, S1). The report also lists a payment date of 9/15/2026 (F2, S1) and identifies the transaction month as 30 (S1). The reporting period is not inferred from the payment date; it is directly stated in the source text.",
+    "evidence": [
+      "F1",
+      "F2",
+      "S1"
+    ]
+  }
+]

@@ -1,0 +1,152 @@
+[
+  {
+    "facts": [
+      {
+        "label": "Initial revenue figure",
+        "value": "USD 50 million",
+        "period": "2025",
+        "unit": "USD",
+        "quote": "Revenue for 2025 was USD 50 million."
+      },
+      {
+        "label": "Corrected revenue figure",
+        "value": "USD 47 million",
+        "period": "2025",
+        "unit": "USD",
+        "quote": "Revenue for 2025 was USD 47 million"
+      },
+      {
+        "label": "Nature of correction",
+        "value": "erroneous",
+        "period": "",
+        "unit": "",
+        "quote": "the earlier USD 50 million figure was erroneous"
+      },
+      {
+        "label": "Explanation status",
+        "value": "No explanation for the correction was supplied",
+        "period": "",
+        "unit": "",
+        "quote": "No explanation for the correction was supplied."
+      }
+    ]
+  },
+  {
+    "title": "2025 Revenue Correction Notice",
+    "subtitle": "Update to 2025 revenue figure",
+    "overview": [
+      {
+        "text": "The document reports a correction to the 2025 revenue figure. The initial report stated revenue for 2025 was USD 50 million [F1]. This was later identified as erroneous, and the corrected figure is USD 47 million [F2, F3].",
+        "evidence": [
+          "F1",
+          "F2",
+          "F3"
+        ]
+      },
+      {
+        "text": "The source explicitly notes that no explanation for this correction was supplied [F4]. Therefore, the brief reflects only the stated figures and the fact that the original number was wrong, without inferring reasons or calculating the difference.",
+        "evidence": [
+          "F4"
+        ]
+      }
+    ],
+    "highlights": [
+      {
+        "text": "Initial 2025 revenue was reported as USD 50 million [F1].",
+        "evidence": [
+          "F1"
+        ]
+      },
+      {
+        "text": "The corrected 2025 revenue is USD 47 million [F2].",
+        "evidence": [
+          "F2"
+        ]
+      },
+      {
+        "text": "The source states the earlier USD 50 million figure was erroneous [F3].",
+        "evidence": [
+          "F3"
+        ]
+      },
+      {
+        "text": "No explanation for the correction was supplied in the source [F4].",
+        "evidence": [
+          "F4"
+        ]
+      }
+    ],
+    "risks": [
+      {
+        "text": "Lack of explanation for the correction creates uncertainty about the cause of the error [F4].",
+        "evidence": [
+          "F4"
+        ]
+      }
+    ],
+    "questions": [
+      "What caused the initial 2025 revenue figure to be erroneous?",
+      "Are there other financial statements or periods affected by this correction?",
+      "How should readers interpret the corrected USD 47 million figure in context?"
+    ]
+  },
+  {
+    "verdicts": [
+      {
+        "id": "C1",
+        "supported": true,
+        "reason": "The source explicitly states the initial figure was USD 50 million, the corrected figure is USD 47 million, and the earlier figure was erroneous. The claim accurately reflects this sequence and the lack of explanation."
+      },
+      {
+        "id": "C2",
+        "supported": true,
+        "reason": "The source explicitly states 'No explanation for the correction was supplied.' The claim correctly notes this fact and avoids inferring reasons."
+      },
+      {
+        "id": "C3",
+        "supported": true,
+        "reason": "The source states 'Revenue for 2025 was USD 50 million' in the highlights section. The claim matches this exactly."
+      },
+      {
+        "id": "C4",
+        "supported": true,
+        "reason": "The source states 'Revenue for 2025 was USD 47 million' as the corrected figure. The claim matches this exactly."
+      },
+      {
+        "id": "C5",
+        "supported": true,
+        "reason": "The source explicitly states 'the earlier USD 50 million figure was erroneous.' The claim matches this exactly."
+      },
+      {
+        "id": "C6",
+        "supported": true,
+        "reason": "The source explicitly states 'No explanation for the correction was supplied.' The claim matches this exactly."
+      },
+      {
+        "id": "C7",
+        "supported": false,
+        "reason": "The source states that no explanation was supplied, but it does not state that this 'creates uncertainty about the cause of the error.' This is an inference not present in the source text."
+      },
+      {
+        "id": "F1",
+        "supported": true,
+        "reason": "The source explicitly states 'Revenue for 2025 was USD 50 million.' The key figure card matches the value, period, and unit."
+      },
+      {
+        "id": "F2",
+        "supported": true,
+        "reason": "The source explicitly states 'Revenue for 2025 was USD 47 million.' The key figure card matches the value, period, and unit."
+      }
+    ]
+  },
+  {
+    "answer": "The corrected revenue figure is USD 47 million for 2025 (F2). This replaces the initial figure of USD 50 million, which was identified as erroneous (F1, F3). No explanation for the correction was supplied (F4).",
+    "evidence": [
+      "F2",
+      "F1",
+      "F3",
+      "F4",
+      "S1"
+    ]
+  }
+]

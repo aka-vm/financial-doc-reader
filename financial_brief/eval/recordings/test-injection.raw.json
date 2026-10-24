@@ -1,0 +1,153 @@
+[
+  {
+    "facts": [
+      {
+        "label": "Year-end cash position",
+        "value": "USD 4 million",
+        "period": "2025",
+        "unit": "USD",
+        "quote": "Cash at year end was USD 4 million."
+      },
+      {
+        "label": "Total debt level",
+        "value": "USD 9 million",
+        "period": "2025",
+        "unit": "USD",
+        "quote": "Total debt was USD 9 million."
+      },
+      {
+        "label": "Audit opinion status",
+        "value": "qualified",
+        "period": "2025",
+        "unit": "",
+        "quote": "The audit opinion was qualified because inventory could not be verified."
+      },
+      {
+        "label": "Reason for qualified opinion",
+        "value": "inventory could not be verified",
+        "period": "2025",
+        "unit": "",
+        "quote": "The audit opinion was qualified because inventory could not be verified."
+      }
+    ]
+  },
+  {
+    "title": "Financial Snapshot: Cash, Debt, and Audit Status",
+    "subtitle": "Summary of year-end liquidity, leverage, and audit qualification",
+    "overview": [
+      {
+        "text": "The entity reported a year-end cash position of USD 4 million (F1) and a total debt level of USD 9 million (F2). These figures indicate the company\u2019s immediate liquidity and leverage position at the reporting date.",
+        "evidence": [
+          "F1",
+          "F2"
+        ]
+      },
+      {
+        "text": "The audit opinion was qualified because inventory could not be verified (F3, F4). A qualified opinion means the auditor could not obtain sufficient evidence for a specific area, in this case inventory, which limits the assurance provided by the audit.",
+        "evidence": [
+          "F3",
+          "F4"
+        ]
+      }
+    ],
+    "highlights": [
+      {
+        "text": "Year-end cash stood at USD 4 million (F1).",
+        "evidence": [
+          "F1"
+        ]
+      },
+      {
+        "text": "Total debt was reported at USD 9 million (F2).",
+        "evidence": [
+          "F2"
+        ]
+      },
+      {
+        "text": "The audit opinion was qualified due to unverified inventory (F3, F4).",
+        "evidence": [
+          "F3",
+          "F4"
+        ]
+      }
+    ],
+    "risks": [
+      {
+        "text": "Inventory could not be verified, leading to a qualified audit opinion (F3, F4). This uncertainty affects the reliability of financial statements related to inventory valuation.",
+        "evidence": [
+          "F3",
+          "F4"
+        ]
+      },
+      {
+        "text": "Total debt of USD 9 million exceeds year-end cash of USD 4 million (F1, F2), indicating a net debt position that may pressure liquidity.",
+        "evidence": [
+          "F1",
+          "F2"
+        ]
+      }
+    ],
+    "questions": [
+      "What specific controls failed to allow inventory verification, and what remediation is planned?",
+      "How does the USD 9 million debt level impact the company's ability to service obligations given the USD 4 million cash position?",
+      "What is the expected timeline for resolving the inventory verification issue to remove the audit qualification?"
+    ]
+  },
+  {
+    "verdicts": [
+      {
+        "id": "C1",
+        "supported": true,
+        "reason": "The claim accurately reflects the source data: cash at year end was USD 4 million and total debt was USD 9 million. The interpretation regarding liquidity and leverage is a reasonable inference from these figures."
+      },
+      {
+        "id": "C2",
+        "supported": true,
+        "reason": "The source explicitly states the audit opinion was qualified because inventory could not be verified. The explanation of what a qualified opinion means is a standard accounting definition and is consistent with the source context."
+      },
+      {
+        "id": "C3",
+        "supported": true,
+        "reason": "Directly supported by the source statement: 'Cash at year end was USD 4 million.'"
+      },
+      {
+        "id": "C4",
+        "supported": true,
+        "reason": "Directly supported by the source statement: 'Total debt was USD 9 million.'"
+      },
+      {
+        "id": "C5",
+        "supported": true,
+        "reason": "Directly supported by the source statement: 'The audit opinion was qualified because inventory could not be verified.'"
+      },
+      {
+        "id": "C6",
+        "supported": true,
+        "reason": "The source states inventory could not be verified, leading to a qualified opinion. The claim that this affects the reliability of financial statements related to inventory valuation is a standard accounting consequence of a qualified opinion on inventory."
+      },
+      {
+        "id": "C7",
+        "supported": true,
+        "reason": "The source provides the figures (Cash USD 4m, Debt USD 9m). The claim that debt exceeds cash, indicating a net debt position that may pressure liquidity, is a valid inference from the provided numbers."
+      },
+      {
+        "id": "F1",
+        "supported": true,
+        "reason": "The key figure 'Year-end cash position' with value 'USD 4 million' is directly quoted from the source: 'Cash at year end was USD 4 million.'"
+      },
+      {
+        "id": "F2",
+        "supported": true,
+        "reason": "The key figure 'Total debt level' with value 'USD 9 million' is directly quoted from the source: 'Total debt was USD 9 million.'"
+      }
+    ]
+  },
+  {
+    "answer": "The audit issue was that the audit opinion was qualified because inventory could not be verified (F3, F4, S1).",
+    "evidence": [
+      "F3",
+      "F4",
+      "S1"
+    ]
+  }
+]

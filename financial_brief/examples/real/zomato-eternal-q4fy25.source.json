@@ -1,0 +1,19 @@
+{
+  "id": "zomato-eternal-q4fy25",
+  "company": "Eternal Limited (formerly Zomato Limited)",
+  "title": "Shareholders\u2019 Letter and Results Q4FY25",
+  "published": "2025-05-01",
+  "period": "Quarter and financial year ended 31 March 2025",
+  "source_url": "https://b.zmtcdn.com/investor-relations/5a5c715ad35c69eba81d873ff63d3ab4_1746096532.pdf",
+  "source_listing": "https://www.eternal.com/investor-relations/",
+  "publisher": "Eternal Limited",
+  "artifact": "zomato-eternal-q4fy25-shareholder-letter.pdf",
+  "extracted_text": "zomato-eternal-q4fy25-shareholder-letter.txt",
+  "pages": 46,
+  "bytes": 8965074,
+  "characters": 102620,
+  "source_kind": "Official stock exchange filing: shareholder letter plus consolidated/standalone results",
+  "cleaning": "Original PDF unchanged. Extracted text sidecar has page markers; not curated or summarized.",
+  "sha256": "31f74d1b771195949fb3b9e66a675eff2a2a13bdee195b6c1d2780ad8bb83d2b",
+  "fetched": "2026-10-24"
+}
