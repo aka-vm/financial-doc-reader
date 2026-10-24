@@ -41,6 +41,19 @@ class RegistryTests(unittest.TestCase):
                 self.assertEqual(invoke.call_args.args[5],1200)
         finally:LLM_ROUTER.reset(token)
 
+    def test_thinking_off_is_sent_only_when_configured(self):
+        data=local_config();data['llms']['small']['thinking']=False
+        token=LLM_ROUTER.set(LLMRegistry(data))
+        try:
+            with patch('reader.backends.openai_compatible',return_value={'ok':True}) as invoke:
+                call('registry','task:extract','Read',{})
+                self.assertEqual(invoke.call_args.kwargs['chat_template_kwargs'],{'enable_thinking':False})
+                call('registry','task:review','Check',{})
+                self.assertNotIn('chat_template_kwargs',invoke.call_args.kwargs)
+        finally:LLM_ROUTER.reset(token)
+        data['llms']['small']['thinking']='no'
+        with self.assertRaises(LLMConfigError):LLMRegistry(data)
+
     def test_invalid_routes_disabled_entries_and_embedded_keys_fail_closed(self):
         cases=[]
         data=local_config();data['tasks']['review']='missing';cases.append(data)

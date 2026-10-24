@@ -1,6 +1,6 @@
 'use strict';
 const $ = id => document.getElementById(id);
-let files = [], jobId = null, report = null, polling = false;
+let files = [], jobId = null, report = null, polling = false, eta = null;
 const headers = {'X-Brief-Request': '1'};
 function node(tag, text, cls) { const n = document.createElement(tag); if(text !== undefined) n.textContent=text; if(cls) n.className=cls; return n; }
 function show(view) { for(const id of ['welcome','loading','workspace']) $(id).hidden = id !== view; }
@@ -54,7 +54,11 @@ async function poll(){
       if(jobId!==requestedId)continue;
       if(job.status==='error'){forgetBrief();show('welcome');error(job.error);$('generate').disabled=!files.length;break;}
       if(job.status==='done'){report=job.report;renderReport();show('workspace');break;}
-      show('loading');$('progress-label').textContent=job.progress.label;
+      // ETA from this job's observed pace; queue time is excluded.
+      const {done,total}=job.progress;
+      if(job.status!=='running'||eta?.id!==requestedId)eta={id:requestedId,t:Date.now(),done};
+      const steps=done-eta.done,left=steps>0?(Date.now()-eta.t)/steps*(total-done)/60000:null;
+      show('loading');$('progress-label').textContent=job.progress.label+(left===null?'':left<1?' · under a minute left':` · about ${Math.round(left)} min left`);
       $('progress').value=Math.round(100*job.progress.done/Math.max(1,job.progress.total));
       await new Promise(r=>setTimeout(r,1800));
     }

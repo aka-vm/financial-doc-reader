@@ -50,6 +50,8 @@ class LLMRegistry:
             for field in ('api_key_env','api_key_file'):
                 if field in entry and (not isinstance(entry[field],str) or not entry[field]):
                     raise LLMConfigError(f'LLM {key!r}: invalid credential reference.')
+            if 'thinking' in entry and (entry['provider']!='link' or not isinstance(entry['thinking'],bool)):
+                raise LLMConfigError(f'LLM {key!r}: thinking must be true or false, and only applies to link.')
             url=entry.get('base_url')
             if entry['provider']=='openai' and url:
                 raise LLMConfigError('The openai provider uses api.openai.com. Use link for a custom endpoint.')
@@ -103,7 +105,9 @@ class LLMRegistry:
             return backends.openai(entry['model'],prompt,schema,budget,effort,key=key)
         if entry['provider']=='ollama':
             return backends.ollama(entry['model'],prompt,schema,budget,host=entry['base_url'],key=key)
-        return backends.openai_compatible(entry['base_url'],entry['model'],prompt,schema,key,budget,temperature=0)
+        # Thinking tokens count against the output budget; a thinking model can spend it all before answering.
+        extra={} if entry.get('thinking',True) else {'chat_template_kwargs':{'enable_thinking':False}}
+        return backends.openai_compatible(entry['base_url'],entry['model'],prompt,schema,key,budget,temperature=0,**extra)
 
 
 def load_registry(path):
