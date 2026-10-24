@@ -10,8 +10,8 @@ ROOT = Path(__file__).resolve().parent.parent
 class ExampleCatalogTests(unittest.TestCase):
     def test_public_assets_and_tags(self):
         items = json.loads((ROOT / 'financial_brief/examples/catalog.json').read_text())
-        self.assertEqual(len(items), 50)
-        self.assertEqual(len({i['id'] for i in items}), 50)
+        self.assertEqual(len(items), 53)
+        self.assertEqual(len({i['id'] for i in items}), 53)
         for item in items:
             with self.subTest(example=item['id']):
                 self.assertTrue(1 <= len(item['tags']) <= 3)
@@ -36,9 +36,9 @@ for(let n=0;n<1000;n++){
  assert.equal(new Set(selected.map(i=>i.report_type)).size,6);
  for(const item of selected)appearances.set(item.report_type,(appearances.get(item.report_type)||0)+1);
 }
-assert.equal(appearances.size,7);
+assert.equal(appearances.size,9);
 // Broad bounds catch weighting by item count without a fragile random assertion.
-for(const count of appearances.values())assert(count>650 && count<1001);
+for(const count of appearances.values())assert(count>500 && count<1001);
 assert.deepEqual(randomExamples([]),[]);
 assert.equal(randomExamples(items.slice(0,2)).length,2);
 assert.equal(randomExamples(items,0).length,0);
