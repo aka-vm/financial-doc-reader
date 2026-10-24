@@ -16,7 +16,7 @@ from html import unescape
 from html.parser import HTMLParser
 
 # SEC asks automated clients to identify themselves: set SEC_USER_AGENT="Your Name you@example.com"
-UA = os.environ.get("SEC_USER_AGENT", "servicer-report-reader contact@example.com")
+UA = os.environ.get("SEC_USER_AGENT", "financial-doc-reader contact@example.com")
 KEEP = (".htm", ".html", ".txt", ".pdf", ".csv", ".xml")
 MAX_UNZIPPED = 500 << 20  # refuse zip bombs
 FORMS = {}  # downloaded path -> its EDGAR document type (10-D, EX-99.1, 40-17F2, ...), to explain what a document is

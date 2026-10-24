@@ -32,7 +32,7 @@ def main():
             page.locator('#theme-select').select_option(theme)
             if theme != 'auto':
                 assert page.locator('html').get_attribute('data-theme') == theme
-        assert page.locator('.project-repo').get_attribute('href') == 'https://github.com/aka-vm/servicer-report-reader'
+        assert page.locator('.project-repo').get_attribute('href') == 'https://github.com/aka-vm/financial-doc-reader'
         page.screenshot(path=str(output / 'home.png'), full_page=True)
         page.set_viewport_size({'width': 390, 'height': 844})
         assert not page.evaluate('() => document.documentElement.scrollWidth > innerWidth')

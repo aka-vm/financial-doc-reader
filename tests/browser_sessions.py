@@ -25,7 +25,7 @@ def main():
         page.locator('.example-card').first.get_by_role('button', name='Load example').click()
         page.locator('#generate:not([disabled])').wait_for()
         repo = page.locator('.project-repo')
-        assert repo.get_attribute('href') == 'https://github.com/aka-vm/servicer-report-reader'
+        assert repo.get_attribute('href') == 'https://github.com/aka-vm/financial-doc-reader'
         page.close()
 
         page = browser.new_page()

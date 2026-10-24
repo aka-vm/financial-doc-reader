@@ -1,127 +1,118 @@
-# Ledger / Deal Report Reader
+# Financial Doc Reader
 
-Read financial documents, follow every figure back to its source, and turn a complete
-auto-loan ABS deal into checked monthly figures, payment rules and loan-pool statistics.
-Built by [Vineet](https://aka-vm.github.io) · [GitHub](https://github.com/aka-vm/servicer-report-reader).
+Read financial documents and follow every figure back to the sentence or table it came
+from. For auto-loan ABS deals, go further: check each monthly servicer report's
+arithmetic, run the contract's payment waterfall against what was actually paid, and
+reconcile the loan tape to the pool balance.
 
-The browser app has two modes:
+Built by [Vineet](https://aka-vm.github.io). The browser app is called **Ledger**.
 
-- **Financial brief:** PDF, HTML, TXT and CSV documents become an overview, material
-  figures, highlights, risks, source quotations and follow-up answers. Tables are
-  available for reported figures; comparison charts appear only when compatible
-  metrics, periods and units are supported by the extracted evidence.
-- **ABS deal report:** upload a folder or ZIP of contracts, monthly servicer reports
-  and SEC ABS-EE CSV/XML tapes. Code checks arithmetic, balance carryovers, payment
-  waterfalls and tape reconciliation. Anything unconfirmed is listed under Needs review.
+## What it does
 
-The library contains 50 substantial public examples, including Eternal/Zomato,
-Zerodha, Reliance, HDFC Bank, TCS, Wipro, global issuer releases, SEC monthly filings
-and full loan deals. The page displays only six random examples at a time, with a
-shuffle control. Each links to its original source and discloses its period/scope.
-Loading an example does not run a model until you submit it.
+**Financial brief.** Drop in PDF, HTML, TXT or CSV documents (annual reports, earnings
+releases, earnings calls, proxy statements, management updates). You get an overview,
+material figures, highlights and risks, each with its source quotation, and can ask
+follow-up questions. Charts appear only when the extracted figures share compatible
+metrics, periods and units.
 
-## Start here
+**ABS deal report.** Drop in a folder or ZIP of contracts, monthly servicer reports
+and SEC ABS-EE loan tapes, or paste an EDGAR link. Code, not the model, checks totals,
+balance carryovers, the payment waterfall and tape reconciliation. Anything it cannot
+confirm is listed under *Needs review*.
 
-**Using a coding agent?** Give it [AGENTS.md](AGENTS.md), or [agent.MD](agent.MD).
-It must first establish your provider/model choices and credential references,
-reusing choices you have already supplied. It must not assume you want a paid API.
+The page has 53 public examples, six shown at a time: Eternal/Zomato, Zerodha,
+Reliance, HDFC Bank, Bajaj Finance, TCS, Wipro, SoFi, Apple, NVIDIA, Berkshire, the
+Federal Reserve's bank lending survey, SEC servicer filings and complete loan deals.
+Each links to its original source. Loading an example runs no model until you submit it.
 
-For manual setup, follow [SETUP.md](SETUP.md). From the repository root:
+## Quick start
+
+Using a coding agent (Claude Code, Codex)? Point it at [AGENTS.md](AGENTS.md). It will
+ask which models you want before calling any of them.
+
+Otherwise, from the repository root (Python 3.10+):
 
 ```sh
 python3 -m venv .venv-brief
 .venv-brief/bin/pip install -r requirements-brief.txt
-# Original example files use Git LFS. Install git-lfs if it is not available.
-git lfs install
-git lfs pull
-python3 -m reader.selftest
-.venv-brief/bin/python -m unittest discover -s tests -v
-```
+git lfs install && git lfs pull          # the original ABS example reports use Git LFS
+python3 -m reader.selftest               # no model needed; must print "ok: ..."
 
-Choose your LLMs before starting the app. The template uses GPT-5 nano for simple
-extraction and GPT-6 Luna for difficult tables, writing and checking:
-
-```sh
 cp llm-config.example.json llm-config.json
-# Edit the file for your providers, endpoints, model IDs and credential references.
-.venv-brief/bin/python -m financial_brief.llm_config llm-config.json
-# Optional: one small provider request per selected LLM; hosted requests may be billed.
-.venv-brief/bin/python -m financial_brief.llm_config llm-config.json --test
+# edit llm-config.json: providers, model IDs, endpoints, credential references
+.venv-brief/bin/python -m financial_brief.llm_config llm-config.json          # validate
+.venv-brief/bin/python -m financial_brief.llm_config llm-config.json --test   # one small request per model
 .venv-brief/bin/python -m financial_brief.server
 ```
 
-Open **http://localhost:8422**. Put API keys in server environment variables or private
-key files, never in the JSON registry or browser. Two reports run concurrently by
-default; additional uploads queue. Export JSON, Markdown, figures CSV, or print to PDF.
+Open http://localhost:8422. Two reports run at once; more uploads queue. Export JSON,
+Markdown, a figures CSV, or print to PDF. Full setup and hosting: [SETUP.md](SETUP.md).
 
-## Choose an LLM for each task
+## Choose your models
 
-[llm-config.example.json](llm-config.example.json) separates the registry from task routing:
+`llm-config.json` lists the models you have (`llms`) and which one handles each job
+(`tasks`). Providers: `openai` (OpenAI API), `link` (any OpenAI-compatible server:
+vLLM, LM Studio, a gateway) and `ollama`. Everything local, with no API key:
 
 ```json
 {
   "version": 1,
   "llms": {
-    "nano": {"provider": "openai", "model": "gpt-5-nano", "api_key_env": "OPENAI_API_KEY"},
-    "luna": {"provider": "openai", "model": "gpt-6-luna", "api_key_env": "OPENAI_API_KEY"},
     "local": {"provider": "link", "model": "your-served-model-id", "base_url": "http://127.0.0.1:8000/v1"}
   },
   "tasks": {
-    "extract": "nano",
-    "extract_tables": "luna",
-    "recover_extract": "luna",
-    "write": "luna",
-    "review": "luna",
-    "answer": "luna",
-    "contract": "luna",
-    "month_inputs": "nano"
+    "extract": "local", "extract_tables": "local", "recover_extract": "local",
+    "write": "local", "review": "local", "answer": "local",
+    "contract": "local", "month_inputs": "local"
   }
 }
 ```
 
-To use your own server for everything, point every task at `local`. `link` supports
-OpenAI-compatible endpoints such as vLLM, LM Studio or a hosted gateway. `ollama`
-supports Ollama's native API. Tasks may use different endpoints and credentials.
-Task objects can also set reasoning effort and output-token budgets. See
-[LLM routing](docs/agent/LLM_ROUTING.md) for validation, credential precedence and examples.
+Or mix: a small model for simple extraction (`extract`, `month_inputs`) and a stronger
+one for dense tables, writing, review and contract rules. The example file shows this
+with GPT-5 nano and GPT-6 Luna. Hosted providers receive your document text and may
+charge for it.
 
-Configuration is read when a job starts, then held stable for that job. Changes apply
-to subsequent jobs without a server restart. Reports record the selected models and
-configuration revision. `/healthz` exposes safe routing metadata, not keys or endpoints.
+Keys stay in environment variables or key files, never in the JSON or the browser. The
+config is read when each job starts, so edits apply to the next job without a restart.
+Details: [LLM routing](docs/agent/LLM_ROUTING.md).
 
-## What the checks establish
+## What the checks prove, and what they don't
 
-Quoted values must occur in extracted source text. Header context supplies explicit
-periods, units and scope; a second model pass checks material claims and displayed
-figures. These checks do not establish accounting accuracy or audit the source.
-Generic briefs do not run the ABS reconciliation engine.
+- Every quoted value must appear in the extracted source text; invented lines are rejected.
+- Periods, units and scope come from the table headers they sit under.
+- A second model pass checks material claims and displayed figures.
+- For ABS deals, arithmetic and waterfalls are computed in code and compared line by line.
 
-Scanned/image-only content needs OCR and is reported as a coverage limitation. PDFs
-that permit reading with an empty password are supported; password-protected PDFs
-still require an unlocked copy. Figures are never invented to fill unreadable charts.
+These checks do not audit the source or establish accounting accuracy. Image-only pages
+and charts are not read (no OCR) and are reported as a coverage gap. Password-protected
+PDFs need an unlocked copy.
 
-Private documents go to the providers selected in your registry. Fully local routing
-keeps model requests on those configured endpoints. Uploaded originals are removed
-after processing; session-owned reports expire after one hour by default.
+Documents go only to the model endpoints in your config. Uploaded originals are deleted
+after processing; reports expire after one hour by default.
 
-## Hosting, evaluation and development
+## Command line and MCP
 
-- [Setup and deployment](SETUP.md)
+The original ABS tools still work without the browser app:
+
+```sh
+python3 -m reader.deal examples/santander-drive-2024-1-deal/* --backend ollama --model <model> --out deal.json
+```
+
+`mcp_server.py` exposes deal reports to Claude Code, Codex or Claude Desktop. Ask your
+agent to "set this up as an MCP server" and it follows [AGENTS.md](AGENTS.md). See
+[docs/ABS_READER.md](docs/ABS_READER.md) and [STARTUP.md](STARTUP.md).
+
+## Development
+
+```sh
+.venv-brief/bin/python -m unittest discover -s tests -v   # offline; no model calls
+```
+
 - [Architecture](docs/agent/ARCHITECTURE.md)
-- [Model configuration](docs/agent/LLM_ROUTING.md)
 - [Operations and troubleshooting](docs/agent/OPERATIONS.md)
 - [Evaluation approach and limits](docs/agent/EVALUATION.md)
 - [Development handoff](docs/agent/HANDOFF.md)
-- [Original ABS CLI, MCP and historical Qwen results](docs/ABS_READER.md), [STARTUP.md](STARTUP.md)
 
-Independent example evaluation uses **agy**, with Gemini Flash coordinating reviews.
-It is optional development tooling, not a dependency for running the app. Exact
-model versions, fallback reviewers and findings are retained in evaluation artifacts;
-a favorable score is not an audit opinion.
-
-Example cards carry up to three tags (report type, topic and region). The six-card
-selection samples report types equally before repeating a type, so the larger SEC
-servicer collection does not dominate. The library includes full annual reports,
-earnings releases, management updates, earnings calls, proxy statements, servicer
-reports and complete ABS bundles. Add examples through `financial_brief/examples/catalog.json`
-with `report_type` and `tags`; no extra service or model call is required.
+To add an example, add an entry to `financial_brief/examples/catalog.json` with a
+`report_type` and `tags`.
